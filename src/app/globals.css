@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fcf9f8;
+  --foreground: #1a1a1a;
+  --kinetic-blue: #4d7cf5;
+  --kinetic-black: #1a1a1a;
+  --kinetic-gold: #F2B84B;
+  --surface: #fcf9f8;
 }
 
 @theme inline {
@@ -12,15 +16,88 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  color: var(--foreground);
+  background: var(--background);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Brutalist utilities */
+.brutalist-border {
+  border: 4px solid #1a1a1a;
+}
+
+.brutalist-border-thin {
+  border: 2px solid #1a1a1a;
+}
+
+.brutalist-shadow {
+  box-shadow: 8px 8px 0px 0px #1a1a1a;
+}
+
+.brutalist-shadow-sm {
+  box-shadow: 4px 4px 0px 0px #1a1a1a;
+}
+
+/* Safety badge colors */
+.safety-safe {
+  background: #22c55e;
+  color: #1a1a1a;
+}
+
+.safety-caution {
+  background: #F2B84B;
+  color: #1a1a1a;
+}
+
+.safety-dangerous {
+  background: #ef4444;
+  color: white;
+}
+
+/* Ticker marquee */
+.ticker-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 4px solid #1a1a1a;
+  border-bottom: 4px solid #1a1a1a;
+}
+
+.ticker-content {
+  display: inline-flex;
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Code blocks */
+code {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  background: #1a1a1a;
+  color: #F2B84B;
+  padding: 2px 6px;
+  font-size: 0.85em;
+  border: 2px solid #1a1a1a;
+}
+
+/* Scroll margin for anchor links */
+[id] {
+  scroll-margin-top: 100px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fcf9f8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border: 2px solid #fcf9f8;
 }

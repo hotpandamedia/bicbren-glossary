@@ -1,0 +1,969 @@
+{
+  "meta": {
+    "title": "BicBren Tech Glossary",
+    "tagline": "The bridge between Hot Panda Media and KOT Projects",
+    "description": "A plain-language tech reference for non-programmers who work closely with developers and AI tools.",
+    "lastUpdated": "2026-04-03",
+    "safetyLegend": {
+      "safe": "Can't break anything. Just reading or viewing information.",
+      "caution": "Makes changes, but they can be undone. Still be mindful.",
+      "dangerous": "Can lose work, delete data, or affect live systems. Always double-check before running."
+    }
+  },
+
+  "terms": [
+    {
+      "term": "API (Application Programming Interface)",
+      "category": "Concepts",
+      "definition": "A set of rules that lets different software talk to each other. When your website needs data from Directus, it asks through the API — like a waiter taking your order to the kitchen.",
+      "example": "The HPM public website calls the Directus API to fetch artist bios and fun facts. The API returns the data as JSON, and the site displays it."
+    },
+    {
+      "term": "Backend",
+      "category": "Concepts",
+      "definition": "The behind-the-scenes part of an application — the server, database, and logic that users never see directly. It processes data, handles authentication, and stores everything.",
+      "example": "Directus on Railway is our backend. It stores all HPM collections (projects, SOPs, tasks) and handles who can log in and what they can see."
+    },
+    {
+      "term": "Branch",
+      "category": "Git",
+      "definition": "A separate line of development that lets you work on features or fixes without affecting the main codebase. Think of it as a parallel copy of your project where you can experiment freely.",
+      "example": "When building the tech roadmap page for HPM, we created a branch called `hpmapp01-schema` so the work stayed isolated from the live app until it was ready."
+    },
+    {
+      "term": "Build",
+      "category": "DevOps",
+      "definition": "The process of converting your source code into something a browser or server can actually run. Modern code often needs to be compiled, bundled, and optimized before it works.",
+      "example": "When Vercel deploys the KOT site, it runs a build step that compiles all the Next.js pages into optimized HTML and JavaScript."
+    },
+    {
+      "term": "Cache",
+      "category": "Concepts",
+      "definition": "A stored copy of data that's been fetched before, so the system doesn't have to go get it again. Makes things faster but can sometimes show outdated information.",
+      "example": "If the HPM site caches artist data, visitors see the page load instantly — but a newly added artist might not appear until the cache refreshes."
+    },
+    {
+      "term": "CI (Continuous Integration)",
+      "category": "DevOps",
+      "definition": "An automated process that checks your code every time you push changes — running tests, builds, and quality checks to catch problems early before they reach production.",
+      "example": "When you push code to the KOT site repo, Vercel automatically runs a build to make sure the site compiles without errors before deploying it."
+    },
+    {
+      "term": "CLI (Command Line Interface)",
+      "category": "Tools",
+      "definition": "A text-based way to interact with your computer or a tool by typing commands instead of clicking buttons. Faster and more powerful than a GUI for many development tasks.",
+      "example": "We use the Vercel CLI to deploy sites, the Railway CLI to manage databases, and Claude Code as a CLI assistant for development work."
+    },
+    {
+      "term": "Collection",
+      "category": "Database",
+      "definition": "In Directus, a collection is essentially a database table with a friendly name. It holds a specific type of data — each row is one item, each column is a field.",
+      "example": "The HPM internal app has 15 collections including projects, SOPs, tasks, and reviews. Each collection maps to a PostgreSQL table on Railway."
+    },
+    {
+      "term": "Commit",
+      "category": "Git",
+      "definition": "A saved snapshot of your code changes with a message describing what you did and why. Each commit is a checkpoint you can return to if something goes wrong.",
+      "example": "After adding Google OAuth to Directus, we made a commit: 'Add Google SSO config for staff authentication' — so we can trace exactly when and why that change was made."
+    },
+    {
+      "term": "CORS (Cross-Origin Resource Sharing)",
+      "category": "Concepts",
+      "definition": "A security rule that controls which websites can request data from your server. If your site at domain A tries to fetch data from domain B, CORS settings on B decide whether to allow it.",
+      "example": "The HPM public website (on Vercel) needs CORS permission to fetch data from Directus (on Railway) because they're on different domains."
+    },
+    {
+      "term": "CRUD",
+      "category": "Concepts",
+      "definition": "The four basic operations for any data: Create, Read, Update, Delete. Almost every app feature boils down to one of these four actions.",
+      "example": "In the HPM internal app: creating a new project is C, viewing SOPs is R, editing task status is U, and removing a duplicate entry is D."
+    },
+    {
+      "term": "Database",
+      "category": "Database",
+      "definition": "A structured system for storing and organizing data. Think of it as a set of spreadsheets that your application can read and write to — but much faster and more reliable than actual spreadsheets.",
+      "example": "HPM uses PostgreSQL (a type of database) hosted on Railway. Directus sits on top of it and gives you a visual interface to manage the data."
+    },
+    {
+      "term": "Deploy",
+      "category": "DevOps",
+      "definition": "The process of publishing your code so it's live and accessible to users. Can be to a preview URL for testing or to production for the real thing.",
+      "example": "When the KOT site is ready, we deploy it to Vercel — preview deploys let Kenny review changes before we push to the live kotprojects.com domain."
+    },
+    {
+      "term": "DNS (Domain Name System)",
+      "category": "Concepts",
+      "definition": "The system that translates human-readable domain names (like hotpandamedia.com) into server addresses computers understand. It's the phonebook of the internet.",
+      "example": "When you point kotprojects.com to Vercel, you're updating DNS records to say 'when someone visits this domain, send them to our Vercel server.'"
+    },
+    {
+      "term": "Endpoint",
+      "category": "Concepts",
+      "definition": "A specific URL where your API accepts requests. Each endpoint serves a different purpose — one might return a list of artists, another might create a new project.",
+      "example": "The Directus endpoint `/items/artists` returns all artist data. The endpoint `/items/projects` returns project data. Each collection has its own endpoint."
+    },
+    {
+      "term": "Environment",
+      "category": "DevOps",
+      "definition": "A separate version of your application setup. Development (your machine), staging (preview/test), and production (live) are the typical three. Each can have different settings.",
+      "example": "On your Mac Mini it's development, Vercel preview URLs are staging, and hotpandamedia.com is production. Each connects to different database instances."
+    },
+    {
+      "term": "Environment Variables (env vars)",
+      "category": "DevOps",
+      "definition": "Secret configuration values (API keys, database URLs, passwords) stored outside your code so they never get committed to the repository. Different environments use different values.",
+      "example": "The Directus database URL and Google OAuth credentials for HPM are stored as environment variables on Railway — not in the code itself."
+    },
+    {
+      "term": "Foreign Key (FK)",
+      "category": "Database",
+      "definition": "A field in one database table that points to a record in another table, creating a relationship between them. It's how you link data together.",
+      "example": "In the HPM schema, `fun_facts.artist_id` is a foreign key pointing to `artists.id`. This links each fun fact to the correct artist. We use UUID (the auto-generated ID), not the entity code."
+    },
+    {
+      "term": "Fork",
+      "category": "Git",
+      "definition": "A complete copy of someone else's repository under your own account. You can modify it freely without affecting the original project.",
+      "example": "If we wanted to customize an open-source Directus extension, we'd fork the original repo, make our changes, and maintain our own version for HPM."
+    },
+    {
+      "term": "Frontend",
+      "category": "Concepts",
+      "definition": "The part of an application that users see and interact with — the visual design, buttons, pages, and layout. Runs in the browser.",
+      "example": "The KOT site and HPM public website are frontends built with Next.js. They fetch data from the backend (Directus) and display it nicely."
+    },
+    {
+      "term": "Git",
+      "category": "Git",
+      "definition": "A version control system that tracks every change to your code over time. It lets multiple people work on the same project, keeps a full history, and allows you to undo mistakes.",
+      "example": "All HPM and KOT projects use Git to track changes — every edit, every feature, every fix is recorded so nothing is ever lost."
+    },
+    {
+      "term": "GUI (Graphical User Interface)",
+      "category": "Tools",
+      "definition": "A visual way to interact with software using windows, buttons, and menus — as opposed to typing commands in a CLI. Most apps you use daily have a GUI.",
+      "example": "Directus is a GUI for your database — instead of writing SQL queries, you click through collections, drag fields, and set permissions visually."
+    },
+    {
+      "term": "Hook",
+      "category": "Concepts",
+      "definition": "An automatic action triggered by a specific event. When something happens (a commit, a deploy, a form submission), a hook runs code in response.",
+      "example": "Claude Code has hooks that run automatically — like a startup hook that loads your memory and session context every time a new conversation begins."
+    },
+    {
+      "term": "JSON (JavaScript Object Notation)",
+      "category": "Concepts",
+      "definition": "A standard text format for storing and exchanging structured data. It uses key-value pairs and is readable by both humans and machines. Pronounced 'JAY-son'.",
+      "example": "When the HPM site asks Directus for artist data, the API returns it as JSON — a structured format the website knows how to read and display."
+    },
+    {
+      "term": "Localhost",
+      "category": "DevOps",
+      "definition": "Your own computer acting as a server. When you run an app locally for testing, it's available at localhost (usually localhost:3000). Only you can see it — it's not on the internet.",
+      "example": "Running the HPM site locally shows it at localhost:3000 on the Mac Mini. But since you SSH from your laptop, you need a tunnel to access it."
+    },
+    {
+      "term": "Main / Master",
+      "category": "Git",
+      "definition": "The primary branch of your repository — the 'source of truth' that represents the current production-ready state of your code. All feature branches eventually merge back into main.",
+      "example": "The `main` branch of the HPM internal app is what's deployed live. Feature work happens on separate branches and merges into main when approved."
+    },
+    {
+      "term": "Merge",
+      "category": "Git",
+      "definition": "Combining changes from one branch into another. When a feature is complete and reviewed, you merge it into the main branch to include it in the live product.",
+      "example": "After the roadmap page was built and tested on the `hpmapp01-schema` branch, merging it into main would make it part of the live HPM app."
+    },
+    {
+      "term": "Merge Conflict",
+      "category": "Git",
+      "definition": "When two branches change the same part of the same file, Git can't automatically combine them. A human needs to decide which version to keep or how to blend them.",
+      "example": "If you edited a Directus schema file on one branch while Claude edited the same file on another, Git would flag a merge conflict for us to resolve manually."
+    },
+    {
+      "term": "Migration",
+      "category": "Database",
+      "definition": "A scripted change to your database structure — adding tables, renaming columns, changing field types. Migrations are versioned so you can apply or undo them in order.",
+      "example": "When we add a new collection to Directus for HPM (like a task tracker), a migration runs to create that table in the PostgreSQL database on Railway."
+    },
+    {
+      "term": "Multi-tenancy",
+      "category": "Concepts",
+      "definition": "One application serving multiple separate organizations, each with their own data that's completely isolated from the others. Users only see their own company's data.",
+      "example": "HPM and KOT share the same Directus setup, but data is fully isolated per company. When you log in, the system routes you to the correct tenant automatically."
+    },
+    {
+      "term": "OAuth",
+      "category": "Concepts",
+      "definition": "A secure way to log in using an existing account (like Google) instead of creating a new username and password. The third-party service verifies your identity and sends you back.",
+      "example": "HPM staff log into Directus using 'Sign in with Google' — Google confirms who they are, and Directus matches their email to the right user and permissions."
+    },
+    {
+      "term": "Package",
+      "category": "Concepts",
+      "definition": "A bundle of reusable code written by someone else that you can install in your project. Instead of building everything from scratch, you use packages for common tasks.",
+      "example": "The HPM site uses packages like Next.js (for building web pages), Tailwind (for styling), and the Directus SDK (for talking to the database)."
+    },
+    {
+      "term": "Port",
+      "category": "Concepts",
+      "definition": "A number that identifies a specific service running on a computer. Like apartment numbers in a building — the IP is the building, the port is the unit.",
+      "example": "The HPM dev server runs on port 3000, Directus might run on port 8055. When you SSH tunnel, you map the remote port to the same local port."
+    },
+    {
+      "term": "PR (Pull Request)",
+      "category": "Git",
+      "definition": "A formal request to merge your branch into the main codebase. It shows all the changes you made, lets others review your code, and provides a place for discussion before merging.",
+      "example": "After building a new feature for the KOT client portal, we open a PR on GitHub so the changes can be reviewed before going live."
+    },
+    {
+      "term": "Production",
+      "category": "DevOps",
+      "definition": "The live environment that real users interact with. Changes here affect the actual product — as opposed to development or staging environments used for testing.",
+      "example": "The HPM internal app running at its live URL is production. We test on preview deployments first and only promote to production when everything checks out."
+    },
+    {
+      "term": "Pull",
+      "category": "Git",
+      "definition": "Downloading the latest changes from the remote repository to your local machine. Keeps your local copy up to date with what others have pushed.",
+      "example": "Before starting work each morning, you pull the latest code to make sure you have any changes that were pushed overnight."
+    },
+    {
+      "term": "Push",
+      "category": "Git",
+      "definition": "Uploading your local commits to the remote repository (like GitHub) so others can see your changes and the deploy pipeline can pick them up.",
+      "example": "After committing changes to the KOT site locally, pushing sends them to GitHub, which triggers Vercel to build and deploy a preview."
+    },
+    {
+      "term": "PWA (Progressive Web App)",
+      "category": "Concepts",
+      "definition": "A website that can be installed on your phone or computer and works like a native app — with offline support, push notifications, and an app icon on your home screen.",
+      "example": "The home app is built as a PWA so you and Ngoc can add it to your phone's home screen and use it like a regular app, no App Store needed."
+    },
+    {
+      "term": "Repository (Repo)",
+      "category": "Git",
+      "definition": "The complete project folder tracked by Git, including all files, history, and branches. Can live locally on your machine and remotely on GitHub.",
+      "example": "Each project has its own repo on GitHub: `hotpandamedia` for the HPM site, `kot-site` for KOT, `hpm-internal-app` for the ops dashboard."
+    },
+    {
+      "term": "Rollback",
+      "category": "DevOps",
+      "definition": "Reverting to a previous working version of your application when a new deployment introduces bugs or breaks something.",
+      "example": "If a deploy to the HPM app causes errors, Vercel lets us instantly rollback to the previous working deployment while we fix the issue."
+    },
+    {
+      "term": "Schema",
+      "category": "Database",
+      "definition": "The blueprint of your database — it defines what tables (collections) exist, what columns (fields) each has, and the relationships between them.",
+      "example": "The HPM internal app schema in Directus defines all 15 collections (projects, SOPs, tasks, reviews) and how they relate to each other."
+    },
+    {
+      "term": "SDK (Software Development Kit)",
+      "category": "Tools",
+      "definition": "A ready-made toolkit that makes it easier to work with a specific service. Instead of writing raw API calls, you use the SDK's simpler functions.",
+      "example": "The Directus SDK lets the HPM site fetch data with simple commands like `getItems('artists')` instead of manually building HTTP requests."
+    },
+    {
+      "term": "SSH (Secure Shell)",
+      "category": "Tools",
+      "definition": "A secure way to remotely connect to and control another computer over a network. You type commands on your laptop, but they execute on the remote machine.",
+      "example": "You SSH from your laptop into the Mac Mini (`ssh mini`) to run Claude Code and dev servers. The Mac Mini does the heavy lifting, your laptop is just the window."
+    },
+    {
+      "term": "SSH Tunnel",
+      "category": "Tools",
+      "definition": "A secure pipe that forwards a port from a remote machine to your local machine, so you can access remote services as if they were running locally.",
+      "example": "When the dev server runs on the Mac Mini's port 3000, an SSH tunnel (`ssh -L 3000:localhost:3000 mini`) lets your laptop's browser access it at localhost:3000."
+    },
+    {
+      "term": "Staging",
+      "category": "DevOps",
+      "definition": "A test environment that mirrors production as closely as possible. Used for final testing before changes go live.",
+      "example": "Vercel preview deployments act as our staging — every push gets its own URL where we can test before promoting to the live site."
+    },
+    {
+      "term": "Token",
+      "category": "Concepts",
+      "definition": "A temporary key that proves who you are after logging in. Instead of sending your password with every request, you send the token. Tokens expire for security.",
+      "example": "When you log into Directus, it gives you a session token. Every time your browser requests data, it sends this token to prove you're still authenticated."
+    },
+    {
+      "term": "UUID (Universally Unique Identifier)",
+      "category": "Database",
+      "definition": "A randomly generated ID that's practically guaranteed to be unique across all systems everywhere. Looks like: `550e8400-e29b-41d4-a716-446655440000`.",
+      "example": "Every record in Directus gets a UUID as its primary key. When linking fun_facts to artists, we use the artist's UUID — not the entity code — because Directus is built around UUIDs."
+    },
+    {
+      "term": "Webhook",
+      "category": "Concepts",
+      "definition": "An automatic notification sent from one service to another when something happens. Instead of constantly checking for updates, the service tells you when something changes.",
+      "example": "We could set up a Lark webhook so Directus sends a message to the HPM team chat whenever a new task is created or a project status changes."
+    },
+    {
+      "term": "Worktree",
+      "category": "Git",
+      "definition": "A way to check out multiple branches of the same repo simultaneously in different folders. Lets you work on two features at once without switching back and forth.",
+      "example": "While working on the HPM roadmap page, we can use a worktree to also fix a bug on the KOT site without stashing or switching branches."
+    }
+  ],
+
+  "commands": [
+    {
+      "command": "git status",
+      "category": "Git",
+      "safety": "safe",
+      "what": "Shows which files have been changed, added, or deleted since the last commit. Doesn't change anything — just reports the current state.",
+      "when": "Run this when you want to see what's been modified before committing. It's like checking your work before saving.",
+      "example": "Before committing HPM changes, `git status` might show: 3 files modified, 1 new file not yet tracked."
+    },
+    {
+      "command": "git log",
+      "category": "Git",
+      "safety": "safe",
+      "what": "Shows the history of all commits — who changed what, when, and why. A timeline of your project's evolution.",
+      "when": "Use when you need to find when something was changed or by whom. Useful for understanding the history of a feature.",
+      "example": "Running `git log` on the HPM repo shows every commit in order — you can see when Google OAuth was added and what the commit message said."
+    },
+    {
+      "command": "git diff",
+      "category": "Git",
+      "safety": "safe",
+      "what": "Shows the exact changes between two states — line by line, what was added (green) and removed (red).",
+      "when": "Use before committing to review exactly what you're about to save. Catches accidental changes.",
+      "example": "Before committing, `git diff` shows exactly which lines of code changed in the HPM site — you can verify nothing unexpected slipped in."
+    },
+    {
+      "command": "git branch",
+      "category": "Git",
+      "safety": "safe",
+      "what": "Lists all branches in the repo and shows which one you're currently on (marked with a *).",
+      "when": "Use to check where you are before starting work. Making changes on the wrong branch is a common mistake.",
+      "example": "Running `git branch` before working on KOT shows: `* main`, `hpmapp01-schema`, `feature/roadmap` — the * means you're on main."
+    },
+    {
+      "command": "git add <file>",
+      "category": "Git",
+      "safety": "safe",
+      "what": "Stages specific files for the next commit. Staging is like putting items in a box before sealing it — you choose what goes in.",
+      "when": "Use after making changes, before committing. Always add specific files by name rather than using `git add .` (which adds everything).",
+      "example": "`git add src/pages/roadmap.tsx` stages just the roadmap page. Better than `git add .` which might accidentally include secret files."
+    },
+    {
+      "command": "git add . (or git add -A)",
+      "category": "Git",
+      "safety": "caution",
+      "what": "Stages ALL changed files for commit — including ones you might not want, like .env files with secrets or large binary files.",
+      "when": "Only use when you're 100% sure every changed file should be committed. Prefer adding specific files by name to be safe.",
+      "example": "If you accidentally created a `.env.local` file with API keys, `git add .` would stage it too — and pushing it would expose your secrets."
+    },
+    {
+      "command": "git commit -m \"message\"",
+      "category": "Git",
+      "safety": "caution",
+      "what": "Saves all staged changes as a new snapshot with a description. Once committed, the changes are recorded in history.",
+      "when": "Use after staging your changes with `git add`. Write a clear message explaining what you changed and why.",
+      "example": "`git commit -m \"Add Google OAuth config for HPM staff login\"` — clear, explains what was done and for what purpose."
+    },
+    {
+      "command": "git push",
+      "category": "Git",
+      "safety": "caution",
+      "what": "Uploads your local commits to GitHub. Others can now see your changes, and it triggers automatic deploys on Vercel.",
+      "when": "Use when your changes are ready to share or deploy. Once pushed, other people and systems can see and use your code.",
+      "example": "After committing KOT site changes, `git push` sends them to GitHub, which triggers Vercel to build a preview deployment."
+    },
+    {
+      "command": "git pull",
+      "category": "Git",
+      "safety": "caution",
+      "what": "Downloads the latest changes from GitHub to your local machine and merges them with your current work.",
+      "when": "Run before starting work each day, or before pushing, to make sure you have the latest code. Can cause merge conflicts if you and someone else changed the same file.",
+      "example": "If Claude pushed changes overnight, `git pull` the next morning grabs those updates so you're working on the latest version."
+    },
+    {
+      "command": "git checkout <branch>",
+      "category": "Git",
+      "safety": "caution",
+      "what": "Switches you to a different branch. Your working files change to match that branch's state.",
+      "when": "Use to switch between features or go back to main. Make sure to commit or stash your current changes first, or they'll be lost.",
+      "example": "`git checkout hpmapp01-schema` switches to the schema branch. Your files change to match that branch's code."
+    },
+    {
+      "command": "git checkout -b <new-branch>",
+      "category": "Git",
+      "safety": "safe",
+      "what": "Creates a new branch AND switches to it in one step. The new branch starts as a copy of whatever branch you're currently on.",
+      "when": "Use when starting a new feature or fix. Always branch off main for a clean starting point.",
+      "example": "`git checkout -b feature/kot-portal` creates a new branch for the KOT client portal work, based on your current branch."
+    },
+    {
+      "command": "git merge <branch>",
+      "category": "Git",
+      "safety": "caution",
+      "what": "Combines another branch's changes into your current branch. If both branches touched the same files, you may need to resolve conflicts.",
+      "when": "Use when a feature is complete and you want to bring it into main. Usually done via a PR on GitHub, not manually.",
+      "example": "On the `main` branch, `git merge feature/roadmap` brings in all the roadmap work. If there are conflicts, Git will tell you which files need manual fixing."
+    },
+    {
+      "command": "git stash",
+      "category": "Git",
+      "safety": "caution",
+      "what": "Temporarily saves your uncommitted changes and reverts files to the last commit. Like putting your work in a drawer to deal with later.",
+      "when": "Use when you need to switch branches but aren't ready to commit. `git stash pop` brings your changes back.",
+      "example": "Mid-way through editing the KOT site, an urgent HPM fix comes in. `git stash` saves your KOT work, you switch to HPM, fix it, switch back, `git stash pop` restores your KOT changes."
+    },
+    {
+      "command": "git reset --hard",
+      "category": "Git",
+      "safety": "dangerous",
+      "what": "Permanently discards ALL uncommitted changes and resets files to the last commit. There is NO undo. Your work is gone.",
+      "when": "Only use when you want to completely throw away everything you've changed since the last commit. Make sure you really mean it.",
+      "example": "If you made experimental changes to the HPM site that went completely wrong and you want to start fresh: `git reset --hard` wipes the slate. But any unsaved work is gone forever."
+    },
+    {
+      "command": "git push --force",
+      "category": "Git",
+      "safety": "dangerous",
+      "what": "Overwrites the remote history with your local history. Can permanently destroy other people's work if they've pushed commits you don't have.",
+      "when": "Almost never. This is the nuclear option. If you think you need it, ask first. There's usually a safer alternative.",
+      "example": "If Kenny pushed changes to the KOT repo and you force-push, his commits are erased from GitHub. He'd have to re-do all his work."
+    },
+    {
+      "command": "git branch -D <branch>",
+      "category": "Git",
+      "safety": "dangerous",
+      "what": "Force-deletes a branch, even if its changes haven't been merged anywhere. The branch and its unique commits are gone.",
+      "when": "Only for branches you're absolutely sure are no longer needed and have been merged or are truly garbage.",
+      "example": "After merging the roadmap feature into main, `git branch -D feature/roadmap` cleans up the old branch. But if you hadn't merged it, the work is lost."
+    },
+    {
+      "command": "npm install (or npm i)",
+      "category": "Node.js",
+      "safety": "safe",
+      "what": "Downloads and installs all the packages your project depends on, based on the package.json file.",
+      "when": "Run after cloning a repo for the first time, or after pulling changes that added new packages.",
+      "example": "After cloning the HPM site repo, `npm install` downloads Next.js, Tailwind, Directus SDK, and everything else the project needs."
+    },
+    {
+      "command": "npm run dev",
+      "category": "Node.js",
+      "safety": "safe",
+      "what": "Starts the development server so you can preview the site locally. Usually at localhost:3000. Auto-refreshes when you save changes.",
+      "when": "Use when you want to see the site while working on it. This is for local testing only — not for production.",
+      "example": "`npm run dev` on the HPM project starts a local server. Open localhost:3000 in a browser (or use an SSH tunnel from your laptop) to see the site."
+    },
+    {
+      "command": "npm run build",
+      "category": "Node.js",
+      "safety": "safe",
+      "what": "Compiles your project into production-ready files. If the build fails, there's usually an error in your code that needs fixing before deploying.",
+      "when": "Run to check if your code will deploy successfully. Vercel runs this automatically, but testing locally catches errors faster.",
+      "example": "Before pushing KOT changes, `npm run build` locally catches any TypeScript errors or missing imports that would cause the Vercel deploy to fail."
+    },
+    {
+      "command": "ssh mini",
+      "category": "System",
+      "safety": "safe",
+      "what": "Connects to your Mac Mini from your laptop over SSH. All commands you type after this run on the Mac Mini, not your laptop.",
+      "when": "Use whenever you want to work on the Mac Mini remotely — running Claude Code, starting dev servers, managing repos.",
+      "example": "From your laptop: `ssh mini` connects you to the Mac Mini. Then `cd ~/projects/hotpandamedia` takes you to the HPM project on that machine."
+    },
+    {
+      "command": "ssh -L 3000:localhost:3000 mini",
+      "category": "System",
+      "safety": "safe",
+      "what": "Connects to the Mac Mini AND creates a tunnel so port 3000 on the Mac Mini appears as port 3000 on your laptop. You can then open localhost:3000 in your laptop's browser.",
+      "when": "Use when you need to view a dev server running on the Mac Mini from your laptop's browser.",
+      "example": "Start the HPM dev server on Mac Mini, then from your laptop: `ssh -L 3000:localhost:3000 mini` — now open localhost:3000 on your laptop and see the site."
+    },
+    {
+      "command": "rm -rf <folder>",
+      "category": "System",
+      "safety": "dangerous",
+      "what": "Permanently deletes a folder and everything inside it, with no confirmation and no trash can. The data is gone.",
+      "when": "Use with extreme care. Usually for cleaning up node_modules or build artifacts. Triple-check the path before running.",
+      "example": "`rm -rf node_modules` is safe (just removes downloaded packages, reinstall with npm install). But `rm -rf ~/projects` would delete ALL your project work permanently."
+    },
+    {
+      "command": "vercel",
+      "category": "Vercel",
+      "safety": "safe",
+      "what": "Deploys your project to a preview URL on Vercel. Does not affect the live production site.",
+      "when": "Use to test a deployment without going live. You'll get a unique URL to preview the changes.",
+      "example": "Running `vercel` in the KOT project folder deploys to a preview URL like kot-site-abc123.vercel.app for testing."
+    },
+    {
+      "command": "vercel --prod",
+      "category": "Vercel",
+      "safety": "caution",
+      "what": "Deploys directly to production — the live site that real users see. Changes are immediate.",
+      "when": "Only when you've tested on preview and are confident the changes are ready for the public.",
+      "example": "`vercel --prod` in the HPM project deploys to hotpandamedia.com. Real visitors see the changes immediately."
+    }
+  ],
+
+  "stack": [
+    {
+      "tool": "Next.js",
+      "category": "Frontend Framework",
+      "what": "A framework for building websites and web apps using React. Handles routing (pages), server-side rendering (fast page loads), and deployment optimization.",
+      "why": "Powers all our websites — HPM public site, KOT site, HPM internal app, and the home app. One framework, consistent skills across all projects.",
+      "analogy": "If building a website is like building a house, Next.js is the construction framework — it gives you the walls, plumbing, and wiring patterns so you can focus on the design."
+    },
+    {
+      "tool": "Tailwind CSS",
+      "category": "Styling",
+      "what": "A system for styling websites using small, pre-made CSS classes directly in your HTML. Instead of writing separate style files, you add classes like `text-red-500` or `p-4`.",
+      "why": "Fast to build with, consistent across projects. When Claude writes `bg-blue-600 text-white rounded-lg`, that's Tailwind — blue background, white text, rounded corners.",
+      "analogy": "Like a LEGO set for design — snap together pre-made pieces instead of carving each one from scratch."
+    },
+    {
+      "tool": "Directus",
+      "category": "Backend / CMS",
+      "what": "An open-source tool that sits on top of your database and gives it a visual admin panel, user management, permissions, and an API — all without writing backend code.",
+      "why": "It's the operations backbone for HPM. Staff log in, manage projects, SOPs, and tasks through Directus instead of spreadsheets. 15 collections and counting.",
+      "analogy": "Think of it as a smart spreadsheet app that also handles user logins, permissions (who can see what), and connects directly to your website and apps."
+    },
+    {
+      "tool": "PostgreSQL (Postgres)",
+      "category": "Database",
+      "what": "A powerful, reliable, open-source database. It's where all the actual data lives — Directus is just the interface on top of it.",
+      "why": "Industry standard, handles complex relationships well, scales as the business grows. Used by companies from startups to Instagram.",
+      "analogy": "If Directus is the filing cabinet's labels and drawer handles, PostgreSQL is the actual cabinet and the documents inside."
+    },
+    {
+      "tool": "Railway",
+      "category": "Hosting Platform",
+      "what": "A cloud platform for running servers and databases. You push code, Railway builds and runs it. Handles the infrastructure so you don't need to manage servers yourself.",
+      "why": "Hosts our Directus instance and PostgreSQL database. Easy to deploy, good logging, simple environment variable management.",
+      "analogy": "Like renting a fully managed office space — you bring your business (code), they handle the building, power, and security."
+    },
+    {
+      "tool": "Vercel",
+      "category": "Hosting Platform",
+      "what": "A cloud platform specialized for frontend websites and apps. Automatically builds, deploys, and serves your site globally with excellent performance.",
+      "why": "Hosts all our Next.js sites (HPM, KOT, home app). Every push to GitHub triggers an automatic preview deploy. Production deploys go live globally in seconds.",
+      "analogy": "Like a worldwide chain of showrooms — your site is automatically replicated to servers near your visitors for the fastest possible load times."
+    },
+    {
+      "tool": "GitHub",
+      "category": "Code Hosting",
+      "what": "A platform for storing Git repositories in the cloud, collaborating through pull requests, and tracking issues. The social network for code.",
+      "why": "All HPM and KOT repos live on GitHub. It's where code review happens, PRs are opened, and the connection to Vercel auto-deploys from.",
+      "analogy": "Like Google Drive for code — but with built-in version history, collaboration tools, and the ability to track and discuss every change."
+    },
+    {
+      "tool": "Claude Code",
+      "category": "AI Development Tool",
+      "what": "An AI assistant that runs in your terminal and can read, write, and modify code, run commands, and help with development tasks interactively.",
+      "why": "Your primary development partner. Handles coding, debugging, deployment, and even building things like this glossary. Runs on the Mac Mini via SSH.",
+      "analogy": "Like having a developer sitting next to you who can read your entire codebase, answer questions, write code, and run commands — but in a chat window."
+    },
+    {
+      "tool": "TypeScript",
+      "category": "Programming Language",
+      "what": "A version of JavaScript that adds type checking — it catches certain kinds of bugs before the code even runs. Used in all our Next.js projects.",
+      "why": "Prevents common mistakes (like passing a number where text was expected). When a build fails with a 'type error', that's TypeScript doing its job.",
+      "analogy": "If JavaScript is writing a letter freehand, TypeScript is writing on a form — the form tells you exactly what goes in each field, catching mistakes early."
+    },
+    {
+      "tool": "Lark",
+      "category": "Team Communication",
+      "what": "A team messaging and collaboration platform (like Slack but popular in Asia). Supports webhooks for automated notifications.",
+      "why": "HPM/KOT team communication tool. Used for day-to-day chat and can receive automated alerts from our systems via webhooks.",
+      "analogy": "The team's digital office — chat rooms for each project, plus the ability for our tools to post automatic updates."
+    }
+  ],
+
+  "safePractices": [
+    {
+      "title": "Always backup before changing the database",
+      "category": "Database Safety",
+      "rule": "Export the Directus schema (collections, fields, relations, permissions) BEFORE and AFTER any migration or build that changes the database structure.",
+      "why": "If a migration goes wrong, you need a snapshot to restore from. The 'after' backup confirms what actually changed.",
+      "how": "Save to `backups/{buildname}_pre_{DDMMYY}/` before and `backups/{buildname}_post_{DDMMYY}/` after. Include a README with restore steps.",
+      "realStory": "This is a hard rule for all HPM/KOT builds. Even 'small' changes get backed up — because small changes have caused big problems before."
+    },
+    {
+      "title": "Never commit secrets or credentials",
+      "category": "Security",
+      "rule": "API keys, database passwords, OAuth secrets, and any sensitive configuration go in environment variables (.env files), NEVER in the code itself.",
+      "why": "Once committed and pushed to GitHub, secrets are in the public history forever — even if you delete them in a later commit. Bots actively scan GitHub for exposed keys.",
+      "how": "Use `.env.local` for local development, set env vars in Railway/Vercel for production. Make sure `.env*` is in your `.gitignore` file.",
+      "realStory": "The HPM Google OAuth client_secret and Directus database URL are stored as environment variables on Railway. If they were in the code, anyone with GitHub access could see them."
+    },
+    {
+      "title": "Check which branch you're on before working",
+      "category": "Git Safety",
+      "rule": "Always run `git branch` or `git status` before making changes. Working on the wrong branch is one of the most common and frustrating mistakes.",
+      "why": "If you make changes on `main` instead of your feature branch, you might accidentally deploy unfinished work or create messy merge situations.",
+      "how": "Make it a habit: `git status` first thing. If you're on the wrong branch, `git checkout <correct-branch>` before touching any files.",
+      "realStory": "Imagine building a new KOT feature but accidentally doing it on the HPM branch. The HPM site deploys with random KOT code. Not fun."
+    },
+    {
+      "title": "Use preview deploys before going to production",
+      "category": "Deployment Safety",
+      "rule": "Always test on a preview/staging URL before deploying to production. Never push directly to the live site without testing.",
+      "why": "What works locally might break in production due to different environment variables, missing dependencies, or configuration differences.",
+      "how": "Push to a branch (not main) → Vercel creates a preview URL → test there → merge to main for production deploy.",
+      "realStory": "Every push to the KOT repo gets a preview URL. Kenny reviews changes there before we promote to the live kotprojects.com."
+    },
+    {
+      "title": "Commit often with clear messages",
+      "category": "Git Safety",
+      "rule": "Make small, focused commits with messages that explain what you did and why. Don't bundle 10 different changes into one giant commit.",
+      "why": "If something breaks, small commits make it easy to find and undo the exact change that caused the problem. Giant commits make debugging a nightmare.",
+      "how": "Commit after each logical piece of work. Message format: what you did + why. Example: 'Add artist bio field to support new profile layout'.",
+      "realStory": "Good: 3 commits for 3 features. Bad: 1 commit called 'various updates' with 47 file changes — good luck finding the bug."
+    },
+    {
+      "title": "Pull before you push",
+      "category": "Git Safety",
+      "rule": "Always pull the latest changes before pushing your own. This prevents merge conflicts and ensures you're working on top of the latest code.",
+      "why": "If someone else pushed changes and you push without pulling, your push will be rejected or create conflicts.",
+      "how": "`git pull` before `git push`. If there are conflicts, resolve them before pushing.",
+      "realStory": "If Claude pushed changes to the HPM repo overnight and you push without pulling, Git will reject your push. Pull first, resolve any conflicts, then push."
+    },
+    {
+      "title": "Never use banned file name suffixes",
+      "category": "File Organization",
+      "rule": "Never name files with FINAL, FINAL_FINAL, NEW, or UPDATED. Use the versioning system: _v01, _v02, _WIP, _MASTER.",
+      "why": "Ambiguous names create chaos. 'FINAL_v2_NEW_UPDATED.pdf' tells you nothing. Version numbers and status suffixes are clear and sortable.",
+      "how": "Follow the naming convention: `[ENTITY]_[YYMM]_[TYPE]_[DETAILS]_[VERSION]`. Example: `HPM_2604_BRIEF_KOTRedesign_v02`.",
+      "realStory": "This is the HPM/KOT naming standard. Claude flags non-conforming file names and renames them on the spot."
+    },
+    {
+      "title": "Don't run destructive commands without thinking",
+      "category": "System Safety",
+      "rule": "Before running `rm -rf`, `git reset --hard`, `git push --force`, or any command marked as dangerous — stop and ask: 'Can I undo this? Am I targeting the right thing?'",
+      "why": "These commands don't ask for confirmation and can't be undone. One wrong path in `rm -rf` can delete your entire project.",
+      "how": "Read the command twice. Check the target path. Ask Claude or a developer if you're unsure. There's usually a safer alternative.",
+      "realStory": "Claude Code itself follows this rule — before running any dangerous command, it asks for your permission first."
+    }
+  ],
+
+  "fileTypes": [
+    {
+      "extension": ".ts / .tsx",
+      "name": "TypeScript",
+      "what": "The main code files for our Next.js projects. `.ts` is pure logic, `.tsx` includes visual components (HTML-like elements).",
+      "you_see_it": "Everywhere in the HPM, KOT, and home app projects. The files Claude edits most often.",
+      "can_edit": false,
+      "note": "Editing these without understanding can break the site. Leave to Claude or developers."
+    },
+    {
+      "extension": ".js / .jsx",
+      "name": "JavaScript",
+      "what": "The original language of the web. Our projects mostly use TypeScript instead, but config files and some tools still use plain .js.",
+      "you_see_it": "Config files like `next.config.mjs`, `tailwind.config.ts`, `postcss.config.mjs`.",
+      "can_edit": false,
+      "note": "Config files are sensitive — small typos can break builds."
+    },
+    {
+      "extension": ".json",
+      "name": "JSON data file",
+      "what": "Structured data files. Used for configuration (package.json), data storage (this glossary!), and API responses.",
+      "you_see_it": "`package.json` (project dependencies), `tsconfig.json` (TypeScript settings), Directus schema exports.",
+      "can_edit": "Carefully. JSON is strict — a missing comma or extra bracket breaks it. Use a JSON validator if editing manually.",
+      "note": "package.json is especially important — it lists every package the project depends on."
+    },
+    {
+      "extension": ".md",
+      "name": "Markdown",
+      "what": "Text files with simple formatting (bold, lists, headers) that render nicely on GitHub. Used for documentation, specs, and plans.",
+      "you_see_it": "README.md, CLAUDE.md, build specs, session logs, this glossary's source.",
+      "can_edit": true,
+      "note": "Safe to edit! Markdown is just formatted text. Use # for headers, - for bullets, **bold** for emphasis."
+    },
+    {
+      "extension": ".env / .env.local",
+      "name": "Environment file",
+      "what": "Contains secret configuration — API keys, database URLs, passwords. NEVER commit these to Git.",
+      "you_see_it": "At the root of projects. `.env.local` is for local development only.",
+      "can_edit": "Yes, but carefully. Wrong values = broken connections. And NEVER push to GitHub.",
+      "note": "If you see a .env file on GitHub, the secrets inside are compromised. Rotate them immediately."
+    },
+    {
+      "extension": ".gitignore",
+      "name": "Git ignore list",
+      "what": "Tells Git which files to NOT track. Keeps secrets, build outputs, and system files out of the repository.",
+      "you_see_it": "Root of every project. Lists patterns like `node_modules/`, `.env*`, `.DS_Store`.",
+      "can_edit": true,
+      "note": "Important for security. Make sure .env files and node_modules are always in here."
+    },
+    {
+      "extension": ".css",
+      "name": "Stylesheet",
+      "what": "Defines how things look — colors, spacing, fonts, layout. Our projects mostly use Tailwind instead of raw CSS.",
+      "you_see_it": "Usually just `globals.css` in our projects, since Tailwind handles most styling inline.",
+      "can_edit": false,
+      "note": "Minor visual tweaks are possible, but Tailwind is preferred for consistency."
+    },
+    {
+      "extension": "package.json",
+      "name": "Project manifest",
+      "what": "The ID card of a Node.js project. Lists the project name, all dependencies (packages it needs), and available commands (scripts).",
+      "you_see_it": "Root of every project. This is what `npm install` reads to know what to download.",
+      "can_edit": false,
+      "note": "Managed by npm commands, not edited by hand. `npm install <package>` adds to it automatically."
+    },
+    {
+      "extension": "package-lock.json",
+      "name": "Dependency lock file",
+      "what": "An auto-generated file that records the exact version of every package installed. Ensures everyone working on the project gets identical dependencies.",
+      "you_see_it": "Root of every project. Updated automatically by npm.",
+      "can_edit": false,
+      "note": "Never edit this manually. It's auto-generated. Always commit it to Git though — it ensures consistent builds."
+    }
+  ],
+
+  "symbols": [
+    {
+      "symbol": "// or /* */",
+      "name": "Comments",
+      "what": "Notes left by developers in the code that the computer ignores. `//` is a single-line comment, `/* */` wraps multiple lines.",
+      "example": "`// TODO: add error handling` — a note reminding someone to come back and finish this part."
+    },
+    {
+      "symbol": "=> (arrow)",
+      "name": "Arrow function",
+      "what": "A shorthand way to write a function (a reusable piece of logic). The arrow says 'take this input and return this output'.",
+      "example": "`const double = (x) => x * 2` — a function that takes a number and doubles it."
+    },
+    {
+      "symbol": "{ } (curly braces)",
+      "name": "Code block / Object",
+      "what": "Groups code together (like a paragraph) or defines structured data (key-value pairs). Context determines which.",
+      "example": "In code: `if (loggedIn) { showDashboard() }` — run this if logged in. As data: `{ name: 'Dong', role: 'admin' }`."
+    },
+    {
+      "symbol": "[ ] (square brackets)",
+      "name": "Array",
+      "what": "An ordered list of items. Can hold anything — text, numbers, objects, even other arrays.",
+      "example": "`const artists = ['MA', 'ATS', 'TNY']` — a list of HPM artist codes."
+    },
+    {
+      "symbol": "` ` (backticks)",
+      "name": "Template literal",
+      "what": "A special string that can include dynamic values using `${variable}`. More flexible than regular quotes.",
+      "example": "`Hello, ${user.name}!` becomes `Hello, Dong!` — the variable is replaced with its actual value."
+    },
+    {
+      "symbol": "$ (dollar sign)",
+      "name": "Variable / Shell prompt",
+      "what": "In template literals: inserts a variable's value. In terminal: indicates the command prompt (where you type).",
+      "example": "In code: `${artist.name}`. In terminal: `$ git status` means 'type git status at the prompt'."
+    },
+    {
+      "symbol": "=== (triple equals)",
+      "name": "Strict equality",
+      "what": "Checks if two values are exactly the same — same value AND same type. `'5' === 5` is false (string vs number).",
+      "example": "`if (user.role === 'admin')` — only true if the role is exactly the text 'admin', not a number or anything else."
+    },
+    {
+      "symbol": "!= or !==",
+      "name": "Not equal",
+      "what": "The opposite of equality checks. True when two values are different.",
+      "example": "`if (status !== 'paid')` — do something if the status is anything other than 'paid'."
+    },
+    {
+      "symbol": "&&  ||",
+      "name": "AND / OR operators",
+      "what": "`&&` means both conditions must be true. `||` means at least one must be true.",
+      "example": "`if (isAdmin && isLoggedIn)` — must be both. `if (isHPM || isKOT)` — either company works."
+    },
+    {
+      "symbol": "... (spread/rest)",
+      "name": "Spread operator",
+      "what": "Expands an array or object into individual elements. Like unpacking a suitcase — takes everything out and lays it flat.",
+      "example": "`const all = [...hpmArtists, ...kotClients]` — combines both lists into one."
+    },
+    {
+      "symbol": "?. (optional chaining)",
+      "name": "Safe navigation",
+      "what": "Safely accesses a property that might not exist. Instead of crashing, it returns undefined.",
+      "example": "`user?.email` — get the email if user exists, otherwise just return undefined instead of crashing."
+    },
+    {
+      "symbol": "?? (nullish coalescing)",
+      "name": "Default value",
+      "what": "Provides a fallback value when something is null or undefined. 'Use this, or if it's missing, use that instead.'",
+      "example": "`const name = user.name ?? 'Anonymous'` — use the user's name, but if it's missing, show 'Anonymous'."
+    },
+    {
+      "symbol": "| (pipe)",
+      "name": "Pipe / Union type",
+      "what": "In the terminal: sends one command's output as input to another. In TypeScript: means 'this OR that type'.",
+      "example": "Terminal: `git log | head -5` (show only first 5 log entries). TypeScript: `type Status = 'draft' | 'published'` (can only be one of these)."
+    },
+    {
+      "symbol": ": (colon in TypeScript)",
+      "name": "Type annotation",
+      "what": "Declares what type of data a variable holds. Helps catch bugs before the code runs.",
+      "example": "`const projectName: string = 'HPM'` — this variable must always be text, never a number."
+    },
+    {
+      "symbol": "async / await",
+      "name": "Asynchronous code",
+      "what": "Handles operations that take time (fetching data, reading files) without freezing the app. `await` pauses until the result arrives.",
+      "example": "`const artists = await directus.items('artists').readByQuery({})` — wait for Directus to return the artist data before continuing."
+    }
+  ],
+
+  "faqs": [
+    {
+      "question": "Why can't I see the dev server from my laptop?",
+      "answer": "The dev server runs on the Mac Mini at `localhost:3000`, but 'localhost' means 'this machine'. Your laptop is a different machine. You need an SSH tunnel to bridge them.",
+      "solution": "Use `ssh -L 3000:localhost:3000 mini` from your laptop. This makes the Mac Mini's port 3000 appear as your laptop's port 3000. Then open localhost:3000 in your laptop's browser.",
+      "related": ["SSH Tunnel", "Localhost", "Port"]
+    },
+    {
+      "question": "Why did the Vercel deploy fail?",
+      "answer": "Vercel runs `npm run build` on their servers. If it fails, it's usually a code error (TypeScript type errors, missing imports) or a missing environment variable.",
+      "solution": "1. Check the Vercel build logs for the specific error. 2. Run `npm run build` locally to reproduce it. 3. If it's an env var issue, check Vercel project settings → Environment Variables. 4. Fix the error, commit, and push — Vercel will auto-retry.",
+      "related": ["Build", "Environment Variables", "Deploy"]
+    },
+    {
+      "question": "Why can't staff log in with Google?",
+      "answer": "Directus Google OAuth has specific requirements: the user must exist in Directus with provider set to 'google', their email must be in GCP's test user list (while in testing mode), and all the environment variables must be exactly right.",
+      "solution": "Check: 1. User exists in Directus with correct email and provider='google'. 2. Email is in GCP console → OAuth consent screen → Test users. 3. All AUTH_GOOGLE_* env vars are set on Railway. 4. PUBLIC_URL matches the actual Railway URL exactly.",
+      "related": ["OAuth", "Environment Variables", "Token"]
+    },
+    {
+      "question": "What's the difference between Vercel and Railway?",
+      "answer": "Vercel is for frontend/websites (Next.js sites that visitors see). Railway is for backend/servers (Directus and the database that stores data). They serve different purposes and work together.",
+      "solution": "Think of it as: Vercel = the storefront (what customers see), Railway = the back office (where data lives and is managed). The storefront calls the back office's API to get the data it needs.",
+      "related": ["Frontend", "Backend", "Deploy"]
+    },
+    {
+      "question": "I changed something but the site looks the same?",
+      "answer": "Could be caching (browser or Vercel showing an old version), deploying to preview instead of production, or the change is on a branch that hasn't been merged to main yet.",
+      "solution": "1. Hard refresh the browser (Cmd+Shift+R). 2. Check which branch the change is on (`git branch`). 3. Check if Vercel deployed the latest commit (Vercel dashboard). 4. If preview, the live site won't change until you merge to main.",
+      "related": ["Cache", "Branch", "Deploy", "Production"]
+    },
+    {
+      "question": "What does 'merge conflict' mean and what do I do?",
+      "answer": "Two branches changed the same part of the same file. Git doesn't know which version to keep, so it asks you to choose. This is normal — not an error.",
+      "solution": "Don't panic. Git marks the conflicting sections in the file. You (or Claude) need to edit the file to pick the right version, remove the conflict markers, then commit. Ask Claude for help if unsure — resolving conflicts is a routine part of development.",
+      "related": ["Merge Conflict", "Branch", "Merge"]
+    },
+    {
+      "question": "Why does Claude ask for permission before some commands?",
+      "answer": "Claude Code has a safety system. Safe commands (reading files, checking status) run automatically. Dangerous or irreversible commands (deleting, force-pushing, modifying production) require your explicit approval.",
+      "solution": "Read what Claude is asking to do. If it makes sense, approve it. If you're not sure, ask Claude to explain what the command does and whether it's reversible. This is a feature, not a limitation — it prevents accidents.",
+      "related": ["CLI", "Deploy", "Production"]
+    },
+    {
+      "question": "Why do we backup Directus schema before AND after changes?",
+      "answer": "The 'before' backup is your safety net — if the migration breaks something, you can restore the previous state. The 'after' backup records what the migration actually did, serving as documentation.",
+      "solution": "This is a non-negotiable rule for all HPM/KOT builds. Claude handles this automatically. Pre-backup goes to `backups/{buildname}_pre_{DDMMYY}/`, post-backup to `backups/{buildname}_post_{DDMMYY}/`.",
+      "related": ["Schema", "Migration", "Database"]
+    },
+    {
+      "question": "What's a branch vs a fork vs a worktree?",
+      "answer": "Branch: a parallel line of work within the same repo (most common, used daily). Fork: a complete copy of someone else's repo under your account (for contributing to external projects). Worktree: multiple branches checked out in separate folders simultaneously (for working on two things at once without switching).",
+      "solution": "For day-to-day HPM/KOT work, you'll almost always use branches. Forks are for external open-source code. Worktrees are for when Claude needs to work on two features simultaneously.",
+      "related": ["Branch", "Fork", "Worktree"]
+    },
+    {
+      "question": "What does 'type error' mean in the build?",
+      "answer": "TypeScript found a mismatch — like trying to use a number where text was expected, or accessing a property that doesn't exist. It's catching a potential bug before it reaches users.",
+      "solution": "Read the error message — it tells you the file, line number, and what it expected vs what it got. Claude can fix most type errors automatically. Think of it as spell-check but for code logic.",
+      "related": ["TypeScript", "Build"]
+    }
+  ],
+
+  "troubleshooting": [
+    {
+      "problem": "Site shows 'Cannot connect' or 'This site can't be reached' in browser",
+      "likely_cause": "Dev server isn't running, wrong port, or no SSH tunnel",
+      "steps": [
+        "Check if the dev server is running (look for 'ready on localhost:3000' in the terminal)",
+        "If working from laptop → Mac Mini: make sure you used `ssh -L 3000:localhost:3000 mini`",
+        "Try opening the URL in an incognito/private window (clears browser cache)",
+        "Check if another process is using the same port: `lsof -i :3000`"
+      ],
+      "severity": "common"
+    },
+    {
+      "problem": "Vercel build failed after push",
+      "likely_cause": "Code error, missing environment variable, or dependency issue",
+      "steps": [
+        "Go to Vercel dashboard → select project → Deployments → click the failed deploy",
+        "Read the build log — the error is usually near the bottom",
+        "Common fix: run `npm run build` locally to see the same error",
+        "If it mentions an env var: check Vercel → Project Settings → Environment Variables",
+        "Fix the issue, commit, push — Vercel auto-retries"
+      ],
+      "severity": "common"
+    },
+    {
+      "problem": "Google login shows 'Access denied' or '403' on Directus",
+      "likely_cause": "User not in GCP test users, provider not set, or env var mismatch",
+      "steps": [
+        "Check GCP Console → APIs & Services → OAuth consent screen → Test users — email must be listed",
+        "Check Directus → Users — user must exist with provider='google'",
+        "Verify Railway env vars: AUTH_GOOGLE_* vars, PUBLIC_URL must match exactly",
+        "Clear cookies and try again — stale session tokens cause weird errors",
+        "Check if GCP consent screen is still in 'Testing' mode (limits to listed test users only)"
+      ],
+      "severity": "common"
+    },
+    {
+      "problem": "'Permission denied' when running a command",
+      "likely_cause": "Insufficient file permissions or trying to edit a protected file",
+      "steps": [
+        "Check if you're in the right directory and logged into the right machine",
+        "For SSH config files: you may need to edit from the machine directly, not over SSH",
+        "For npm: try `sudo npm install` only as a last resort (and only if you understand why)",
+        "For Git: check if you have push access to the repo on GitHub"
+      ],
+      "severity": "occasional"
+    },
+    {
+      "problem": "'Module not found' or 'Cannot find module' error",
+      "likely_cause": "Missing package dependency or wrong import path",
+      "steps": [
+        "Run `npm install` — the package might not be installed locally",
+        "Check if the import path is correct (typos, wrong folder, missing file extension)",
+        "Check `package.json` — is the package listed in dependencies?",
+        "If it was recently added by someone else: `git pull` then `npm install`"
+      ],
+      "severity": "common"
+    },
+    {
+      "problem": "Changes committed to the wrong branch",
+      "likely_cause": "Forgot to check/switch branch before making changes",
+      "steps": [
+        "Don't panic — Git tracks everything",
+        "If not pushed yet: `git log` to see the commit, then ask Claude to help move it to the right branch",
+        "Prevention: always run `git status` before starting work to see which branch you're on",
+        "Claude will typically check this for you, but it's a good habit to develop"
+      ],
+      "severity": "occasional"
+    },
+    {
+      "problem": "Directus collections or fields not showing up after migration",
+      "likely_cause": "Cache, browser session, or migration didn't fully complete",
+      "steps": [
+        "Hard refresh Directus (Cmd+Shift+R)",
+        "Log out and log back in (session might have stale permissions)",
+        "Check Railway logs for migration errors",
+        "Compare against the post-migration backup to verify the schema matches expectations"
+      ],
+      "severity": "occasional"
+    },
+    {
+      "problem": "Git says 'rejected' when trying to push",
+      "likely_cause": "Remote has commits you don't have locally — someone (or another session) pushed first",
+      "steps": [
+        "Run `git pull` to get the remote changes first",
+        "If there are merge conflicts: resolve them (or ask Claude to help)",
+        "After resolving: commit the merge, then push again",
+        "NEVER use `git push --force` to override this — it destroys the other commits"
+      ],
+      "severity": "common"
+    }
+  ]
+}
