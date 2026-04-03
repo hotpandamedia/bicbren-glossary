@@ -231,12 +231,14 @@ function SortBar({
 }
 
 function CollapsibleCard({
+  id,
   title,
   accentColor = "#4d7cf5",
   rightLabel,
   badges,
   children,
 }: {
+  id?: string;
   title: string;
   accentColor?: string;
   rightLabel?: React.ReactNode;
@@ -248,7 +250,7 @@ function CollapsibleCard({
   const bgColor = isGold ? "#F2B84B" : "#4d7cf5";
   const textColor = isGold ? "#1a1a1a" : "#ffffff";
   return (
-    <div className="border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+    <div id={id} className="border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
       <button
         onClick={() => setOpen(!open)}
         className="w-full px-4 md:px-6 py-4 flex items-center justify-between text-left"
@@ -301,6 +303,10 @@ function BackToTop() {
 }
 
 /* ─── Helpers ─── */
+function slug(str: string): string {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
 function unique<T>(arr: T[], fn: (item: T) => string): string[] {
   return [...new Set(arr.map(fn))].sort();
 }
@@ -502,7 +508,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                 className="text-5xl md:text-7xl font-black leading-none select-none"
                 style={{ fontFamily: headline, color: "#F2B84B" }}
               >
-                ★
+                //
               </span>
               <h2
                 className="text-3xl md:text-5xl font-black uppercase pb-2 flex-1"
@@ -521,10 +527,19 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                 );
                 const sectionLabel = sectionMeta?.label ?? item.section.toUpperCase();
                 const sectionColor = sectionMeta?.color === "gold" ? "#F2B84B" : "#4d7cf5";
+                const targetId = slug(item.name);
                 return (
-                  <div
+                  <button
                     key={i}
-                    className="border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm p-4 md:p-6 flex flex-col md:flex-row md:items-center gap-3 md:gap-6"
+                    onClick={() => {
+                      const el = document.getElementById(targetId);
+                      if (el) {
+                        el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        const btn = el.querySelector("button");
+                        if (btn) btn.click();
+                      }
+                    }}
+                    className="w-full text-left border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm p-4 md:p-6 flex flex-col md:flex-row md:items-center gap-3 md:gap-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer"
                   >
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <span
@@ -553,7 +568,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                     >
                       {item.dateAdded}
                     </span>
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -588,6 +603,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               {filteredTerms.map((t) => (
                 <CollapsibleCard
                   key={t.term}
+                  id={slug(t.term)}
                   title={t.term}
                   accentColor="#4d7cf5"
                 >
@@ -651,6 +667,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               {filteredCommands.map((c) => (
                 <CollapsibleCard
                   key={c.command}
+                  id={slug(c.command)}
                   title={c.command}
                   accentColor="#F2B84B"
                   rightLabel={<SafetyBadge level={c.safety} />}
@@ -704,6 +721,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               {filteredStack.map((s) => (
                 <CollapsibleCard
                   key={s.tool}
+                  id={slug(s.tool)}
                   title={s.tool}
                   accentColor="#4d7cf5"
                 >
@@ -747,6 +765,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               {data.safePractices.map((p) => (
                 <CollapsibleCard
                   key={p.title}
+                  id={slug(p.title)}
                   title={p.title}
                   accentColor="#F2B84B"
                 >
@@ -806,6 +825,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               {data.fileTypes.map((f) => (
                 <CollapsibleCard
                   key={f.extension}
+                  id={slug(f.extension)}
                   title={`${f.extension}  —  ${f.name}`}
                   accentColor="#4d7cf5"
                   rightLabel={
@@ -848,6 +868,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               {data.symbols.map((s) => (
                 <CollapsibleCard
                   key={s.symbol}
+                  id={slug(s.name)}
                   title={s.symbol}
                   accentColor="#F2B84B"
                   rightLabel={
@@ -891,6 +912,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               {filteredFaqs.map((f, i) => (
                 <CollapsibleCard
                   key={i}
+                  id={slug(f.question)}
                   title={f.question}
                   accentColor="#4d7cf5"
                 >
@@ -960,6 +982,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               {filteredTroubleshooting.map((t, i) => (
                 <CollapsibleCard
                   key={i}
+                  id={slug(t.problem)}
                   title={t.problem}
                   accentColor="#F2B84B"
                   badges={<SeverityDot severity={t.severity} />}

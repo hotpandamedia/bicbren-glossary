@@ -3,7 +3,7 @@
     "title": "BicBren Tech Glossary",
     "tagline": "The bridge between Hot Panda Media and KOT Projects",
     "description": "A plain-language tech reference for non-programmers who work closely with developers and AI tools.",
-    "lastUpdated": "2026-04-03",
+    "lastUpdated": "2026-04-04",
     "safetyLegend": {
       "safe": "Can't break anything. Just reading or viewing information.",
       "caution": "Makes changes, but they can be undone. Still be mindful.",
@@ -13,34 +13,34 @@
 
   "recentlyAdded": [
     {
-      "section": "terms",
-      "name": "API (Application Programming Interface)",
-      "summary": "Rules that let different software talk to each other — like a waiter between your website and the database.",
-      "dateAdded": "2026-04-03"
+      "section": "commands",
+      "name": "npx [package] [command]",
+      "summary": "Runs a package command without installing it permanently — like borrowing a tool for one job.",
+      "dateAdded": "2026-04-04"
     },
     {
       "section": "commands",
-      "name": "git push",
-      "summary": "Sends your committed code changes from your computer up to GitHub so others can see them.",
-      "dateAdded": "2026-04-03"
+      "name": "npm outdated",
+      "summary": "Shows which packages have newer versions available, without changing anything.",
+      "dateAdded": "2026-04-04"
     },
     {
-      "section": "stack",
-      "name": "Directus",
-      "summary": "Our headless CMS — the admin dashboard where HPM and KOT content is managed.",
-      "dateAdded": "2026-04-03"
+      "section": "commands",
+      "name": "npm start",
+      "summary": "Launches the production version of your app — like flipping the 'Open' sign.",
+      "dateAdded": "2026-04-04"
     },
     {
-      "section": "faqs",
-      "name": "Why does my site look different from what I see in the code?",
-      "summary": "Usually a caching issue — the browser or CDN is showing an older version.",
-      "dateAdded": "2026-04-03"
+      "section": "commands",
+      "name": "npm uninstall [package]",
+      "summary": "Removes a package you no longer need to keep your project clean.",
+      "dateAdded": "2026-04-04"
     },
     {
-      "section": "troubleshooting",
-      "name": "Site shows old content after deploy",
-      "summary": "CDN or browser cache is stale. Hard refresh or clear Vercel cache.",
-      "dateAdded": "2026-04-03"
+      "section": "commands",
+      "name": "npm update",
+      "summary": "Updates installed packages to newer versions — like updating apps on your phone.",
+      "dateAdded": "2026-04-04"
     }
   ],
 
@@ -533,6 +533,46 @@
       "what": "Deploys directly to production — the live site that real users see. Changes are immediate.",
       "when": "Only when you've tested on preview and are confident the changes are ready for the public.",
       "example": "`vercel --prod` in the HPM project deploys to hotpandamedia.com. Real visitors see the changes immediately."
+    },
+    {
+      "command": "npm update",
+      "category": "NPM",
+      "safety": "caution",
+      "what": "Updates your installed packages to newer versions within the ranges allowed by package.json. Like updating apps on your phone — you get bug fixes, but occasionally something might behave differently.",
+      "when": "When a tool or Claude tells you a package has a newer version, or when troubleshooting a bug that might be fixed upstream.",
+      "example": "If the Directus SDK has a bug fix, running `npm update` in the HPM app pulls in that fix without changing major versions."
+    },
+    {
+      "command": "npm uninstall [package]",
+      "category": "NPM",
+      "safety": "caution",
+      "what": "Removes a package you no longer need. Keeps your project clean and lightweight — like clearing out ingredients you're not using anymore.",
+      "when": "When you've replaced a tool with something better, or a package was added by mistake.",
+      "example": "If we switched date libraries on the KOT site, we'd run `npm uninstall old-date-lib` to remove the old one and keep the project tidy."
+    },
+    {
+      "command": "npm start",
+      "category": "NPM",
+      "safety": "safe",
+      "what": "Runs your project's start script — usually launches the production version of your app. Think of it as flipping the 'Open' sign on your shop.",
+      "when": "When you want to test how your app runs in production mode locally, or when a hosting service uses it to launch your app.",
+      "example": "Railway runs `npm start` to boot up Node.js apps on deploy. Locally, you'd use it to preview the production build after running `npm run build`."
+    },
+    {
+      "command": "npm outdated",
+      "category": "NPM",
+      "safety": "safe",
+      "what": "Shows a list of packages that have newer versions available — without changing anything. Like checking which apps on your phone have updates waiting.",
+      "when": "Before running `npm update`, to see what's out of date and how far behind you are.",
+      "example": "Running `npm outdated` in the BicBren glossary repo might show that `next` or `tailwindcss` has a newer version available."
+    },
+    {
+      "command": "npx [package] [command]",
+      "category": "NPM",
+      "safety": "caution",
+      "what": "Runs a package command without installing it permanently. Like borrowing a tool for one job instead of buying it. If already installed, it uses that; if not, it downloads it temporarily.",
+      "when": "For one-off commands like scaffolding a new project or running a tool you don't need permanently.",
+      "example": "The BicBren glossary was created with `npx create-next-app`. We also use `npx next build` to test builds locally without a global install."
     }
   ],
 
