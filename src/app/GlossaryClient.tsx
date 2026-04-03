@@ -3,6 +3,13 @@
 import { useState, useMemo, useEffect } from "react";
 
 /* ─── Types ─── */
+type RecentItem = {
+  section: string;
+  name: string;
+  summary: string;
+  dateAdded: string;
+};
+
 type GlossaryData = {
   meta: {
     title: string;
@@ -11,6 +18,7 @@ type GlossaryData = {
     lastUpdated: string;
     safetyLegend: Record<string, string>;
   };
+  recentlyAdded: RecentItem[];
   terms: { term: string; category: string; definition: string; example: string }[];
   commands: {
     command: string;
@@ -485,6 +493,72 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
 
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12 space-y-16 md:space-y-24">
+
+        {/* ── RECENTLY ADDED ── */}
+        {!activeSection && !q && data.recentlyAdded.length > 0 && (
+          <section>
+            <div className="flex items-start gap-4 md:gap-6 mb-6 md:mb-8">
+              <span
+                className="text-5xl md:text-7xl font-black leading-none select-none"
+                style={{ fontFamily: headline, color: "#F2B84B" }}
+              >
+                ★
+              </span>
+              <h2
+                className="text-3xl md:text-5xl font-black uppercase pb-2 flex-1"
+                style={{ fontFamily: headline, borderBottom: "4px solid #F2B84B" }}
+              >
+                Recently Added
+              </h2>
+            </div>
+            <div className="space-y-3">
+              {data.recentlyAdded.map((item, i) => {
+                const sectionMeta = SECTIONS.find(
+                  (s) =>
+                    s.id === item.section ||
+                    (item.section === "safePractices" && s.id === "safety") ||
+                    (item.section === "fileTypes" && s.id === "files")
+                );
+                const sectionLabel = sectionMeta?.label ?? item.section.toUpperCase();
+                const sectionColor = sectionMeta?.color === "gold" ? "#F2B84B" : "#4d7cf5";
+                return (
+                  <div
+                    key={i}
+                    className="border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm p-4 md:p-6 flex flex-col md:flex-row md:items-center gap-3 md:gap-6"
+                  >
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <span
+                        className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] flex-shrink-0"
+                        style={{
+                          fontFamily: label,
+                          background: sectionColor,
+                          color: sectionColor === "#F2B84B" ? "#1a1a1a" : "#ffffff",
+                        }}
+                      >
+                        {sectionLabel}
+                      </span>
+                      <h3
+                        className="text-base md:text-lg font-black uppercase truncate"
+                        style={{ fontFamily: headline }}
+                      >
+                        {item.name}
+                      </h3>
+                    </div>
+                    <p className="text-sm leading-relaxed text-[#1a1a1a]/70 md:max-w-[50%]">
+                      {item.summary}
+                    </p>
+                    <span
+                      className="text-xs text-[#1a1a1a]/30 uppercase flex-shrink-0"
+                      style={{ fontFamily: label }}
+                    >
+                      {item.dateAdded}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* ── 01 TERMS ── */}
         {showSection("terms") && filteredTerms.length > 0 && (

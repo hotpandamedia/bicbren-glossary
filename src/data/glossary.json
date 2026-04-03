@@ -11,6 +11,39 @@
     }
   },
 
+  "recentlyAdded": [
+    {
+      "section": "terms",
+      "name": "API (Application Programming Interface)",
+      "summary": "Rules that let different software talk to each other — like a waiter between your website and the database.",
+      "dateAdded": "2026-04-03"
+    },
+    {
+      "section": "commands",
+      "name": "git push",
+      "summary": "Sends your committed code changes from your computer up to GitHub so others can see them.",
+      "dateAdded": "2026-04-03"
+    },
+    {
+      "section": "stack",
+      "name": "Directus",
+      "summary": "Our headless CMS — the admin dashboard where HPM and KOT content is managed.",
+      "dateAdded": "2026-04-03"
+    },
+    {
+      "section": "faqs",
+      "name": "Why does my site look different from what I see in the code?",
+      "summary": "Usually a caching issue — the browser or CDN is showing an older version.",
+      "dateAdded": "2026-04-03"
+    },
+    {
+      "section": "troubleshooting",
+      "name": "Site shows old content after deploy",
+      "summary": "CDN or browser cache is stale. Hard refresh or clear Vercel cache.",
+      "dateAdded": "2026-04-03"
+    }
+  ],
+
   "terms": [
     {
       "term": "API (Application Programming Interface)",
