@@ -178,8 +178,8 @@ function SortBar({
           onClick={() => onSort(o.key)}
           className={`px-2 py-1 text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] transition-all ${
             current === o.key
-              ? "bg-[#1a1a1a] text-[#fcf9f8]"
-              : "bg-white text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-[#fcf9f8]"
+              ? "bg-[#4d7cf5] text-white"
+              : "bg-white text-[#1a1a1a] hover:bg-[#4d7cf5] hover:text-white"
           }`}
           style={{ fontFamily: label }}
         >
@@ -224,34 +224,33 @@ function SortBar({
 
 function CollapsibleCard({
   title,
-  headerColor = "#1a1a1a",
-  headerTextColor = "#fcf9f8",
   accentColor = "#4d7cf5",
   rightLabel,
   badges,
   children,
 }: {
   title: string;
-  headerColor?: string;
-  headerTextColor?: string;
   accentColor?: string;
   rightLabel?: React.ReactNode;
   badges?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const isGold = accentColor === "#F2B84B" || accentColor === "#1a1a1a";
+  const bgColor = isGold ? "#F2B84B" : "#4d7cf5";
+  const textColor = isGold ? "#1a1a1a" : "#ffffff";
   return (
     <div className="border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
       <button
         onClick={() => setOpen(!open)}
         className="w-full px-4 md:px-6 py-4 flex items-center justify-between text-left"
-        style={{ background: headerColor, borderBottom: open ? `4px solid ${accentColor}` : "none" }}
+        style={{ background: bgColor, borderBottom: open ? `4px solid ${bgColor}` : "none" }}
       >
         <div className="flex items-center gap-3 pr-4 min-w-0">
           {badges}
           <h3
             className="text-lg md:text-2xl font-black uppercase truncate"
-            style={{ fontFamily: headline, color: headerTextColor }}
+            style={{ fontFamily: headline, color: textColor }}
           >
             {title}
           </h3>
@@ -260,7 +259,7 @@ function CollapsibleCard({
           {rightLabel}
           <span
             className="text-2xl font-black"
-            style={{ fontFamily: headline, color: accentColor }}
+            style={{ fontFamily: headline, color: textColor }}
           >
             {open ? "−" : "+"}
           </span>
@@ -285,7 +284,7 @@ function BackToTop() {
   return (
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#1a1a1a] text-[#F2B84B] border-4 border-[#1a1a1a] brutalist-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-[#F2B84B] hover:text-[#1a1a1a] transition-all flex items-center justify-center"
+      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#4d7cf5] text-white border-4 border-[#1a1a1a] brutalist-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-[#F2B84B] hover:text-[#1a1a1a] transition-all flex items-center justify-center"
       aria-label="Back to top"
     >
       <span className="text-2xl font-black" style={{ fontFamily: headline }}>↑</span>
@@ -298,10 +297,16 @@ function unique<T>(arr: T[], fn: (item: T) => string): string[] {
   return [...new Set(arr.map(fn))].sort();
 }
 
+const SAFETY_ORDER: Record<string, number> = { safe: 0, caution: 1, dangerous: 2 };
+
 function sortItems<T>(items: T[], key: string, dir: SortDir): T[] {
   return [...items].sort((a, b) => {
     const av = String((a as Record<string, unknown>)[key] ?? "").toLowerCase();
     const bv = String((b as Record<string, unknown>)[key] ?? "").toLowerCase();
+    if (key === "safety") {
+      const diff = (SAFETY_ORDER[av] ?? 9) - (SAFETY_ORDER[bv] ?? 9);
+      return dir === "asc" ? diff : -diff;
+    }
     return dir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
   });
 }
@@ -555,7 +560,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               options={[
                 { key: "command", label: "Name" },
                 { key: "category", label: "Category" },
-                { key: "safety", label: "Safety" },
+                { key: "safety", label: "Safety Level" },
               ]}
               current={cmdSort}
               direction={cmdSortDir}
@@ -626,9 +631,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                 <CollapsibleCard
                   key={s.tool}
                   title={s.tool}
-                  headerColor="#4d7cf5"
-                  headerTextColor="#ffffff"
-                  accentColor="#1a1a1a"
+                  accentColor="#4d7cf5"
                 >
                   <div className="space-y-3">
                     <span
@@ -671,9 +674,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                 <CollapsibleCard
                   key={p.title}
                   title={p.title}
-                  headerColor="#F2B84B"
-                  headerTextColor="#1a1a1a"
-                  accentColor="#1a1a1a"
+                  accentColor="#F2B84B"
                 >
                   <div className="space-y-3">
                     <span
