@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, createContext, useContext } from "react";
+
+const CollapseContext = createContext(0);
 
 /* ─── Types ─── */
 type RecentItem = {
@@ -257,6 +259,18 @@ function CollapsibleCard({
   const [closing, setClosing] = useState(false);
   const openAnimRef = useRef(0);
   const closeAnimRef = useRef(0);
+  const collapseSignal = useContext(CollapseContext);
+  const prevSignal = useRef(collapseSignal);
+
+  useEffect(() => {
+    if (collapseSignal !== prevSignal.current) {
+      prevSignal.current = collapseSignal;
+      if (open && !closing) {
+        setClosing(true);
+      }
+    }
+  }, [collapseSignal, open, closing]);
+
   const isGold = accentColor === "#F2B84B" || accentColor === "#1a1a1a";
   const bgColor = isGold ? "#F2B84B" : "#4d7cf5";
   const textColor = isGold ? "#1a1a1a" : "#ffffff";
@@ -571,10 +585,12 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
   }
 
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [collapseAll, setCollapseAll] = useState(0);
 
   const showSection = (id: string) => !activeSection || activeSection === id;
 
   return (
+    <CollapseContext.Provider value={collapseAll}>
     <div className="min-h-screen">
       <BackToTop />
 
@@ -652,6 +668,15 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               style={{ fontFamily: label }}
             >
               {activeSection ? SECTIONS.find((s) => s.id === activeSection)?.label ?? "Filter" : "Filter"}
+            </button>
+            {/* Collapse all */}
+            <button
+              onClick={() => setCollapseAll((c) => c + 1)}
+              className="px-3 py-2.5 md:py-0 border-4 md:border-2 border-[#1a1a1a] bg-white text-[#1a1a1a] font-bold uppercase text-xs tracking-wider hover:bg-[#ef4444] hover:text-white transition-all flex-shrink-0"
+              style={{ fontFamily: label }}
+              title="Collapse all open cards"
+            >
+              ↑↓
             </button>
           </div>
 
@@ -799,9 +824,9 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               </section>
             )}
 
-            {/* RIGHT: Recently Added */}
+            {/* RIGHT: Recently Added (sticky on desktop) */}
             {data.recentlyAdded.length > 0 && (
-              <section>
+              <section className="md:sticky md:top-[140px] md:self-start">
                 <div className="flex items-start gap-4 md:gap-6 mb-6 md:mb-8">
                   <span
                     className="text-5xl md:text-7xl font-black leading-none select-none"
@@ -1409,5 +1434,6 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
         </div>
       </footer>
     </div>
+    </CollapseContext.Provider>
   );
 }
