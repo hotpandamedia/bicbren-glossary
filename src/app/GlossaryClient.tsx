@@ -27,6 +27,8 @@ type GlossaryData = {
     what: string;
     when: string;
     example: string;
+    platform?: string;
+    tags?: string[];
   }[];
   stack: {
     tool: string;
@@ -358,6 +360,59 @@ function unique<T>(arr: T[], fn: (item: T) => string): string[] {
   return [...new Set(arr.map(fn))].sort();
 }
 
+const PLATFORM_STYLES: Record<string, { bg: string; text: string }> = {
+  Terminal: { bg: "bg-[#1a1a1a]", text: "text-[#fcf9f8]" },
+  tmux: { bg: "bg-[#22c55e]", text: "text-[#1a1a1a]" },
+  "Claude Code": { bg: "bg-[#c084fc]", text: "text-[#1a1a1a]" },
+  Laptop: { bg: "bg-[#4d7cf5]", text: "text-white" },
+};
+
+const TAG_STYLES: Record<string, { bg: string; text: string }> = {
+  essential: { bg: "bg-[#ef4444]/15", text: "text-[#ef4444]" },
+  qol: { bg: "bg-[#22c55e]/15", text: "text-[#166534]" },
+  custom: { bg: "bg-[#F2B84B]/20", text: "text-[#92400e]" },
+  "read-only": { bg: "bg-[#4d7cf5]/10", text: "text-[#4d7cf5]" },
+  automation: { bg: "bg-[#c084fc]/15", text: "text-[#7c3aed]" },
+  navigation: { bg: "bg-[#06b6d4]/15", text: "text-[#0e7490]" },
+  cleanup: { bg: "bg-[#f97316]/15", text: "text-[#c2410c]" },
+  recovery: { bg: "bg-[#ec4899]/15", text: "text-[#be185d]" },
+};
+
+const TAG_LABELS: Record<string, string> = {
+  essential: "Essential",
+  qol: "QoL",
+  custom: "Custom",
+  "read-only": "Read-only",
+  automation: "Automation",
+  navigation: "Navigation",
+  cleanup: "Cleanup",
+  recovery: "Recovery",
+};
+
+function PlatformBadge({ platform }: { platform: string }) {
+  const style = PLATFORM_STYLES[platform] ?? PLATFORM_STYLES.Terminal;
+  return (
+    <span
+      className={`inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border-2 border-[#1a1a1a] ${style.bg} ${style.text}`}
+      style={{ fontFamily: label }}
+    >
+      {platform}
+    </span>
+  );
+}
+
+function TagBadge({ tag }: { tag: string }) {
+  const style = TAG_STYLES[tag] ?? { bg: "bg-[#1a1a1a]/10", text: "text-[#1a1a1a]" };
+  return (
+    <span
+      className={`inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${style.bg} ${style.text}`}
+      style={{ fontFamily: label }}
+    >
+      {TAG_LABELS[tag] ?? tag}
+    </span>
+  );
+}
+
 function shortDesc(text: string): string {
   const first = text.split(/\.\s|—/)[0].trim();
   return first.length > 60 ? first.slice(0, 57) + "..." : first;
@@ -391,6 +446,8 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
   const [cmdSort, setCmdSort] = useState("safety");
   const [cmdSortDir, setCmdSortDir] = useState<SortDir>("desc");
   const [cmdSafetyFilter, setCmdSafetyFilter] = useState("all");
+  const [cmdPlatformFilter, setCmdPlatformFilter] = useState("all");
+  const [cmdTagFilter, setCmdTagFilter] = useState("all");
 
   const [stackSort, setStackSort] = useState("tool");
   const [stackSortDir, setStackSortDir] = useState<SortDir>("asc");
@@ -429,10 +486,12 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
       (c) =>
         matchesStack(c as unknown as Record<string, unknown>) &&
         (!q || c.command.toLowerCase().includes(q) || c.what.toLowerCase().includes(q) || c.category.toLowerCase().includes(q)) &&
-        (cmdSafetyFilter === "all" || c.safety === cmdSafetyFilter)
+        (cmdSafetyFilter === "all" || c.safety === cmdSafetyFilter) &&
+        (cmdPlatformFilter === "all" || c.platform === cmdPlatformFilter) &&
+        (cmdTagFilter === "all" || (c.tags ?? []).includes(cmdTagFilter))
     );
     return sortItems(items, cmdSort, cmdSortDir);
-  }, [data.commands, q, cmdSafetyFilter, cmdSort, cmdSortDir, stackFilter]);
+  }, [data.commands, q, cmdSafetyFilter, cmdPlatformFilter, cmdTagFilter, cmdSort, cmdSortDir, stackFilter]);
 
   const filteredStack = useMemo(() => {
     let items = data.stack.filter(
@@ -833,6 +892,45 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               currentFilter={cmdSafetyFilter}
               onFilter={(k) => setCmdSafetyFilter(k)}
             />
+            {/* Platform + Tag filters */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="text-xs font-bold uppercase text-[#1a1a1a]/40 mr-1" style={{ fontFamily: label }}>
+                Platform:
+              </span>
+              {["all", "Terminal", "tmux", "Claude Code", "Laptop"].map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setCmdPlatformFilter(p)}
+                  className={`px-2 py-1 text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] transition-all ${
+                    cmdPlatformFilter === p
+                      ? "bg-[#1a1a1a] text-[#fcf9f8]"
+                      : "bg-white text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-[#fcf9f8]"
+                  }`}
+                  style={{ fontFamily: label }}
+                >
+                  {p === "all" ? "All" : p}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="text-xs font-bold uppercase text-[#1a1a1a]/40 mr-1" style={{ fontFamily: label }}>
+                Type:
+              </span>
+              {["all", "essential", "qol", "custom", "read-only", "automation", "navigation", "cleanup", "recovery"].map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setCmdTagFilter(t)}
+                  className={`px-2 py-1 text-xs font-bold uppercase tracking-wider transition-all ${
+                    cmdTagFilter === t
+                      ? `border-2 border-[#1a1a1a] ${(TAG_STYLES[t] ?? { bg: "bg-[#1a1a1a]", text: "text-[#fcf9f8]" }).bg} ${(TAG_STYLES[t] ?? { bg: "", text: "text-[#fcf9f8]" }).text}`
+                      : "border-2 border-[#1a1a1a] bg-white text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-[#fcf9f8]"
+                  }`}
+                  style={{ fontFamily: label }}
+                >
+                  {t === "all" ? "All" : TAG_LABELS[t] ?? t}
+                </button>
+              ))}
+            </div>
             <div className="space-y-3">
               {filteredCommands.map((c) => (
                 <CollapsibleCard
@@ -844,12 +942,16 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                   rightLabel={<SafetyBadge level={c.safety} />}
                 >
                   <div className="space-y-3">
-                    <span
-                      className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#F2B84B]/10 text-[#1a1a1a] border-2 border-[#F2B84B]/30"
-                      style={{ fontFamily: label }}
-                    >
-                      {c.category}
-                    </span>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span
+                        className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#F2B84B]/10 text-[#1a1a1a] border-2 border-[#F2B84B]/30"
+                        style={{ fontFamily: label }}
+                      >
+                        {c.category}
+                      </span>
+                      {c.platform && <PlatformBadge platform={c.platform} />}
+                      {c.tags?.map((tag) => <TagBadge key={tag} tag={tag} />)}
+                    </div>
                     <div>
                       <p className="text-xs uppercase tracking-wider text-[#F2B84B] font-bold mb-1" style={{ fontFamily: label }}>
                         What it does

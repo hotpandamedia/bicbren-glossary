@@ -10,7 +10,6 @@
       "dangerous": "Can lose work, delete data, or affect live systems. Always double-check before running."
     }
   },
-
   "recentlyAdded": [
     {
       "section": "terms",
@@ -43,7 +42,6 @@
       "dateAdded": "2026-04-04"
     }
   ],
-
   "terms": [
     {
       "term": "API (Application Programming Interface)",
@@ -400,7 +398,6 @@
       "example": "Instead of typing a password every time you SSH into the Mac Mini, your Ed25519 key proves who you are automatically. Mobile SSH apps (like Blink) use the same key for one-tap connections."
     }
   ],
-
   "commands": [
     {
       "command": "git status",
@@ -408,7 +405,12 @@
       "safety": "safe",
       "what": "Shows which files have been changed, added, or deleted since the last commit. Doesn't change anything — just reports the current state.",
       "when": "Run this when you want to see what's been modified before committing. It's like checking your work before saving.",
-      "example": "Before committing HPM changes, `git status` might show: 3 files modified, 1 new file not yet tracked."
+      "example": "Before committing HPM changes, `git status` might show: 3 files modified, 1 new file not yet tracked.",
+      "platform": "Terminal",
+      "tags": [
+        "essential",
+        "read-only"
+      ]
     },
     {
       "command": "git log",
@@ -416,7 +418,11 @@
       "safety": "safe",
       "what": "Shows the history of all commits — who changed what, when, and why. A timeline of your project's evolution.",
       "when": "Use when you need to find when something was changed or by whom. Useful for understanding the history of a feature.",
-      "example": "Running `git log` on the HPM repo shows every commit in order — you can see when Google OAuth was added and what the commit message said."
+      "example": "Running `git log` on the HPM repo shows every commit in order — you can see when Google OAuth was added and what the commit message said.",
+      "platform": "Terminal",
+      "tags": [
+        "read-only"
+      ]
     },
     {
       "command": "git diff",
@@ -424,7 +430,12 @@
       "safety": "safe",
       "what": "Shows the exact changes between two states — line by line, what was added (green) and removed (red).",
       "when": "Use before committing to review exactly what you're about to save. Catches accidental changes.",
-      "example": "Before committing, `git diff` shows exactly which lines of code changed in the HPM site — you can verify nothing unexpected slipped in."
+      "example": "Before committing, `git diff` shows exactly which lines of code changed in the HPM site — you can verify nothing unexpected slipped in.",
+      "platform": "Terminal",
+      "tags": [
+        "essential",
+        "read-only"
+      ]
     },
     {
       "command": "git branch",
@@ -432,7 +443,12 @@
       "safety": "safe",
       "what": "Lists all branches in the repo and shows which one you're currently on (marked with a *).",
       "when": "Use to check where you are before starting work. Making changes on the wrong branch is a common mistake.",
-      "example": "Running `git branch` before working on KOT shows: `* main`, `hpmapp01-schema`, `feature/roadmap` — the * means you're on main."
+      "example": "Running `git branch` before working on KOT shows: `* main`, `hpmapp01-schema`, `feature/roadmap` — the * means you're on main.",
+      "platform": "Terminal",
+      "tags": [
+        "essential",
+        "read-only"
+      ]
     },
     {
       "command": "git add <file>",
@@ -440,7 +456,11 @@
       "safety": "safe",
       "what": "Stages specific files for the next commit. Staging is like putting items in a box before sealing it — you choose what goes in.",
       "when": "Use after making changes, before committing. Always add specific files by name rather than using `git add .` (which adds everything).",
-      "example": "`git add src/pages/roadmap.tsx` stages just the roadmap page. Better than `git add .` which might accidentally include secret files."
+      "example": "`git add src/pages/roadmap.tsx` stages just the roadmap page. Better than `git add .` which might accidentally include secret files.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "git add . (or git add -A)",
@@ -448,7 +468,9 @@
       "safety": "caution",
       "what": "Stages ALL changed files for commit — including ones you might not want, like .env files with secrets or large binary files.",
       "when": "Only use when you're 100% sure every changed file should be committed. Prefer adding specific files by name to be safe.",
-      "example": "If you accidentally created a `.env.local` file with API keys, `git add .` would stage it too — and pushing it would expose your secrets."
+      "example": "If you accidentally created a `.env.local` file with API keys, `git add .` would stage it too — and pushing it would expose your secrets.",
+      "platform": "Terminal",
+      "tags": []
     },
     {
       "command": "git commit -m \"message\"",
@@ -456,7 +478,11 @@
       "safety": "caution",
       "what": "Saves all staged changes as a new snapshot with a description. Once committed, the changes are recorded in history.",
       "when": "Use after staging your changes with `git add`. Write a clear message explaining what you changed and why.",
-      "example": "`git commit -m \"Add Google OAuth config for HPM staff login\"` — clear, explains what was done and for what purpose."
+      "example": "`git commit -m \"Add Google OAuth config for HPM staff login\"` — clear, explains what was done and for what purpose.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "git push",
@@ -464,7 +490,11 @@
       "safety": "caution",
       "what": "Uploads your local commits to GitHub. Others can now see your changes, and it triggers automatic deploys on Vercel.",
       "when": "Use when your changes are ready to share or deploy. Once pushed, other people and systems can see and use your code.",
-      "example": "After committing KOT site changes, `git push` sends them to GitHub, which triggers Vercel to build a preview deployment."
+      "example": "After committing KOT site changes, `git push` sends them to GitHub, which triggers Vercel to build a preview deployment.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "git pull",
@@ -472,7 +502,11 @@
       "safety": "caution",
       "what": "Downloads the latest changes from GitHub to your local machine and merges them with your current work.",
       "when": "Run before starting work each day, or before pushing, to make sure you have the latest code. Can cause merge conflicts if you and someone else changed the same file.",
-      "example": "If Claude pushed changes overnight, `git pull` the next morning grabs those updates so you're working on the latest version."
+      "example": "If Claude pushed changes overnight, `git pull` the next morning grabs those updates so you're working on the latest version.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "git checkout <branch>",
@@ -480,7 +514,11 @@
       "safety": "caution",
       "what": "Switches you to a different branch. Your working files change to match that branch's state.",
       "when": "Use to switch between features or go back to main. Make sure to commit or stash your current changes first, or they'll be lost.",
-      "example": "`git checkout hpmapp01-schema` switches to the schema branch. Your files change to match that branch's code."
+      "example": "`git checkout hpmapp01-schema` switches to the schema branch. Your files change to match that branch's code.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "git checkout -b <new-branch>",
@@ -488,7 +526,11 @@
       "safety": "safe",
       "what": "Creates a new branch AND switches to it in one step. The new branch starts as a copy of whatever branch you're currently on.",
       "when": "Use when starting a new feature or fix. Always branch off main for a clean starting point.",
-      "example": "`git checkout -b feature/kot-portal` creates a new branch for the KOT client portal work, based on your current branch."
+      "example": "`git checkout -b feature/kot-portal` creates a new branch for the KOT client portal work, based on your current branch.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "git merge <branch>",
@@ -496,7 +538,9 @@
       "safety": "caution",
       "what": "Combines another branch's changes into your current branch. If both branches touched the same files, you may need to resolve conflicts.",
       "when": "Use when a feature is complete and you want to bring it into main. Usually done via a PR on GitHub, not manually.",
-      "example": "On the `main` branch, `git merge feature/roadmap` brings in all the roadmap work. If there are conflicts, Git will tell you which files need manual fixing."
+      "example": "On the `main` branch, `git merge feature/roadmap` brings in all the roadmap work. If there are conflicts, Git will tell you which files need manual fixing.",
+      "platform": "Terminal",
+      "tags": []
     },
     {
       "command": "git stash",
@@ -504,7 +548,12 @@
       "safety": "caution",
       "what": "Temporarily saves your uncommitted changes and reverts files to the last commit. Like putting your work in a drawer to deal with later.",
       "when": "Use when you need to switch branches but aren't ready to commit. `git stash pop` brings your changes back.",
-      "example": "Mid-way through editing the KOT site, an urgent HPM fix comes in. `git stash` saves your KOT work, you switch to HPM, fix it, switch back, `git stash pop` restores your KOT changes."
+      "example": "Mid-way through editing the KOT site, an urgent HPM fix comes in. `git stash` saves your KOT work, you switch to HPM, fix it, switch back, `git stash pop` restores your KOT changes.",
+      "platform": "Terminal",
+      "tags": [
+        "recovery",
+        "qol"
+      ]
     },
     {
       "command": "git reset --hard",
@@ -512,7 +561,11 @@
       "safety": "dangerous",
       "what": "Permanently discards ALL uncommitted changes and resets files to the last commit. There is NO undo. Your work is gone.",
       "when": "Only use when you want to completely throw away everything you've changed since the last commit. Make sure you really mean it.",
-      "example": "If you made experimental changes to the HPM site that went completely wrong and you want to start fresh: `git reset --hard` wipes the slate. But any unsaved work is gone forever."
+      "example": "If you made experimental changes to the HPM site that went completely wrong and you want to start fresh: `git reset --hard` wipes the slate. But any unsaved work is gone forever.",
+      "platform": "Terminal",
+      "tags": [
+        "recovery"
+      ]
     },
     {
       "command": "git push --force",
@@ -520,7 +573,9 @@
       "safety": "dangerous",
       "what": "Overwrites the remote history with your local history. Can permanently destroy other people's work if they've pushed commits you don't have.",
       "when": "Almost never. This is the nuclear option. If you think you need it, ask first. There's usually a safer alternative.",
-      "example": "If Kenny pushed changes to the KOT repo and you force-push, his commits are erased from GitHub. He'd have to re-do all his work."
+      "example": "If Kenny pushed changes to the KOT repo and you force-push, his commits are erased from GitHub. He'd have to re-do all his work.",
+      "platform": "Terminal",
+      "tags": []
     },
     {
       "command": "git branch -D <branch>",
@@ -528,7 +583,11 @@
       "safety": "dangerous",
       "what": "Force-deletes a branch, even if its changes haven't been merged anywhere. The branch and its unique commits are gone.",
       "when": "Only for branches you're absolutely sure are no longer needed and have been merged or are truly garbage.",
-      "example": "After merging the roadmap feature into main, `git branch -D feature/roadmap` cleans up the old branch. But if you hadn't merged it, the work is lost."
+      "example": "After merging the roadmap feature into main, `git branch -D feature/roadmap` cleans up the old branch. But if you hadn't merged it, the work is lost.",
+      "platform": "Terminal",
+      "tags": [
+        "cleanup"
+      ]
     },
     {
       "command": "npm install (or npm i)",
@@ -536,7 +595,11 @@
       "safety": "safe",
       "what": "Downloads and installs all the packages your project depends on, based on the package.json file.",
       "when": "Run after cloning a repo for the first time, or after pulling changes that added new packages.",
-      "example": "After cloning the HPM site repo, `npm install` downloads Next.js, Tailwind, Directus SDK, and everything else the project needs."
+      "example": "After cloning the HPM site repo, `npm install` downloads Next.js, Tailwind, Directus SDK, and everything else the project needs.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "npm run dev",
@@ -544,7 +607,11 @@
       "safety": "safe",
       "what": "Starts the development server so you can preview the site locally. Usually at localhost:3000. Auto-refreshes when you save changes.",
       "when": "Use when you want to see the site while working on it. This is for local testing only — not for production.",
-      "example": "`npm run dev` on the HPM project starts a local server. Open localhost:3000 in a browser (or use an SSH tunnel from your laptop) to see the site."
+      "example": "`npm run dev` on the HPM project starts a local server. Open localhost:3000 in a browser (or use an SSH tunnel from your laptop) to see the site.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "npm run build",
@@ -552,7 +619,11 @@
       "safety": "safe",
       "what": "Compiles your project into production-ready files. If the build fails, there's usually an error in your code that needs fixing before deploying.",
       "when": "Run to check if your code will deploy successfully. Vercel runs this automatically, but testing locally catches errors faster.",
-      "example": "Before pushing KOT changes, `npm run build` locally catches any TypeScript errors or missing imports that would cause the Vercel deploy to fail."
+      "example": "Before pushing KOT changes, `npm run build` locally catches any TypeScript errors or missing imports that would cause the Vercel deploy to fail.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "ssh mini",
@@ -560,7 +631,12 @@
       "safety": "safe",
       "what": "Connects to your Mac Mini from your laptop over SSH. All commands you type after this run on the Mac Mini, not your laptop.",
       "when": "Use whenever you want to work on the Mac Mini remotely — running Claude Code, starting dev servers, managing repos.",
-      "example": "From your laptop: `ssh mini` connects you to the Mac Mini. Then `cd ~/projects/hotpandamedia` takes you to the HPM project on that machine."
+      "example": "From your laptop: `ssh mini` connects you to the Mac Mini. Then `cd ~/projects/hotpandamedia` takes you to the HPM project on that machine.",
+      "platform": "Laptop",
+      "tags": [
+        "essential",
+        "custom"
+      ]
     },
     {
       "command": "ssh -L 3000:localhost:3000 mini",
@@ -568,7 +644,12 @@
       "safety": "safe",
       "what": "Connects to the Mac Mini AND creates a tunnel so port 3000 on the Mac Mini appears as port 3000 on your laptop. You can then open localhost:3000 in your laptop's browser.",
       "when": "Use when you need to view a dev server running on the Mac Mini from your laptop's browser.",
-      "example": "Start the HPM dev server on Mac Mini, then from your laptop: `ssh -L 3000:localhost:3000 mini` — now open localhost:3000 on your laptop and see the site."
+      "example": "Start the HPM dev server on Mac Mini, then from your laptop: `ssh -L 3000:localhost:3000 mini` — now open localhost:3000 on your laptop and see the site.",
+      "platform": "Laptop",
+      "tags": [
+        "essential",
+        "custom"
+      ]
     },
     {
       "command": "rm -rf <folder>",
@@ -576,7 +657,11 @@
       "safety": "dangerous",
       "what": "Permanently deletes a folder and everything inside it, with no confirmation and no trash can. The data is gone.",
       "when": "Use with extreme care. Usually for cleaning up node_modules or build artifacts. Triple-check the path before running.",
-      "example": "`rm -rf node_modules` is safe (just removes downloaded packages, reinstall with npm install). But `rm -rf ~/projects` would delete ALL your project work permanently."
+      "example": "`rm -rf node_modules` is safe (just removes downloaded packages, reinstall with npm install). But `rm -rf ~/projects` would delete ALL your project work permanently.",
+      "platform": "Terminal",
+      "tags": [
+        "cleanup"
+      ]
     },
     {
       "command": "vercel",
@@ -584,7 +669,9 @@
       "safety": "safe",
       "what": "Deploys your project to a preview URL on Vercel. Does not affect the live production site.",
       "when": "Use to test a deployment without going live. You'll get a unique URL to preview the changes.",
-      "example": "Running `vercel` in the KOT project folder deploys to a preview URL like kot-site-abc123.vercel.app for testing."
+      "example": "Running `vercel` in the KOT project folder deploys to a preview URL like kot-site-abc123.vercel.app for testing.",
+      "platform": "Terminal",
+      "tags": []
     },
     {
       "command": "vercel --prod",
@@ -592,7 +679,9 @@
       "safety": "caution",
       "what": "Deploys directly to production — the live site that real users see. Changes are immediate.",
       "when": "Only when you've tested on preview and are confident the changes are ready for the public.",
-      "example": "`vercel --prod` in the HPM project deploys to hotpandamedia.com. Real visitors see the changes immediately."
+      "example": "`vercel --prod` in the HPM project deploys to hotpandamedia.com. Real visitors see the changes immediately.",
+      "platform": "Terminal",
+      "tags": []
     },
     {
       "command": "npm update",
@@ -600,7 +689,11 @@
       "safety": "caution",
       "what": "Updates your installed packages to newer versions within the ranges allowed by package.json. Like updating apps on your phone — you get bug fixes, but occasionally something might behave differently.",
       "when": "When a tool or Claude tells you a package has a newer version, or when troubleshooting a bug that might be fixed upstream.",
-      "example": "If the Directus SDK has a bug fix, running `npm update` in the HPM app pulls in that fix without changing major versions."
+      "example": "If the Directus SDK has a bug fix, running `npm update` in the HPM app pulls in that fix without changing major versions.",
+      "platform": "Terminal",
+      "tags": [
+        "qol"
+      ]
     },
     {
       "command": "npm uninstall [package]",
@@ -608,7 +701,11 @@
       "safety": "caution",
       "what": "Removes a package you no longer need. Keeps your project clean and lightweight — like clearing out ingredients you're not using anymore.",
       "when": "When you've replaced a tool with something better, or a package was added by mistake.",
-      "example": "If we switched date libraries on the KOT site, we'd run `npm uninstall old-date-lib` to remove the old one and keep the project tidy."
+      "example": "If we switched date libraries on the KOT site, we'd run `npm uninstall old-date-lib` to remove the old one and keep the project tidy.",
+      "platform": "Terminal",
+      "tags": [
+        "cleanup"
+      ]
     },
     {
       "command": "npm start",
@@ -616,7 +713,9 @@
       "safety": "safe",
       "what": "Runs your project's start script — usually launches the production version of your app. Think of it as flipping the 'Open' sign on your shop.",
       "when": "When you want to test how your app runs in production mode locally, or when a hosting service uses it to launch your app.",
-      "example": "Railway runs `npm start` to boot up Node.js apps on deploy. Locally, you'd use it to preview the production build after running `npm run build`."
+      "example": "Railway runs `npm start` to boot up Node.js apps on deploy. Locally, you'd use it to preview the production build after running `npm run build`.",
+      "platform": "Terminal",
+      "tags": []
     },
     {
       "command": "npm outdated",
@@ -624,7 +723,12 @@
       "safety": "safe",
       "what": "Shows a list of packages that have newer versions available — without changing anything. Like checking which apps on your phone have updates waiting.",
       "when": "Before running `npm update`, to see what's out of date and how far behind you are.",
-      "example": "Running `npm outdated` in the BicBren glossary repo might show that `next` or `tailwindcss` has a newer version available."
+      "example": "Running `npm outdated` in the BicBren glossary repo might show that `next` or `tailwindcss` has a newer version available.",
+      "platform": "Terminal",
+      "tags": [
+        "read-only",
+        "qol"
+      ]
     },
     {
       "command": "npx [package] [command]",
@@ -632,7 +736,11 @@
       "safety": "caution",
       "what": "Runs a package command without installing it permanently. Like borrowing a tool for one job instead of buying it. If already installed, it uses that; if not, it downloads it temporarily.",
       "when": "For one-off commands like scaffolding a new project or running a tool you don't need permanently.",
-      "example": "The BicBren glossary was created with `npx create-next-app`. We also use `npx next build` to test builds locally without a global install."
+      "example": "The BicBren glossary was created with `npx create-next-app`. We also use `npx next build` to test builds locally without a global install.",
+      "platform": "Terminal",
+      "tags": [
+        "qol"
+      ]
     },
     {
       "command": "tmux new -s <name>",
@@ -640,7 +748,11 @@
       "safety": "safe",
       "what": "Creates a new named tmux session. Always name your sessions — unnamed ones get numeric IDs (0, 1, 2) which are impossible to tell apart.",
       "when": "Starting a new work session. Name it after what you're doing.",
-      "example": "`tmux new -s hpm-dev` creates a session called 'hpm-dev'. Later you can reconnect to it by name instead of guessing which number it was."
+      "example": "`tmux new -s hpm-dev` creates a session called 'hpm-dev'. Later you can reconnect to it by name instead of guessing which number it was.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "tmux attach -t <name>",
@@ -648,7 +760,11 @@
       "safety": "safe",
       "what": "Reconnects your terminal to an existing tmux session that's running in the background. Everything is exactly where you left it.",
       "when": "After disconnecting, opening a new terminal, or SSHing back into the Mac Mini.",
-      "example": "`tmux attach -t hpm-dev` reconnects to your HPM session. Claude Code is still running, the dev server is still up, logs are still scrolling."
+      "example": "`tmux attach -t hpm-dev` reconnects to your HPM session. Claude Code is still running, the dev server is still up, logs are still scrolling.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "tmux attach -d -t <name>",
@@ -656,7 +772,12 @@
       "safety": "safe",
       "what": "Reconnects to a session AND forcibly disconnects any other viewport attached to it. Fixes the common problem of wrong terminal dimensions after switching devices.",
       "when": "When switching from a large monitor to a laptop (or vice versa) and the terminal looks squished or has wrong dimensions.",
-      "example": "You were on the Mac Mini's monitor (2560px wide), now you're on your laptop via SSH. `tmux attach -d -t hpm-dev` detaches the old view and resizes to fit your laptop screen."
+      "example": "You were on the Mac Mini's monitor (2560px wide), now you're on your laptop via SSH. `tmux attach -d -t hpm-dev` detaches the old view and resizes to fit your laptop screen.",
+      "platform": "Terminal",
+      "tags": [
+        "essential",
+        "qol"
+      ]
     },
     {
       "command": "tmux ls",
@@ -664,7 +785,12 @@
       "safety": "safe",
       "what": "Lists all active tmux sessions with their names, number of windows, and creation time. Doesn't change anything — just shows what's running.",
       "when": "Checking what sessions are alive in the background before attaching or cleaning up.",
-      "example": "`tmux ls` might show: `hpm-dev: 3 windows` and `kot-dev: 2 windows` — two sessions running with a total of 5 terminal windows between them."
+      "example": "`tmux ls` might show: `hpm-dev: 3 windows` and `kot-dev: 2 windows` — two sessions running with a total of 5 terminal windows between them.",
+      "platform": "Terminal",
+      "tags": [
+        "read-only",
+        "qol"
+      ]
     },
     {
       "command": "tmux rename-session <name>",
@@ -672,7 +798,11 @@
       "safety": "safe",
       "what": "Renames the tmux session you're currently attached to. Useful for correcting typos or updating the label when your focus shifts.",
       "when": "When a session's name no longer reflects what you're doing in it.",
-      "example": "Started a generic session called `dev`, now it's specifically for KOT work: `tmux rename-session kot-dev` updates the label."
+      "example": "Started a generic session called `dev`, now it's specifically for KOT work: `tmux rename-session kot-dev` updates the label.",
+      "platform": "Terminal",
+      "tags": [
+        "qol"
+      ]
     },
     {
       "command": "tmux kill-server",
@@ -680,7 +810,11 @@
       "safety": "dangerous",
       "what": "Instantly destroys ALL running tmux sessions, windows, and panes. Everything running inside tmux stops. Think of it as 'terminal bankruptcy' — a complete reset.",
       "when": "When tmux is misbehaving, consuming too much RAM, or you want a completely fresh start. Does NOT delete saved code or files.",
-      "example": "You have 8 stale sessions eating memory. `tmux kill-server` wipes them all. Your code is safe on disk, but any unsaved terminal output or running processes are gone."
+      "example": "You have 8 stale sessions eating memory. `tmux kill-server` wipes them all. Your code is safe on disk, but any unsaved terminal output or running processes are gone.",
+      "platform": "Terminal",
+      "tags": [
+        "cleanup"
+      ]
     },
     {
       "command": "tmux kill-session -a",
@@ -688,7 +822,11 @@
       "safety": "caution",
       "what": "Kills all tmux sessions EXCEPT the one you're currently attached to. A targeted cleanup that preserves your active workspace.",
       "when": "When you have several old sessions lingering but want to keep your current one alive.",
-      "example": "You're in `hpm-dev` and have 5 old sessions from last week. `tmux kill-session -a` removes the 5 stale ones and keeps `hpm-dev` untouched."
+      "example": "You're in `hpm-dev` and have 5 old sessions from last week. `tmux kill-session -a` removes the 5 stale ones and keeps `hpm-dev` untouched.",
+      "platform": "Terminal",
+      "tags": [
+        "cleanup"
+      ]
     },
     {
       "command": "Ctrl+B, s",
@@ -696,7 +834,12 @@
       "safety": "safe",
       "what": "Opens an interactive tree menu of all active sessions and windows. Navigate with arrow keys and Enter to jump instantly to any session or window.",
       "when": "When you have multiple sessions running and want to quickly switch between them without detaching.",
-      "example": "Press Ctrl+B then s — a menu appears showing `hpm-dev (3 windows)` and `kot-dev (2 windows)`. Arrow down, hit Enter, and you're there."
+      "example": "Press Ctrl+B then s — a menu appears showing `hpm-dev (3 windows)` and `kot-dev (2 windows)`. Arrow down, hit Enter, and you're there.",
+      "platform": "tmux",
+      "tags": [
+        "essential",
+        "navigation"
+      ]
     },
     {
       "command": "Ctrl+B, w",
@@ -704,7 +847,12 @@
       "safety": "safe",
       "what": "Opens the session tree with a live preview pane showing what's happening in the highlighted window. Like `Ctrl+B, s` but with a visual preview.",
       "when": "When you want to see what's in a window before switching to it — useful when you have many windows and forgot which is which.",
-      "example": "Press Ctrl+B then w — as you arrow through the list, the right side shows a live snapshot of each window's content. Find the one you need, hit Enter."
+      "example": "Press Ctrl+B then w — as you arrow through the list, the right side shows a live snapshot of each window's content. Find the one you need, hit Enter.",
+      "platform": "tmux",
+      "tags": [
+        "navigation",
+        "qol"
+      ]
     },
     {
       "command": "Ctrl+B, c",
@@ -712,7 +860,11 @@
       "safety": "safe",
       "what": "Creates a new window (tab) in the current tmux session. The new window opens with a fresh terminal prompt.",
       "when": "When you need another terminal within the same session — like opening a new browser tab.",
-      "example": "You're running Claude Code in window 1. Press Ctrl+B then c to create window 2, where you can run the dev server. Switch between them with Ctrl+B then the window number."
+      "example": "You're running Claude Code in window 1. Press Ctrl+B then c to create window 2, where you can run the dev server. Switch between them with Ctrl+B then the window number.",
+      "platform": "tmux",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "Ctrl+B, %",
@@ -720,7 +872,11 @@
       "safety": "safe",
       "what": "Splits the current pane vertically — creates two side-by-side panes in the same window.",
       "when": "When you want to see two terminals next to each other, like code on the left and logs on the right.",
-      "example": "Press Ctrl+B then % — your window splits in half. Left pane keeps what was there, right pane opens a new terminal. Great for watching logs while coding."
+      "example": "Press Ctrl+B then % — your window splits in half. Left pane keeps what was there, right pane opens a new terminal. Great for watching logs while coding.",
+      "platform": "tmux",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "Ctrl+B, \"",
@@ -728,7 +884,11 @@
       "safety": "safe",
       "what": "Splits the current pane horizontally — creates a top pane and a bottom pane in the same window.",
       "when": "When you want to stack terminals vertically, like a main workspace on top and a monitoring view below.",
-      "example": "Press Ctrl+B then \" — top pane keeps your work, bottom pane opens a new terminal. Useful for running a command while watching output above."
+      "example": "Press Ctrl+B then \" — top pane keeps your work, bottom pane opens a new terminal. Useful for running a command while watching output above.",
+      "platform": "tmux",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "Ctrl+B, z",
@@ -736,7 +896,12 @@
       "safety": "safe",
       "what": "Zoom mode — temporarily expands the active pane to fill the entire window. Press again to restore the split layout. Essential for single-screen work.",
       "when": "When you've split your window into panes but need one pane full-screen temporarily — like reading a long error message.",
-      "example": "You have 3 panes visible but need to read Claude's full output. Ctrl+B then z zooms that pane to 100%. When done, Ctrl+B then z again restores the split."
+      "example": "You have 3 panes visible but need to read Claude's full output. Ctrl+B then z zooms that pane to 100%. When done, Ctrl+B then z again restores the split.",
+      "platform": "tmux",
+      "tags": [
+        "essential",
+        "qol"
+      ]
     },
     {
       "command": "Ctrl+B, Space",
@@ -744,7 +909,11 @@
       "safety": "safe",
       "what": "Auto-cycles through built-in pane layouts — even grid, horizontal stack, vertical stack, and more. Keeps pressing to find one that works.",
       "when": "When your panes are unevenly sized or you want a quick, balanced layout without manually resizing.",
-      "example": "You have 4 panes in weird sizes. Press Ctrl+B then Space a few times — tmux cycles through layouts until you land on a clean 2x2 grid."
+      "example": "You have 4 panes in weird sizes. Press Ctrl+B then Space a few times — tmux cycles through layouts until you land on a clean 2x2 grid.",
+      "platform": "tmux",
+      "tags": [
+        "qol"
+      ]
     },
     {
       "command": "Ctrl+B, [",
@@ -752,7 +921,11 @@
       "safety": "safe",
       "what": "Enters 'Copy Mode' — pauses the terminal output so you can scroll up through history using arrow keys, Page Up/Down, or swipe gestures on mobile.",
       "when": "When you need to scroll back through a long log, error output, or Claude's response that scrolled past. Press `q` to exit copy mode.",
-      "example": "A build error scrolled past too fast. Ctrl+B then [ freezes the output — now scroll up with arrow keys to find the actual error. Press q when done."
+      "example": "A build error scrolled past too fast. Ctrl+B then [ freezes the output — now scroll up with arrow keys to find the actual error. Press q when done.",
+      "platform": "tmux",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "tmux send-keys -t <session:window> \"<command>\" Enter",
@@ -760,7 +933,11 @@
       "safety": "caution",
       "what": "Sends a command to a specific tmux pane without needing to be attached to or looking at that pane. An automation power tool.",
       "when": "Running commands in background panes from scripts or shortcuts — like starting a dev server in a pane you're not viewing.",
-      "example": "`tmux send-keys -t hpm-dev:1 'npm run dev' Enter` starts the dev server in window 1 of the hpm-dev session, even if you're currently looking at window 0."
+      "example": "`tmux send-keys -t hpm-dev:1 'npm run dev' Enter` starts the dev server in window 1 of the hpm-dev session, even if you're currently looking at window 0.",
+      "platform": "Terminal",
+      "tags": [
+        "automation"
+      ]
     },
     {
       "command": "tmux capture-pane -p -t <session:window>",
@@ -768,7 +945,12 @@
       "safety": "safe",
       "what": "Takes a silent text snapshot of what's currently visible in a specific pane. Outputs the text content — useful for scripting, logging, or checking on background processes.",
       "when": "When you want to programmatically check what's happening in a pane without switching to it.",
-      "example": "`tmux capture-pane -p -t hpm-dev:2` prints whatever is on screen in window 2 — maybe the last few lines of dev server output, confirming it's still running."
+      "example": "`tmux capture-pane -p -t hpm-dev:2` prints whatever is on screen in window 2 — maybe the last few lines of dev server output, confirming it's still running.",
+      "platform": "Terminal",
+      "tags": [
+        "automation",
+        "read-only"
+      ]
     },
     {
       "command": "claude -n \"<name>\"",
@@ -776,7 +958,12 @@
       "safety": "safe",
       "what": "Starts a new Claude Code conversation with an explicit name. Prevents auto-generated session clutter and makes it easy to find and resume later.",
       "when": "Always use this when starting Claude Code. Name it after your current task.",
-      "example": "`claude -n 'hpm-glossary-update'` starts a named session. Later, `claude -r` shows it in the list by name instead of a random ID."
+      "example": "`claude -n 'hpm-glossary-update'` starts a named session. Later, `claude -r` shows it in the list by name instead of a random ID.",
+      "platform": "Terminal",
+      "tags": [
+        "essential",
+        "qol"
+      ]
     },
     {
       "command": "claude -r (or --resume)",
@@ -784,7 +971,11 @@
       "safety": "safe",
       "what": "Opens a menu of past Claude Code conversations so you can pick one to resume. You can also bypass the menu by passing the session name directly.",
       "when": "When you want to continue a previous conversation — to review what was discussed or keep working on the same task.",
-      "example": "`claude -r` shows a list of past sessions. Or `claude -r 'hpm-glossary-update'` jumps straight to that specific conversation."
+      "example": "`claude -r` shows a list of past sessions. Or `claude -r 'hpm-glossary-update'` jumps straight to that specific conversation.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
     },
     {
       "command": "claude -c (or --continue)",
@@ -792,7 +983,12 @@
       "safety": "safe",
       "what": "Instantly resumes the most recent Claude Code conversation in the current directory. No menu, no selection — just picks up where you left off.",
       "when": "When you know the last conversation in this folder is the one you want. Fastest way to resume work after a break.",
-      "example": "You were working on KOT in `~/projects/kot-site`, stepped away, and came back. `claude -c` resumes exactly where you left off."
+      "example": "You were working on KOT in `~/projects/kot-site`, stepped away, and came back. `claude -c` resumes exactly where you left off.",
+      "platform": "Terminal",
+      "tags": [
+        "essential",
+        "qol"
+      ]
     },
     {
       "command": "/rename <name>",
@@ -800,7 +996,11 @@
       "safety": "safe",
       "what": "An internal slash command that renames the active Claude Code conversation. Always provide a descriptive name as an argument.",
       "when": "When you started a session without naming it, or the focus of the conversation has shifted and the old name no longer fits.",
-      "example": "Mid-conversation, you realize the session is now about database work: `/rename db-troubleshooting` updates the label so you can find it later."
+      "example": "Mid-conversation, you realize the session is now about database work: `/rename db-troubleshooting` updates the label so you can find it later.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
     },
     {
       "command": "/color <color>",
@@ -808,10 +1008,13 @@
       "safety": "safe",
       "what": "Changes the UI border color of the current Claude Code session. Useful for visually distinguishing between multiple sessions running in different tmux panes.",
       "when": "When you have multiple Claude Code sessions open side-by-side and need to tell them apart at a glance.",
-      "example": "`/color green` for HPM work, `/color blue` for KOT — you can instantly see which pane is which without reading the session name."
+      "example": "`/color green` for HPM work, `/color blue` for KOT — you can instantly see which pane is which without reading the session name.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
     }
   ],
-
   "stack": [
     {
       "tool": "Next.js",
@@ -905,7 +1108,6 @@
       "analogy": "Like having a second advisor in the room — sometimes you want a different perspective before making a big decision. Claude and Gemini each have strengths."
     }
   ],
-
   "safePractices": [
     {
       "title": "Always backup before changing the database",
@@ -988,7 +1190,6 @@
       "realStory": "This is one of the most common tmux frustrations for new users. The fix is simple but you have to know about the `-d` flag."
     }
   ],
-
   "fileTypes": [
     {
       "extension": ".ts / .tsx",
@@ -1063,7 +1264,6 @@
       "note": "Never edit this manually. It's auto-generated. Always commit it to Git though — it ensures consistent builds."
     }
   ],
-
   "symbols": [
     {
       "symbol": "// or /* */",
@@ -1156,88 +1356,138 @@
       "example": "`const artists = await directus.items('artists').readByQuery({})` — wait for Directus to return the artist data before continuing."
     }
   ],
-
   "faqs": [
     {
       "question": "Why can't I see the dev server from my laptop?",
       "answer": "The dev server runs on the Mac Mini at `localhost:3000`, but 'localhost' means 'this machine'. Your laptop is a different machine. You need an SSH tunnel to bridge them.",
       "solution": "Use `ssh -L 3000:localhost:3000 mini` from your laptop. This makes the Mac Mini's port 3000 appear as your laptop's port 3000. Then open localhost:3000 in your laptop's browser.",
-      "related": ["SSH Tunnel", "Localhost", "Port"]
+      "related": [
+        "SSH Tunnel",
+        "Localhost",
+        "Port"
+      ]
     },
     {
       "question": "Why did the Vercel deploy fail?",
       "answer": "Vercel runs `npm run build` on their servers. If it fails, it's usually a code error (TypeScript type errors, missing imports) or a missing environment variable.",
       "solution": "1. Check the Vercel build logs for the specific error. 2. Run `npm run build` locally to reproduce it. 3. If it's an env var issue, check Vercel project settings → Environment Variables. 4. Fix the error, commit, and push — Vercel will auto-retry.",
-      "related": ["Build", "Environment Variables", "Deploy"]
+      "related": [
+        "Build",
+        "Environment Variables",
+        "Deploy"
+      ]
     },
     {
       "question": "Why can't staff log in with Google?",
       "answer": "Directus Google OAuth has specific requirements: the user must exist in Directus with provider set to 'google', their email must be in GCP's test user list (while in testing mode), and all the environment variables must be exactly right.",
       "solution": "Check: 1. User exists in Directus with correct email and provider='google'. 2. Email is in GCP console → OAuth consent screen → Test users. 3. All AUTH_GOOGLE_* env vars are set on Railway. 4. PUBLIC_URL matches the actual Railway URL exactly.",
-      "related": ["OAuth", "Environment Variables", "Token"]
+      "related": [
+        "OAuth",
+        "Environment Variables",
+        "Token"
+      ]
     },
     {
       "question": "What's the difference between Vercel and Railway?",
       "answer": "Vercel is for frontend/websites (Next.js sites that visitors see). Railway is for backend/servers (Directus and the database that stores data). They serve different purposes and work together.",
       "solution": "Think of it as: Vercel = the storefront (what customers see), Railway = the back office (where data lives and is managed). The storefront calls the back office's API to get the data it needs.",
-      "related": ["Frontend", "Backend", "Deploy"]
+      "related": [
+        "Frontend",
+        "Backend",
+        "Deploy"
+      ]
     },
     {
       "question": "I changed something but the site looks the same?",
       "answer": "Could be caching (browser or Vercel showing an old version), deploying to preview instead of production, or the change is on a branch that hasn't been merged to main yet.",
       "solution": "1. Hard refresh the browser (Cmd+Shift+R). 2. Check which branch the change is on (`git branch`). 3. Check if Vercel deployed the latest commit (Vercel dashboard). 4. If preview, the live site won't change until you merge to main.",
-      "related": ["Cache", "Branch", "Deploy", "Production"]
+      "related": [
+        "Cache",
+        "Branch",
+        "Deploy",
+        "Production"
+      ]
     },
     {
       "question": "What does 'merge conflict' mean and what do I do?",
       "answer": "Two branches changed the same part of the same file. Git doesn't know which version to keep, so it asks you to choose. This is normal — not an error.",
       "solution": "Don't panic. Git marks the conflicting sections in the file. You (or Claude) need to edit the file to pick the right version, remove the conflict markers, then commit. Ask Claude for help if unsure — resolving conflicts is a routine part of development.",
-      "related": ["Merge Conflict", "Branch", "Merge"]
+      "related": [
+        "Merge Conflict",
+        "Branch",
+        "Merge"
+      ]
     },
     {
       "question": "Why does Claude ask for permission before some commands?",
       "answer": "Claude Code has a safety system. Safe commands (reading files, checking status) run automatically. Dangerous or irreversible commands (deleting, force-pushing, modifying production) require your explicit approval.",
       "solution": "Read what Claude is asking to do. If it makes sense, approve it. If you're not sure, ask Claude to explain what the command does and whether it's reversible. This is a feature, not a limitation — it prevents accidents.",
-      "related": ["CLI", "Deploy", "Production"]
+      "related": [
+        "CLI",
+        "Deploy",
+        "Production"
+      ]
     },
     {
       "question": "Why do we backup Directus schema before AND after changes?",
       "answer": "The 'before' backup is your safety net — if the migration breaks something, you can restore the previous state. The 'after' backup records what the migration actually did, serving as documentation.",
       "solution": "This is a non-negotiable rule for all HPM/KOT builds. Claude handles this automatically. Pre-backup goes to `backups/{buildname}_pre_{DDMMYY}/`, post-backup to `backups/{buildname}_post_{DDMMYY}/`.",
-      "related": ["Schema", "Migration", "Database"]
+      "related": [
+        "Schema",
+        "Migration",
+        "Database"
+      ]
     },
     {
       "question": "What's a branch vs a fork vs a worktree?",
       "answer": "Branch: a parallel line of work within the same repo (most common, used daily). Fork: a complete copy of someone else's repo under your account (for contributing to external projects). Worktree: multiple branches checked out in separate folders simultaneously (for working on two things at once without switching).",
       "solution": "For day-to-day HPM/KOT work, you'll almost always use branches. Forks are for external open-source code. Worktrees are for when Claude needs to work on two features simultaneously.",
-      "related": ["Branch", "Fork", "Worktree"]
+      "related": [
+        "Branch",
+        "Fork",
+        "Worktree"
+      ]
     },
     {
       "question": "What does 'type error' mean in the build?",
       "answer": "TypeScript found a mismatch — like trying to use a number where text was expected, or accessing a property that doesn't exist. It's catching a potential bug before it reaches users.",
       "solution": "Read the error message — it tells you the file, line number, and what it expected vs what it got. Claude can fix most type errors automatically. Think of it as spell-check but for code logic.",
-      "related": ["TypeScript", "Build"]
+      "related": [
+        "TypeScript",
+        "Build"
+      ]
     },
     {
       "question": "Why is my terminal session gone after I close my laptop?",
       "answer": "A regular terminal session is tied to your connection. When the connection closes (laptop lid, Wi-Fi drop, SSH timeout), the terminal and everything running inside it dies. tmux prevents this by running sessions in the background, independent of your connection.",
       "solution": "Always work inside tmux. Start with `tmux new -s dev` (or whatever name fits). If you get disconnected, reconnect with `tmux attach -t dev` — everything is exactly where you left it. The processes never stopped.",
-      "related": ["tmux (Terminal Multiplexer)", "Attach / Detach (tmux)", "SSH (Secure Shell)"]
+      "related": [
+        "tmux (Terminal Multiplexer)",
+        "Attach / Detach (tmux)",
+        "SSH (Secure Shell)"
+      ]
     },
     {
       "question": "Why does my tmux look weird or squished on a different screen?",
       "answer": "tmux locks its display to the smallest attached viewport. If you were on a big monitor and now connect from a small laptop screen (or vice versa), the panes stay sized for the old screen — leaving dead space or squishing everything.",
       "solution": "Use `tmux attach -d -t <name>` instead of plain `tmux attach`. The `-d` flag detaches the old viewport first, then attaches fresh with your current screen dimensions. This instantly fixes the sizing.",
-      "related": ["tmux (Terminal Multiplexer)", "Attach / Detach (tmux)", "tmux Session"]
+      "related": [
+        "tmux (Terminal Multiplexer)",
+        "Attach / Detach (tmux)",
+        "tmux Session"
+      ]
     },
     {
       "question": "What's the difference between a tmux session and a Claude Code conversation?",
       "answer": "They solve different problems. A tmux session keeps your terminal processes alive — dev servers, logs, running commands. If tmux dies, those processes die, but your code files are safe on disk. A Claude Code conversation preserves your AI chat context — what you discussed, what Claude knows about your task. Claude saves conversations to disk (~/.claude/), so even if tmux crashes, the conversation history survives. Think of tmux as the room you work in (keeps the lights on) and Claude Code as the notebook on the desk (keeps your notes safe even if the room loses power).",
       "solution": "Use both together: tmux keeps your workspace alive across disconnects, and Claude Code's `-r` or `-c` flags let you resume conversations. If tmux crashes, `claude -r` recovers the conversation. If Claude crashes, tmux keeps your other panes (dev server, logs) running.",
-      "related": ["tmux (Terminal Multiplexer)", "tmux Session", "Claude Code"]
+      "related": [
+        "tmux (Terminal Multiplexer)",
+        "tmux Session",
+        "Claude Code"
+      ]
     }
   ],
-
   "troubleshooting": [
     {
       "problem": "Site shows 'Cannot connect' or 'This site can't be reached' in browser",
