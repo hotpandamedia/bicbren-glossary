@@ -83,43 +83,119 @@ code {
   border: 2px solid #1a1a1a;
 }
 
-/* Card expand animations */
-@keyframes card-slide-down {
-  from { opacity: 0; max-height: 0; transform: translateY(-12px); }
-  to { opacity: 1; max-height: 2000px; transform: translateY(0); }
+/* ── Card OPEN animations ── */
+@keyframes open-slam-down {
+  0% { opacity: 0; transform: translateY(-40px) scaleY(0.3); }
+  60% { opacity: 1; transform: translateY(6px) scaleY(1.02); }
+  100% { opacity: 1; transform: translateY(0) scaleY(1); }
 }
 
-@keyframes card-slide-up {
-  from { opacity: 0; max-height: 0; transform: translateY(12px); }
-  to { opacity: 1; max-height: 2000px; transform: translateY(0); }
+@keyframes open-spring-up {
+  0% { opacity: 0; transform: translateY(50px) scale(0.9); }
+  50% { opacity: 1; transform: translateY(-8px) scale(1.02); }
+  75% { transform: translateY(3px) scale(0.99); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes card-scale-in {
-  from { opacity: 0; max-height: 0; transform: scale(0.95); }
-  to { opacity: 1; max-height: 2000px; transform: scale(1); }
+@keyframes open-rubber-scale {
+  0% { opacity: 0; transform: scale(0.4); }
+  40% { opacity: 1; transform: scale(1.08); }
+  65% { transform: scale(0.96); }
+  85% { transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-@keyframes card-fade-in {
-  from { opacity: 0; max-height: 0; }
-  to { opacity: 1; max-height: 2000px; }
+@keyframes open-swing-in {
+  0% { opacity: 0; transform: perspective(600px) rotateX(-60deg); transform-origin: top center; }
+  50% { opacity: 1; transform: perspective(600px) rotateX(10deg); }
+  75% { transform: perspective(600px) rotateX(-5deg); }
+  100% { opacity: 1; transform: perspective(600px) rotateX(0deg); }
 }
 
-@keyframes card-slide-right {
-  from { opacity: 0; max-height: 0; transform: translateX(-16px); }
-  to { opacity: 1; max-height: 2000px; transform: translateX(0); }
+@keyframes open-slide-skew {
+  0% { opacity: 0; transform: translateX(-60px) skewX(12deg); }
+  60% { opacity: 1; transform: translateX(8px) skewX(-2deg); }
+  100% { opacity: 1; transform: translateX(0) skewX(0deg); }
 }
 
-@keyframes card-flip-in {
-  from { opacity: 0; max-height: 0; transform: rotateX(-5deg); }
-  to { opacity: 1; max-height: 2000px; transform: rotateX(0); }
+@keyframes open-pop-blur {
+  0% { opacity: 0; transform: scale(0.7); filter: blur(8px); }
+  50% { opacity: 1; transform: scale(1.05); filter: blur(1px); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
 }
 
-.card-anim-0 { animation: card-slide-down 0.3s ease-out forwards; }
-.card-anim-1 { animation: card-slide-up 0.3s ease-out forwards; }
-.card-anim-2 { animation: card-scale-in 0.25s ease-out forwards; }
-.card-anim-3 { animation: card-fade-in 0.35s ease-out forwards; }
-.card-anim-4 { animation: card-slide-right 0.3s ease-out forwards; }
-.card-anim-5 { animation: card-flip-in 0.3s ease-out forwards; }
+@keyframes open-typewriter {
+  0% { opacity: 0; clip-path: inset(0 100% 0 0); }
+  100% { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+@keyframes open-drop-bounce {
+  0% { opacity: 0; transform: translateY(-80px); }
+  45% { opacity: 1; transform: translateY(0); }
+  55% { transform: translateY(-12px); }
+  70% { transform: translateY(0); }
+  80% { transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.card-open-0 { animation: open-slam-down 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.card-open-1 { animation: open-spring-up 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.card-open-2 { animation: open-rubber-scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.card-open-3 { animation: open-swing-in 0.45s ease-out forwards; }
+.card-open-4 { animation: open-slide-skew 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.card-open-5 { animation: open-pop-blur 0.4s ease-out forwards; }
+.card-open-6 { animation: open-typewriter 0.4s steps(12, end) forwards; }
+.card-open-7 { animation: open-drop-bounce 0.55s ease-out forwards; }
+
+/* ── Card CLOSE animations ── */
+@keyframes close-yeet-right {
+  0% { opacity: 1; transform: translateX(0) rotate(0); }
+  100% { opacity: 0; transform: translateX(120px) rotate(8deg); }
+}
+
+@keyframes close-shrink-vanish {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.3); }
+}
+
+@keyframes close-fold-up {
+  0% { opacity: 1; transform: perspective(600px) rotateX(0deg); transform-origin: top center; }
+  100% { opacity: 0; transform: perspective(600px) rotateX(-90deg); }
+}
+
+@keyframes close-drop-away {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(40px) scale(0.9); }
+}
+
+@keyframes close-blur-out {
+  0% { opacity: 1; filter: blur(0); transform: scale(1); }
+  100% { opacity: 0; filter: blur(10px); transform: scale(1.05); }
+}
+
+@keyframes close-slide-left {
+  0% { opacity: 1; transform: translateX(0) skewX(0); }
+  100% { opacity: 0; transform: translateX(-80px) skewX(-8deg); }
+}
+
+@keyframes close-squish {
+  0% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+  100% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+}
+
+@keyframes close-spin-away {
+  0% { opacity: 1; transform: rotate(0) scale(1); }
+  100% { opacity: 0; transform: rotate(12deg) scale(0.6); }
+}
+
+.card-close-0 { animation: close-yeet-right 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards; }
+.card-close-1 { animation: close-shrink-vanish 0.25s ease-in forwards; }
+.card-close-2 { animation: close-fold-up 0.3s ease-in forwards; }
+.card-close-3 { animation: close-drop-away 0.25s ease-in forwards; }
+.card-close-4 { animation: close-blur-out 0.3s ease-in forwards; }
+.card-close-5 { animation: close-slide-left 0.3s ease-in forwards; }
+.card-close-6 { animation: close-squish 0.25s ease-in forwards; }
+.card-close-7 { animation: close-spin-away 0.3s ease-in forwards; }
 
 /* Scroll margin for anchor links */
 [id] {

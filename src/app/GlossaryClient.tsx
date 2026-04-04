@@ -230,7 +230,8 @@ function SortBar({
   );
 }
 
-const ANIM_COUNT = 6;
+const OPEN_ANIM_COUNT = 8;
+const CLOSE_ANIM_COUNT = 8;
 
 function CollapsibleCard({
   id,
@@ -248,19 +249,45 @@ function CollapsibleCard({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
-  const animRef = useRef(Math.floor(Math.random() * ANIM_COUNT));
+  const [visible, setVisible] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const openAnimRef = useRef(0);
+  const closeAnimRef = useRef(0);
   const isGold = accentColor === "#F2B84B" || accentColor === "#1a1a1a";
   const bgColor = isGold ? "#F2B84B" : "#4d7cf5";
   const textColor = isGold ? "#1a1a1a" : "#ffffff";
+
+  function handleToggle() {
+    if (!open) {
+      openAnimRef.current = Math.floor(Math.random() * OPEN_ANIM_COUNT);
+      closeAnimRef.current = Math.floor(Math.random() * CLOSE_ANIM_COUNT);
+      setOpen(true);
+      setVisible(true);
+      setClosing(false);
+    } else {
+      setClosing(true);
+    }
+  }
+
+  function handleCloseEnd(e: React.AnimationEvent) {
+    if (closing && e.animationName.startsWith("close-")) {
+      setOpen(false);
+      setVisible(false);
+      setClosing(false);
+    }
+  }
+
+  const showContent = open || visible;
+  const animClass = closing
+    ? `card-close-${closeAnimRef.current}`
+    : `card-open-${openAnimRef.current}`;
+
   return (
     <div id={id} className="border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
       <button
-        onClick={() => {
-          if (!open) animRef.current = Math.floor(Math.random() * ANIM_COUNT);
-          setOpen(!open);
-        }}
+        onClick={handleToggle}
         className="w-full px-4 md:px-6 py-4 flex items-center justify-between text-left"
-        style={{ background: bgColor, borderBottom: open ? `4px solid ${bgColor}` : "none" }}
+        style={{ background: bgColor, borderBottom: showContent && !closing ? `4px solid ${bgColor}` : "none" }}
       >
         <div className="flex items-center gap-3 pr-4 min-w-0">
           {badges}
@@ -275,14 +302,17 @@ function CollapsibleCard({
           {rightLabel}
           <span
             className="text-2xl font-black transition-transform duration-200"
-            style={{ fontFamily: headline, color: textColor, transform: open ? "rotate(45deg)" : "rotate(0)" }}
+            style={{ fontFamily: headline, color: textColor, transform: open && !closing ? "rotate(45deg)" : "rotate(0)" }}
           >
             +
           </span>
         </div>
       </button>
-      {open && (
-        <div className={`p-4 md:p-6 overflow-hidden card-anim-${animRef.current}`}>
+      {showContent && (
+        <div
+          className={`p-4 md:p-6 overflow-hidden ${animClass}`}
+          onAnimationEnd={handleCloseEnd}
+        >
           {children}
         </div>
       )}
