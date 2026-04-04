@@ -882,6 +882,27 @@
       "what": "A team messaging and collaboration platform (like Slack but popular in Asia). Supports webhooks for automated notifications.",
       "why": "HPM/KOT team communication tool. Used for day-to-day chat and can receive automated alerts from our systems via webhooks.",
       "analogy": "The team's digital office — chat rooms for each project, plus the ability for our tools to post automatic updates."
+    },
+    {
+      "tool": "tmux",
+      "category": "DevOps Tool",
+      "what": "A terminal multiplexer that keeps sessions alive in the background, lets you split screens into panes, and survives disconnects. The backbone of persistent remote work.",
+      "why": "Keeps Claude Code, dev servers, and logs running on the Mac Mini even when your laptop disconnects. Essential for SSH workflows — nothing dies when Wi-Fi drops.",
+      "analogy": "Like having a desk that stays exactly how you left it, even after you leave the building. Come back tomorrow, everything is still there — papers open, programs running."
+    },
+    {
+      "tool": "Claude AI",
+      "category": "AI Platform",
+      "what": "Anthropic's AI model and web platform (claude.ai). The intelligence behind Claude Code. Can also be used directly in the browser for research, writing, brainstorming, and analysis without touching code.",
+      "why": "The brain that powers the development workflow. Used via Claude Code in the terminal for coding, and via claude.ai in the browser for non-code tasks like writing specs, reviewing plans, and explaining concepts.",
+      "analogy": "If Claude Code is the developer sitting at the desk, Claude AI is the mind behind it — you can also talk to it directly in a browser for anything that doesn't need a terminal."
+    },
+    {
+      "tool": "Gemini",
+      "category": "AI Platform",
+      "what": "Google's AI model and platform. Available via the web, Google Workspace integrations, and Gemini CLI. A capable alternative to Claude for research, code review, and second opinions.",
+      "why": "Used alongside Claude for cross-referencing, getting different perspectives on technical decisions, and tasks where Google ecosystem integration is useful (Docs, Sheets, Gmail).",
+      "analogy": "Like having a second advisor in the room — sometimes you want a different perspective before making a big decision. Claude and Gemini each have strengths."
     }
   ],
 

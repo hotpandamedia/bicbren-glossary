@@ -369,6 +369,7 @@ function sortItems<T>(items: T[], key: string, dir: SortDir): T[] {
 export function GlossaryClient({ data }: { data: GlossaryData }) {
   const [search, setSearch] = useState("");
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [stackFilter, setStackFilter] = useState<string | null>(null);
 
   // Sort states
   const [termSort, setTermSort] = useState("term");
@@ -389,24 +390,37 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
 
   const q = search.toLowerCase().trim();
 
+  // Stack cross-filter: checks if any field in an object mentions the tool
+  function matchesStack(obj: Record<string, unknown>): boolean {
+    if (!stackFilter) return true;
+    const sf = stackFilter.toLowerCase();
+    return Object.values(obj).some((v) => {
+      if (typeof v === "string") return v.toLowerCase().includes(sf);
+      if (Array.isArray(v)) return v.some((item) => typeof item === "string" && item.toLowerCase().includes(sf));
+      return false;
+    });
+  }
+
   // Filtered + sorted data
   const filteredTerms = useMemo(() => {
     let items = data.terms.filter(
       (t) =>
+        matchesStack(t as unknown as Record<string, unknown>) &&
         (!q || t.term.toLowerCase().includes(q) || t.definition.toLowerCase().includes(q) || t.category.toLowerCase().includes(q)) &&
         (termFilter === "all" || t.category === termFilter)
     );
     return sortItems(items, termSort, termSortDir);
-  }, [data.terms, q, termFilter, termSort, termSortDir]);
+  }, [data.terms, q, termFilter, termSort, termSortDir, stackFilter]);
 
   const filteredCommands = useMemo(() => {
     let items = data.commands.filter(
       (c) =>
+        matchesStack(c as unknown as Record<string, unknown>) &&
         (!q || c.command.toLowerCase().includes(q) || c.what.toLowerCase().includes(q) || c.category.toLowerCase().includes(q)) &&
         (cmdSafetyFilter === "all" || c.safety === cmdSafetyFilter)
     );
     return sortItems(items, cmdSort, cmdSortDir);
-  }, [data.commands, q, cmdSafetyFilter, cmdSort, cmdSortDir]);
+  }, [data.commands, q, cmdSafetyFilter, cmdSort, cmdSortDir, stackFilter]);
 
   const filteredStack = useMemo(() => {
     let items = data.stack.filter(
@@ -416,18 +430,23 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
   }, [data.stack, q, stackSort, stackSortDir]);
 
   const filteredFaqs = useMemo(
-    () => data.faqs.filter((f) => !q || f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q)),
-    [data.faqs, q]
+    () => data.faqs.filter((f) =>
+      matchesStack(f as unknown as Record<string, unknown>) &&
+      (!q || f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q))
+    ),
+    [data.faqs, q, stackFilter]
   );
 
   const sortedFileTypes = useMemo(() => {
     function editRank(v: boolean | string): number {
-      if (v === false) return 0;          // don't edit
-      if (v === true) return 2;           // editable
-      return 1;                           // careful / with care
+      if (v === false) return 0;
+      if (v === true) return 2;
+      return 1;
     }
     let items = data.fileTypes.filter(
-      (f) => !q || f.extension.toLowerCase().includes(q) || f.name.toLowerCase().includes(q) || f.what.toLowerCase().includes(q)
+      (f) =>
+        matchesStack(f as unknown as Record<string, unknown>) &&
+        (!q || f.extension.toLowerCase().includes(q) || f.name.toLowerCase().includes(q) || f.what.toLowerCase().includes(q))
     );
     if (fileSort === "can_edit") {
       items = [...items].sort((a, b) => {
@@ -438,16 +457,34 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
       items = sortItems(items, fileSort, fileSortDir);
     }
     return items;
-  }, [data.fileTypes, q, fileSort, fileSortDir]);
+  }, [data.fileTypes, q, fileSort, fileSortDir, stackFilter]);
 
   const filteredTroubleshooting = useMemo(() => {
     let items = data.troubleshooting.filter(
       (t) =>
+        matchesStack(t as unknown as Record<string, unknown>) &&
         (!q || t.problem.toLowerCase().includes(q) || t.likely_cause.toLowerCase().includes(q)) &&
         (troubleFilter === "all" || t.severity === troubleFilter)
     );
     return items;
-  }, [data.troubleshooting, q, troubleFilter]);
+  }, [data.troubleshooting, q, troubleFilter, stackFilter]);
+
+  // Also filter safe practices, symbols by stack
+  const filteredSafePractices = useMemo(
+    () => data.safePractices.filter((p) =>
+      matchesStack(p as unknown as Record<string, unknown>) &&
+      (!q || p.title.toLowerCase().includes(q) || p.rule.toLowerCase().includes(q) || p.why.toLowerCase().includes(q))
+    ),
+    [data.safePractices, q, stackFilter]
+  );
+
+  const filteredSymbols = useMemo(
+    () => data.symbols.filter((s) =>
+      matchesStack(s as unknown as Record<string, unknown>) &&
+      (!q || s.symbol.toLowerCase().includes(q) || s.name.toLowerCase().includes(q) || s.what.toLowerCase().includes(q))
+    ),
+    [data.symbols, q, stackFilter]
+  );
 
   // Category options
   const termCategories = useMemo(() => unique(data.terms, (t) => t.category), [data.terms]);
@@ -612,6 +649,22 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
 
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12 space-y-16 md:space-y-24">
+
+        {/* Stack filter banner */}
+        {stackFilter && (
+          <div className="flex items-center justify-between gap-4 p-4 border-4 border-[#1a1a1a] bg-[#1a1a1a] text-[#fcf9f8]">
+            <p className="text-sm font-bold uppercase tracking-wider" style={{ fontFamily: label }}>
+              Filtering by: <span className="text-[#F2B84B]">{stackFilter}</span>
+            </p>
+            <button
+              onClick={() => setStackFilter(null)}
+              className="px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 border-[#F2B84B] text-[#F2B84B] hover:bg-[#F2B84B] hover:text-[#1a1a1a] transition-all"
+              style={{ fontFamily: label }}
+            >
+              Clear
+            </button>
+          </div>
+        )}
 
         {/* ── RECENTLY ADDED ── */}
         {!activeSection && !q && data.recentlyAdded.length > 0 && (
@@ -828,7 +881,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                   key={s.tool}
                   id={slug(s.tool)}
                   title={s.tool}
-                  accentColor="#4d7cf5"
+                  accentColor={stackFilter === s.tool ? "#1a1a1a" : "#4d7cf5"}
                 >
                   <div className="space-y-3">
                     <span
@@ -855,6 +908,21 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                       </p>
                       <p className="text-sm leading-relaxed text-[#1a1a1a]/70 italic">{s.analogy}</p>
                     </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setStackFilter(stackFilter === s.tool ? null : s.tool);
+                        setActiveSection(null);
+                      }}
+                      className={`mt-2 w-full px-4 py-2.5 text-xs font-bold uppercase tracking-wider border-4 border-[#1a1a1a] transition-all ${
+                        stackFilter === s.tool
+                          ? "bg-[#1a1a1a] text-[#F2B84B]"
+                          : "bg-[#fcf9f8] text-[#1a1a1a] hover:bg-[#4d7cf5] hover:text-white"
+                      }`}
+                      style={{ fontFamily: label }}
+                    >
+                      {stackFilter === s.tool ? `Showing all ${s.tool} entries — tap to clear` : `Show everything about ${s.tool}`}
+                    </button>
                   </div>
                 </CollapsibleCard>
               ))}
@@ -863,11 +931,11 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
         )}
 
         {/* ── 04 SAFE PRACTICES ── */}
-        {showSection("safety") && (
+        {showSection("safety") && filteredSafePractices.length > 0 && (
           <section>
             <SectionHeader number="04" title="Safe Practices" color="gold" id="safety" />
             <div className="space-y-3">
-              {data.safePractices.map((p) => (
+              {filteredSafePractices.map((p) => (
                 <CollapsibleCard
                   key={p.title}
                   id={slug(p.title)}
@@ -913,7 +981,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
         )}
 
         {/* ── 05 FILE TYPES ── */}
-        {showSection("files") && (
+        {showSection("files") && sortedFileTypes.length > 0 && (
           <section>
             <SectionHeader number="05" title="File Types" color="blue" id="files" />
             <Legend>
@@ -975,11 +1043,11 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
         )}
 
         {/* ── 06 SYMBOLS ── */}
-        {showSection("symbols") && (
+        {showSection("symbols") && filteredSymbols.length > 0 && (
           <section>
             <SectionHeader number="06" title="Symbols & Syntax" color="gold" id="symbols" />
             <div className="space-y-3">
-              {data.symbols.map((s) => (
+              {filteredSymbols.map((s) => (
                 <CollapsibleCard
                   key={s.symbol}
                   id={slug(s.name)}
