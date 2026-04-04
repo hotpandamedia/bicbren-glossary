@@ -13,6 +13,24 @@
   "recentlyAdded": [
     {
       "section": "terms",
+      "name": "Shell, Command, Terminal + 8 more",
+      "summary": "Core terminal concepts — what a shell is, what commands are, hooks, skills, tool permissions, and how it all connects.",
+      "dateAdded": "2026-04-04"
+    },
+    {
+      "section": "commands",
+      "name": "cd, ls, mkdir, pwd, cat, touch, cp, mv, which",
+      "summary": "Essential shell commands for navigating folders, creating files, and checking your environment.",
+      "dateAdded": "2026-04-04"
+    },
+    {
+      "section": "commands",
+      "name": "/commit, /bb-glossary, /review-pr + 6 more",
+      "summary": "Claude Code slash commands — commit, review, simplify, glossary, loops, schedules, and session handoffs.",
+      "dateAdded": "2026-04-04"
+    },
+    {
+      "section": "terms",
       "name": "tmux (Terminal Multiplexer)",
       "summary": "Background service that keeps terminal sessions alive across disconnects — the foundation of persistent dev workflows.",
       "dateAdded": "2026-04-04"
@@ -21,24 +39,6 @@
       "section": "commands",
       "name": "tmux new -s, attach, kill-server + 15 more",
       "summary": "Full tmux command reference — session management, pane splitting, zoom, copy mode, and automation.",
-      "dateAdded": "2026-04-04"
-    },
-    {
-      "section": "commands",
-      "name": "claude -n, -r, -c, /rename, /color",
-      "summary": "Claude Code CLI commands for naming, resuming, and visually organizing AI conversations.",
-      "dateAdded": "2026-04-04"
-    },
-    {
-      "section": "faqs",
-      "name": "tmux sessions vs Claude Code conversations",
-      "summary": "tmux keeps processes alive (the room), Claude Code keeps context alive (the notebook). Use both together.",
-      "dateAdded": "2026-04-04"
-    },
-    {
-      "section": "terms",
-      "name": "Mosh, NordVPN Meshnet, Ed25519",
-      "summary": "Remote access tools — mobile-friendly SSH, peer-to-peer VPN, and modern key-based authentication.",
       "dateAdded": "2026-04-04"
     }
   ],
@@ -396,6 +396,72 @@
       "category": "Security",
       "definition": "A modern, highly secure type of SSH key used for passwordless authentication. Shorter than older RSA keys but stronger. Essential for seamless logins across mobile apps and automated scripts.",
       "example": "Instead of typing a password every time you SSH into the Mac Mini, your Ed25519 key proves who you are automatically. Mobile SSH apps (like Blink) use the same key for one-tap connections."
+    },
+    {
+      "term": "Shell",
+      "category": "Concepts",
+      "definition": "A program that interprets the commands you type and sends them to the operating system. It's the layer between you and the computer's core. Common shells include Bash and Zsh.",
+      "example": "When you open Terminal on Mac or connect via SSH, you're inside a shell. You type `git status`, the shell interprets it, runs Git, and shows you the result."
+    },
+    {
+      "term": "Command",
+      "category": "Concepts",
+      "definition": "An instruction you type into the shell to make the computer do something. Commands can be simple (`ls`) or complex with flags and arguments (`git commit -m 'message'`).",
+      "example": "Every line you see Claude run — `npm install`, `git push`, `vercel --prod` — is a command. The shell reads it, finds the right program, and executes it."
+    },
+    {
+      "term": "Terminal",
+      "category": "Tools",
+      "definition": "The application window where you interact with the shell. It's just the visual container — the shell inside is what actually processes your commands. On Mac, the app is literally called 'Terminal'.",
+      "example": "When you SSH into the Mac Mini, your laptop's terminal connects to the Mac Mini's shell. tmux then manages multiple shells inside that one terminal connection."
+    },
+    {
+      "term": "Flag / Option",
+      "category": "Concepts",
+      "definition": "A modifier you add to a command to change its behavior. Usually starts with a dash (`-v`) or double dash (`--verbose`). Think of them as settings you toggle on for that one command.",
+      "example": "`git push --force` — the `--force` flag changes push from 'upload safely' to 'overwrite remote'. `ls -la` — `-l` means long format, `-a` means show hidden files."
+    },
+    {
+      "term": "Argument",
+      "category": "Concepts",
+      "definition": "The thing a command acts on — usually a file name, folder path, or value. Comes after the command and any flags.",
+      "example": "In `git checkout main`, 'main' is the argument — it tells checkout WHICH branch. In `rm -rf node_modules`, 'node_modules' is the argument — the folder to delete."
+    },
+    {
+      "term": "PATH (Environment Variable)",
+      "category": "Concepts",
+      "definition": "A list of folders the shell checks when you type a command. If the program isn't in one of those folders, the shell says 'command not found'. It's how your computer finds git, npm, node, etc.",
+      "example": "When you type `git`, the shell searches folders listed in PATH until it finds the git program. If you install something and get 'command not found', it's usually a PATH issue."
+    },
+    {
+      "term": "stdout / stderr",
+      "category": "Concepts",
+      "definition": "The two output channels of every command. stdout (standard output) is normal results. stderr (standard error) is error messages. They look the same in the terminal but can be separated for logging.",
+      "example": "When `npm run build` succeeds, the output goes to stdout. When it fails, the error goes to stderr. Claude Code reads both to understand what happened."
+    },
+    {
+      "term": "Hook (Claude Code)",
+      "category": "Tools",
+      "definition": "An automatic action configured in Claude Code's settings that runs before or after specific events — like before a tool is used (PreToolUse), after a tool runs (PostToolUse), or when you submit a prompt (UserPromptSubmit).",
+      "example": "The Vercel plugin hooks into UserPromptSubmit to auto-suggest best practices. The startup hook loads your memory and session context. You see these as '[hook] additional context' messages."
+    },
+    {
+      "term": "PreToolUse / PostToolUse",
+      "category": "Tools",
+      "definition": "Claude Code hook events that fire before and after Claude uses a tool (like Read, Edit, Bash, Write). PreToolUse can inject context or block an action. PostToolUse can validate results.",
+      "example": "When Claude is about to edit a file, PreToolUse fires — your Vercel plugin checks if it's a Next.js file and injects relevant docs. You see this as 'PreToolUse:Edit hook additional context' in the chat."
+    },
+    {
+      "term": "Skill (Claude Code)",
+      "category": "Tools",
+      "definition": "A reusable prompt template that teaches Claude Code how to handle specific tasks. Skills are invoked with slash commands (like /commit or /bb-glossary) and can be custom-built.",
+      "example": "When you type `/bb-glossary tmux`, it loads the BicBren Glossary skill — a full set of instructions for how to search, format, add entries, and push to the live site."
+    },
+    {
+      "term": "Tool Permission (Allow / Deny)",
+      "category": "Tools",
+      "definition": "The safety prompt Claude Code shows before running certain actions. Safe tools (Read, Glob) run automatically. Risky tools (Edit, Bash, Write) ask for your approval. You can allow once, always, or deny.",
+      "example": "When Claude wants to edit a file, you see a permission prompt. Pressing Enter allows it. This is why Claude sometimes pauses — it's waiting for you to approve a file change or shell command."
     }
   ],
   "commands": [
@@ -1012,6 +1078,231 @@
       "platform": "Claude Code",
       "tags": [
         "qol"
+      ]
+    },
+    {
+      "command": "cd <path>",
+      "category": "System",
+      "safety": "safe",
+      "what": "Changes your current directory (folder). Like navigating into a folder in Finder, but by typing the path.",
+      "when": "Every time you need to move to a different project folder before running commands.",
+      "example": "`cd ~/projects/bicbren-glossary` moves you into the glossary project. `cd ..` goes up one level. `cd ~` goes to your home folder.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "ls",
+      "category": "System",
+      "safety": "safe",
+      "what": "Lists files and folders in the current directory. Add `-la` to see hidden files, permissions, and sizes.",
+      "when": "When you need to see what's in a folder. Often the first thing you run after cd-ing somewhere new.",
+      "example": "`ls` shows files. `ls -la` shows everything including hidden files like `.env` and `.gitignore`. `ls ~/projects` lists all your project folders.",
+      "platform": "Terminal",
+      "tags": [
+        "essential",
+        "read-only"
+      ]
+    },
+    {
+      "command": "mkdir <name>",
+      "category": "System",
+      "safety": "safe",
+      "what": "Creates a new empty directory (folder). Add `-p` to create nested folders in one go.",
+      "when": "When you need a new folder for a project, backups, or organizing files.",
+      "example": "`mkdir backups` creates a backups folder. `mkdir -p src/components/ui` creates the full nested path even if src/ doesn't exist yet.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "pwd",
+      "category": "System",
+      "safety": "safe",
+      "what": "Prints the full path of your current directory. Stands for 'print working directory'. Answers 'where am I right now?'",
+      "when": "When you're lost and need to check which folder you're in. Useful after SSH-ing into a machine.",
+      "example": "`pwd` might output `/Users/hotpandamedia/projects/bicbren-glossary` — confirming you're in the right project folder.",
+      "platform": "Terminal",
+      "tags": [
+        "essential",
+        "read-only"
+      ]
+    },
+    {
+      "command": "cat <file>",
+      "category": "System",
+      "safety": "safe",
+      "what": "Displays the entire contents of a file in the terminal. Quick way to peek at a file without opening an editor.",
+      "when": "When you want to quickly check a config file, see what's in a small file, or verify file contents.",
+      "example": "`cat .env.local` shows your environment variables. `cat package.json` shows project dependencies. Don't use on huge files — it'll flood your terminal.",
+      "platform": "Terminal",
+      "tags": [
+        "read-only"
+      ]
+    },
+    {
+      "command": "touch <file>",
+      "category": "System",
+      "safety": "safe",
+      "what": "Creates a new empty file, or updates the timestamp of an existing file without changing its contents.",
+      "when": "When you need to create a placeholder file or an empty config file.",
+      "example": "`touch .env.local` creates an empty environment file. `touch src/app/new-page/page.tsx` creates an empty component file ready to be edited.",
+      "platform": "Terminal",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "cp <source> <dest>",
+      "category": "System",
+      "safety": "caution",
+      "what": "Copies a file or folder to a new location. Add `-r` for folders (recursive copy). The original stays untouched.",
+      "when": "When you need a backup copy of a file before editing it, or when duplicating configs between projects.",
+      "example": "`cp .env.local .env.backup` makes a backup. `cp -r src/components src/components-backup` copies an entire folder.",
+      "platform": "Terminal",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "mv <source> <dest>",
+      "category": "System",
+      "safety": "caution",
+      "what": "Moves a file or folder to a new location, or renames it. The original is gone — it's a move, not a copy.",
+      "when": "When renaming files or reorganizing folder structure.",
+      "example": "`mv old-name.tsx new-name.tsx` renames a file. `mv src/utils src/lib` renames a folder. Be careful — if the destination exists, it gets overwritten.",
+      "platform": "Terminal",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "which <command>",
+      "category": "System",
+      "safety": "safe",
+      "what": "Shows the full path to where a command's program lives on disk. Useful for debugging 'command not found' or checking which version is being used.",
+      "when": "When a command isn't working and you want to check if it's installed and where.",
+      "example": "`which node` might show `/usr/local/bin/node`. `which claude` shows where Claude Code is installed. If nothing shows, it's not in your PATH.",
+      "platform": "Terminal",
+      "tags": [
+        "read-only",
+        "qol"
+      ]
+    },
+    {
+      "command": "/commit",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Tells Claude to stage changes, write a commit message following your project's style, and create a git commit. Respects your CLAUDE.md rules.",
+      "when": "When you've finished a piece of work and want Claude to commit it properly without manually writing the commit message.",
+      "example": "Type `/commit` after finishing a feature. Claude reads the diff, writes a descriptive message, stages the right files, and commits.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential",
+        "qol"
+      ]
+    },
+    {
+      "command": "/commit-push-pr",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "The full pipeline: commits your changes, pushes to GitHub, and creates a pull request with a title and description. One command, three steps.",
+      "when": "When your feature branch is ready for review and you want to go from local changes to a PR in one shot.",
+      "example": "Type `/commit-push-pr` after finishing a feature branch. Claude commits, pushes, and opens a PR on GitHub with a summary of all changes.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential",
+        "qol",
+        "automation"
+      ]
+    },
+    {
+      "command": "/simplify",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Reviews your recently changed code for reuse opportunities, quality issues, and efficiency — then fixes what it finds. A one-command code cleanup.",
+      "when": "After finishing a chunk of code and you want a quick quality pass before committing.",
+      "example": "After building the glossary filter feature, `/simplify` might consolidate repeated filter logic, remove unused variables, and tighten up the code.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/review-pr",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Runs a comprehensive review of a pull request using specialized agents — checking code quality, silent failures, test coverage, and type design.",
+      "when": "Before merging a PR, to catch issues that manual review might miss.",
+      "example": "`/review-pr 42` reviews PR #42 on the current repo. Claude dispatches multiple review agents and reports findings.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol",
+        "read-only"
+      ]
+    },
+    {
+      "command": "/session-handoff",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Generates a handoff log summarizing what was done in the current session — decisions made, changes committed, and next steps. For continuity between sessions.",
+      "when": "At the end of a work session, so the next session (or another person) can pick up where you left off.",
+      "example": "Type `/session-handoff` before closing. Claude writes a summary: 'Added 35 glossary entries, fixed mobile layout, pushed 4 commits. Next: add CC slash commands.'",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/bb-glossary [topic]",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "The BicBren glossary skill — searches, explains, and adds entries to the glossary. Can explain concepts, add new entries, review existing ones, or run an audit.",
+      "when": "Whenever you want to add to or look up something in the BicBren tech glossary at bicbren.com.",
+      "example": "`/bb-glossary tmux` explains tmux and proposes glossary entries. `/bb-glossary list` shows entry counts. `/bb-glossary review` audits the whole glossary.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential",
+        "custom"
+      ]
+    },
+    {
+      "command": "/loop <interval> <command>",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Runs a prompt or slash command on a recurring interval. Like a cron job inside Claude Code. Defaults to every 10 minutes if no interval specified.",
+      "when": "When you want Claude to periodically check on something — a deploy status, test results, or system health.",
+      "example": "`/loop 5m /status` checks Vercel status every 5 minutes. `/loop 10m check if the build passed` has Claude monitor your deploy.",
+      "platform": "Claude Code",
+      "tags": [
+        "automation"
+      ]
+    },
+    {
+      "command": "/schedule",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Creates or manages scheduled remote agents that run on a cron schedule — like automated tasks that execute even when you're not in a Claude Code session.",
+      "when": "For recurring tasks you want automated: daily backups, weekly reviews, status checks.",
+      "example": "`/schedule` shows your scheduled agents. You can create new ones with cron expressions for timing.",
+      "platform": "Claude Code",
+      "tags": [
+        "automation"
+      ]
+    },
+    {
+      "command": "/build-log",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Documents the current build session — what was built, decisions made, and the state of things. Creates a structured build log for project records.",
+      "when": "After completing a significant build or milestone, to create a documented record.",
+      "example": "After finishing the HPM leads system build, `/build-log` creates a structured log of all collections created, decisions made, and what's left to do.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol",
+        "custom"
       ]
     }
   ],
