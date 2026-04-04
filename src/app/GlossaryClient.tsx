@@ -636,7 +636,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
       </div>
 
       {/* Search + Nav */}
-      <div className="sticky top-[76px] md:top-[80px] z-40 bg-[#fcf9f8] border-b-4 border-[#1a1a1a]">
+      <div className="sticky top-0 z-40 bg-[#fcf9f8] border-b-4 border-[#1a1a1a]">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 md:py-4">
           <div className="relative flex gap-2">
             <div className="relative flex-1">
@@ -826,7 +826,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
 
             {/* RIGHT: Recently Added (sticky on desktop) */}
             {data.recentlyAdded.length > 0 && (
-              <section className="md:sticky md:top-[140px] md:self-start">
+              <section className="md:sticky md:top-[70px] md:self-start">
                 <div className="flex items-start gap-4 md:gap-6 mb-6 md:mb-8">
                   <span
                     className="text-5xl md:text-7xl font-black leading-none select-none"
