@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 
 /* ─── Types ─── */
 type RecentItem = {
@@ -111,7 +111,7 @@ function SeverityDot({ severity }: { severity: string }) {
   return (
     <span
       className={`w-3 h-3 rounded-full flex-shrink-0 ${
-        severity === "common" ? "bg-[#F2B84B]" : "bg-[#4d7cf5]"
+        severity === "common" ? "bg-[#ef4444]" : "bg-[#4d7cf5]"
       }`}
     />
   );
@@ -230,6 +230,8 @@ function SortBar({
   );
 }
 
+const ANIM_COUNT = 6;
+
 function CollapsibleCard({
   id,
   title,
@@ -246,13 +248,17 @@ function CollapsibleCard({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const animRef = useRef(Math.floor(Math.random() * ANIM_COUNT));
   const isGold = accentColor === "#F2B84B" || accentColor === "#1a1a1a";
   const bgColor = isGold ? "#F2B84B" : "#4d7cf5";
   const textColor = isGold ? "#1a1a1a" : "#ffffff";
   return (
     <div id={id} className="border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          if (!open) animRef.current = Math.floor(Math.random() * ANIM_COUNT);
+          setOpen(!open);
+        }}
         className="w-full px-4 md:px-6 py-4 flex items-center justify-between text-left"
         style={{ background: bgColor, borderBottom: open ? `4px solid ${bgColor}` : "none" }}
       >
@@ -268,14 +274,18 @@ function CollapsibleCard({
         <div className="flex items-center gap-3 flex-shrink-0">
           {rightLabel}
           <span
-            className="text-2xl font-black"
-            style={{ fontFamily: headline, color: textColor }}
+            className="text-2xl font-black transition-transform duration-200"
+            style={{ fontFamily: headline, color: textColor, transform: open ? "rotate(45deg)" : "rotate(0)" }}
           >
-            {open ? "−" : "+"}
+            +
           </span>
         </div>
       </button>
-      {open && <div className="p-4 md:p-6">{children}</div>}
+      {open && (
+        <div className={`p-4 md:p-6 overflow-hidden card-anim-${animRef.current}`}>
+          {children}
+        </div>
+      )}
     </div>
   );
 }
@@ -335,12 +345,15 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
   const [termSortDir, setTermSortDir] = useState<SortDir>("asc");
   const [termFilter, setTermFilter] = useState("all");
 
-  const [cmdSort, setCmdSort] = useState("command");
-  const [cmdSortDir, setCmdSortDir] = useState<SortDir>("asc");
+  const [cmdSort, setCmdSort] = useState("safety");
+  const [cmdSortDir, setCmdSortDir] = useState<SortDir>("desc");
   const [cmdSafetyFilter, setCmdSafetyFilter] = useState("all");
 
   const [stackSort, setStackSort] = useState("tool");
   const [stackSortDir, setStackSortDir] = useState<SortDir>("asc");
+
+  const [fileSort, setFileSort] = useState("can_edit");
+  const [fileSortDir, setFileSortDir] = useState<SortDir>("asc");
 
   const [troubleFilter, setTroubleFilter] = useState("all");
 
@@ -377,6 +390,26 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
     [data.faqs, q]
   );
 
+  const sortedFileTypes = useMemo(() => {
+    function editRank(v: boolean | string): number {
+      if (v === false) return 0;          // don't edit
+      if (v === true) return 2;           // editable
+      return 1;                           // careful / with care
+    }
+    let items = data.fileTypes.filter(
+      (f) => !q || f.extension.toLowerCase().includes(q) || f.name.toLowerCase().includes(q) || f.what.toLowerCase().includes(q)
+    );
+    if (fileSort === "can_edit") {
+      items = [...items].sort((a, b) => {
+        const diff = editRank(a.can_edit) - editRank(b.can_edit);
+        return fileSortDir === "asc" ? diff : -diff;
+      });
+    } else {
+      items = sortItems(items, fileSort, fileSortDir);
+    }
+    return items;
+  }, [data.fileTypes, q, fileSort, fileSortDir]);
+
   const filteredTroubleshooting = useMemo(() => {
     let items = data.troubleshooting.filter(
       (t) =>
@@ -398,6 +431,8 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
       setDir("asc");
     }
   }
+
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const showSection = (id: string) => !activeSection || activeSection === id;
 
@@ -448,30 +483,45 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
 
       {/* Search + Nav */}
       <div className="sticky top-[76px] md:top-[80px] z-40 bg-[#fcf9f8] border-b-4 border-[#1a1a1a]">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
-          <div className="relative mb-3">
-            <input
-              type="text"
-              placeholder="SEARCH THE GLOSSARY..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-4 py-3 border-4 border-[#1a1a1a] bg-white text-[#1a1a1a] text-base md:text-base font-bold uppercase tracking-wider focus:border-[#4d7cf5] focus:outline-none placeholder:text-[#1a1a1a]/30"
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 md:py-4">
+          <div className="relative flex gap-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                placeholder="SEARCH..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full px-4 py-2.5 md:py-3 border-4 border-[#1a1a1a] bg-white text-[#1a1a1a] text-sm md:text-base font-bold uppercase tracking-wider focus:border-[#4d7cf5] focus:outline-none placeholder:text-[#1a1a1a]/30"
+                style={{ fontFamily: label }}
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1a1a1a] font-black text-lg hover:text-[#ef4444] transition-colors"
+                >
+                  X
+                </button>
+              )}
+            </div>
+            {/* Mobile filter toggle */}
+            <button
+              onClick={() => setFiltersOpen(!filtersOpen)}
+              className={`md:hidden px-3 py-2.5 border-4 border-[#1a1a1a] font-bold uppercase text-xs tracking-wider transition-all flex-shrink-0 ${
+                filtersOpen || activeSection
+                  ? "bg-[#1a1a1a] text-[#fcf9f8]"
+                  : "bg-white text-[#1a1a1a]"
+              }`}
               style={{ fontFamily: label }}
-            />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1a1a1a] font-black text-lg hover:text-[#ef4444] transition-colors"
-              >
-                X
-              </button>
-            )}
+            >
+              {activeSection ? SECTIONS.find((s) => s.id === activeSection)?.label ?? "Filter" : "Filter"}
+            </button>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          {/* Desktop: always visible row */}
+          <div className="hidden md:flex flex-wrap gap-2 mt-3">
             <button
               onClick={() => setActiveSection(null)}
-              className={`px-3 py-1.5 text-sm md:text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] transition-all ${
+              className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] transition-all ${
                 !activeSection ? "bg-[#1a1a1a] text-[#fcf9f8]" : "bg-white text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-[#fcf9f8]"
               }`}
               style={{ fontFamily: label }}
@@ -485,7 +535,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                   setActiveSection(activeSection === s.id ? null : s.id);
                   document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }}
-                className={`px-3 py-1.5 text-sm md:text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] transition-all ${
+                className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] transition-all ${
                   activeSection === s.id ? "bg-[#1a1a1a] text-[#fcf9f8]" : "bg-white text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-[#fcf9f8]"
                 }`}
                 style={{ fontFamily: label }}
@@ -494,6 +544,39 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
               </button>
             ))}
           </div>
+
+          {/* Mobile: collapsible horizontal scroll */}
+          {filtersOpen && (
+            <div className="md:hidden mt-2 -mx-4 px-4 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-2 pb-1 w-max">
+                <button
+                  onClick={() => { setActiveSection(null); setFiltersOpen(false); }}
+                  className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] transition-all whitespace-nowrap ${
+                    !activeSection ? "bg-[#1a1a1a] text-[#fcf9f8]" : "bg-white text-[#1a1a1a]"
+                  }`}
+                  style={{ fontFamily: label }}
+                >
+                  ALL
+                </button>
+                {SECTIONS.map((s) => (
+                  <button
+                    key={s.id}
+                    onClick={() => {
+                      setActiveSection(activeSection === s.id ? null : s.id);
+                      setFiltersOpen(false);
+                      document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                    className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] transition-all whitespace-nowrap ${
+                      activeSection === s.id ? "bg-[#1a1a1a] text-[#fcf9f8]" : "bg-white text-[#1a1a1a]"
+                    }`}
+                    style={{ fontFamily: label }}
+                  >
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -579,14 +662,6 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
         {showSection("terms") && filteredTerms.length > 0 && (
           <section>
             <SectionHeader number="01" title="Terms" color="blue" id="terms" />
-            <Legend>
-              {termCategories.map((cat) => (
-                <span key={cat} className="flex items-center gap-2">
-                  <span className="w-3 h-3 bg-[#4d7cf5] border-2 border-[#1a1a1a]" />
-                  <span className="text-xs uppercase" style={{ fontFamily: label }}>{cat}</span>
-                </span>
-              ))}
-            </Legend>
             <SortBar
               options={[
                 { key: "term", label: "Name" },
@@ -821,8 +896,17 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                 <span className="text-xs">— leave to developers</span>
               </span>
             </Legend>
+            <SortBar
+              options={[
+                { key: "extension", label: "Name" },
+                { key: "can_edit", label: "Editability" },
+              ]}
+              current={fileSort}
+              direction={fileSortDir}
+              onSort={(k) => toggleSort(fileSort, k, fileSortDir, setFileSort, setFileSortDir)}
+            />
             <div className="space-y-3">
-              {data.fileTypes.map((f) => (
+              {sortedFileTypes.map((f) => (
                 <CollapsibleCard
                   key={f.extension}
                   id={slug(f.extension)}

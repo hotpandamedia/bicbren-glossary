@@ -83,9 +83,56 @@ code {
   border: 2px solid #1a1a1a;
 }
 
+/* Card expand animations */
+@keyframes card-slide-down {
+  from { opacity: 0; max-height: 0; transform: translateY(-12px); }
+  to { opacity: 1; max-height: 2000px; transform: translateY(0); }
+}
+
+@keyframes card-slide-up {
+  from { opacity: 0; max-height: 0; transform: translateY(12px); }
+  to { opacity: 1; max-height: 2000px; transform: translateY(0); }
+}
+
+@keyframes card-scale-in {
+  from { opacity: 0; max-height: 0; transform: scale(0.95); }
+  to { opacity: 1; max-height: 2000px; transform: scale(1); }
+}
+
+@keyframes card-fade-in {
+  from { opacity: 0; max-height: 0; }
+  to { opacity: 1; max-height: 2000px; }
+}
+
+@keyframes card-slide-right {
+  from { opacity: 0; max-height: 0; transform: translateX(-16px); }
+  to { opacity: 1; max-height: 2000px; transform: translateX(0); }
+}
+
+@keyframes card-flip-in {
+  from { opacity: 0; max-height: 0; transform: rotateX(-5deg); }
+  to { opacity: 1; max-height: 2000px; transform: rotateX(0); }
+}
+
+.card-anim-0 { animation: card-slide-down 0.3s ease-out forwards; }
+.card-anim-1 { animation: card-slide-up 0.3s ease-out forwards; }
+.card-anim-2 { animation: card-scale-in 0.25s ease-out forwards; }
+.card-anim-3 { animation: card-fade-in 0.35s ease-out forwards; }
+.card-anim-4 { animation: card-slide-right 0.3s ease-out forwards; }
+.card-anim-5 { animation: card-flip-in 0.3s ease-out forwards; }
+
 /* Scroll margin for anchor links */
 [id] {
   scroll-margin-top: 100px;
+}
+
+/* Hide scrollbar for mobile filter strip */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 /* Custom scrollbar */
