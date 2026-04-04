@@ -236,6 +236,7 @@ const CLOSE_ANIM_COUNT = 8;
 function CollapsibleCard({
   id,
   title,
+  subtitle,
   accentColor = "#4d7cf5",
   rightLabel,
   badges,
@@ -243,6 +244,7 @@ function CollapsibleCard({
 }: {
   id?: string;
   title: string;
+  subtitle?: string;
   accentColor?: string;
   rightLabel?: React.ReactNode;
   badges?: React.ReactNode;
@@ -296,6 +298,11 @@ function CollapsibleCard({
             style={{ fontFamily: headline, color: textColor }}
           >
             {title}
+            {subtitle && (
+              <span className="font-normal normal-case text-sm md:text-base opacity-70 ml-2" style={{ fontFamily: label }}>
+                — {subtitle}
+              </span>
+            )}
           </h3>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0">
@@ -349,6 +356,11 @@ function slug(str: string): string {
 
 function unique<T>(arr: T[], fn: (item: T) => string): string[] {
   return [...new Set(arr.map(fn))].sort();
+}
+
+function shortDesc(text: string): string {
+  const first = text.split(/\.\s|—/)[0].trim();
+  return first.length > 60 ? first.slice(0, 57) + "..." : first;
 }
 
 const SAFETY_ORDER: Record<string, number> = { safe: 0, caution: 1, dangerous: 2 };
@@ -827,6 +839,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
                   key={c.command}
                   id={slug(c.command)}
                   title={c.command}
+                  subtitle={shortDesc(c.what)}
                   accentColor="#F2B84B"
                   rightLabel={<SafetyBadge level={c.safety} />}
                 >
