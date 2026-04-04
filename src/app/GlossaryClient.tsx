@@ -75,14 +75,14 @@ type GlossaryData = {
 
 /* ─── Constants ─── */
 const SECTIONS = [
-  { id: "terms", label: "TERMS", number: "01", color: "blue" },
-  { id: "commands", label: "COMMANDS", number: "02", color: "gold" },
-  { id: "stack", label: "YOUR STACK", number: "03", color: "blue" },
-  { id: "safety", label: "SAFE PRACTICES", number: "04", color: "gold" },
-  { id: "files", label: "FILE TYPES", number: "05", color: "blue" },
-  { id: "symbols", label: "SYMBOLS", number: "06", color: "gold" },
-  { id: "faqs", label: "FAQs", number: "07", color: "blue" },
-  { id: "troubleshooting", label: "TROUBLESHOOTING", number: "08", color: "gold" },
+  { id: "stack", label: "TECH STACK", number: "00", color: "blue" },
+  { id: "commands", label: "COMMANDS", number: "01", color: "gold" },
+  { id: "terms", label: "TERMS", number: "02", color: "blue" },
+  { id: "safety", label: "SAFE PRACTICES", number: "03", color: "gold" },
+  { id: "faqs", label: "FAQs", number: "04", color: "blue" },
+  { id: "troubleshooting", label: "TROUBLESHOOTING", number: "05", color: "gold" },
+  { id: "files", label: "FILE TYPES", number: "06", color: "blue" },
+  { id: "symbols", label: "SYMBOLS", number: "07", color: "gold" },
 ] as const;
 
 const headline = "var(--font-barlow-condensed), 'Barlow Condensed', sans-serif";
@@ -737,119 +737,200 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
           </div>
         )}
 
-        {/* ── RECENTLY ADDED ── */}
-        {!activeSection && !q && data.recentlyAdded.length > 0 && (
-          <section>
-            <div className="flex items-start gap-4 md:gap-6 mb-6 md:mb-8">
-              <span
-                className="text-5xl md:text-7xl font-black leading-none select-none"
-                style={{ fontFamily: headline, color: "#F2B84B" }}
-              >
-                //
-              </span>
-              <h2
-                className="text-3xl md:text-5xl font-black uppercase pb-2 flex-1"
-                style={{ fontFamily: headline, borderBottom: "4px solid #F2B84B" }}
-              >
-                Recently Added
-              </h2>
-            </div>
-            <div className="space-y-3">
-              {data.recentlyAdded.map((item, i) => {
-                const sectionMeta = SECTIONS.find(
-                  (s) =>
-                    s.id === item.section ||
-                    (item.section === "safePractices" && s.id === "safety") ||
-                    (item.section === "fileTypes" && s.id === "files")
-                );
-                const sectionLabel = sectionMeta?.label ?? item.section.toUpperCase();
-                const sectionColor = sectionMeta?.color === "gold" ? "#F2B84B" : "#4d7cf5";
-                const targetId = slug(item.name);
-                return (
-                  <button
-                    key={i}
-                    onClick={() => {
-                      const el = document.getElementById(targetId);
-                      if (el) {
-                        el.scrollIntoView({ behavior: "smooth", block: "start" });
-                        const btn = el.querySelector("button");
-                        if (btn) btn.click();
-                      }
-                    }}
-                    className="w-full text-left border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm p-4 md:p-6 flex flex-col md:flex-row md:items-center gap-3 md:gap-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <span
-                        className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 border-[#1a1a1a] flex-shrink-0"
-                        style={{
-                          fontFamily: label,
-                          background: sectionColor,
-                          color: sectionColor === "#F2B84B" ? "#1a1a1a" : "#ffffff",
-                        }}
-                      >
-                        {sectionLabel}
-                      </span>
-                      <h3
-                        className="text-base md:text-lg font-black uppercase truncate"
-                        style={{ fontFamily: headline }}
-                      >
-                        {item.name}
-                      </h3>
-                    </div>
-                    <p className="text-sm leading-relaxed text-[#1a1a1a]/70 md:max-w-[50%]">
-                      {item.summary}
-                    </p>
-                    <span
-                      className="text-xs text-[#1a1a1a]/30 uppercase flex-shrink-0"
-                      style={{ fontFamily: label }}
+        {/* ── TOP SPLIT: TECH STACK + RECENTLY ADDED ── */}
+        {!activeSection && !q && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            {/* LEFT: Tech Stack */}
+            {filteredStack.length > 0 && (
+              <section>
+                <SectionHeader number="00" title="Tech Stack" color="blue" id="stack-top" />
+                <div className="space-y-3">
+                  {filteredStack.map((s) => (
+                    <CollapsibleCard
+                      key={s.tool}
+                      id={slug(s.tool)}
+                      title={s.tool}
+                      accentColor={stackFilter === s.tool ? "#1a1a1a" : "#4d7cf5"}
                     >
-                      {item.dateAdded}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
+                      <div className="space-y-3">
+                        <span
+                          className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#4d7cf5]/10 text-[#4d7cf5] border-2 border-[#4d7cf5]/30"
+                          style={{ fontFamily: label }}
+                        >
+                          {s.category}
+                        </span>
+                        <div>
+                          <p className="text-xs uppercase tracking-wider text-[#4d7cf5] font-bold mb-1" style={{ fontFamily: label }}>
+                            What it is
+                          </p>
+                          <p className="text-sm leading-relaxed">{s.what}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs uppercase tracking-wider text-[#4d7cf5] font-bold mb-1" style={{ fontFamily: label }}>
+                            Why we use it
+                          </p>
+                          <p className="text-sm leading-relaxed">{s.why}</p>
+                        </div>
+                        <div className="pt-3 border-t-2 border-[#1a1a1a]/10">
+                          <p className="text-xs uppercase tracking-wider text-[#1a1a1a]/40 font-bold mb-1" style={{ fontFamily: label }}>
+                            Think of it as
+                          </p>
+                          <p className="text-sm leading-relaxed text-[#1a1a1a]/70 italic">{s.analogy}</p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setStackFilter(stackFilter === s.tool ? null : s.tool);
+                            setActiveSection(null);
+                          }}
+                          className={`mt-2 w-full px-4 py-2.5 text-xs font-bold uppercase tracking-wider border-4 border-[#1a1a1a] transition-all ${
+                            stackFilter === s.tool
+                              ? "bg-[#1a1a1a] text-[#F2B84B]"
+                              : "bg-[#fcf9f8] text-[#1a1a1a] hover:bg-[#4d7cf5] hover:text-white"
+                          }`}
+                          style={{ fontFamily: label }}
+                        >
+                          {stackFilter === s.tool ? `Showing all ${s.tool} entries — tap to clear` : `Show everything about ${s.tool}`}
+                        </button>
+                      </div>
+                    </CollapsibleCard>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* RIGHT: Recently Added */}
+            {data.recentlyAdded.length > 0 && (
+              <section>
+                <div className="flex items-start gap-4 md:gap-6 mb-6 md:mb-8">
+                  <span
+                    className="text-5xl md:text-7xl font-black leading-none select-none"
+                    style={{ fontFamily: headline, color: "#F2B84B" }}
+                  >
+                    //
+                  </span>
+                  <h2
+                    className="text-3xl md:text-5xl font-black uppercase pb-2 flex-1"
+                    style={{ fontFamily: headline, borderBottom: "4px solid #F2B84B" }}
+                  >
+                    Recently Added
+                  </h2>
+                </div>
+                <div className="space-y-3">
+                  {data.recentlyAdded.map((item, i) => {
+                    const sectionMeta = SECTIONS.find(
+                      (s) =>
+                        s.id === item.section ||
+                        (item.section === "safePractices" && s.id === "safety") ||
+                        (item.section === "fileTypes" && s.id === "files")
+                    );
+                    const sectionLabel = sectionMeta?.label ?? item.section.toUpperCase();
+                    const sectionColor = sectionMeta?.color === "gold" ? "#F2B84B" : "#4d7cf5";
+                    const targetId = slug(item.name);
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          const el = document.getElementById(targetId);
+                          if (el) {
+                            el.scrollIntoView({ behavior: "smooth", block: "start" });
+                            const btn = el.querySelector("button");
+                            if (btn) btn.click();
+                          }
+                        }}
+                        className="w-full text-left border-4 border-[#1a1a1a] bg-white brutalist-shadow-sm p-4 flex flex-col gap-3 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span
+                            className="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border-2 border-[#1a1a1a] flex-shrink-0"
+                            style={{
+                              fontFamily: label,
+                              background: sectionColor,
+                              color: sectionColor === "#F2B84B" ? "#1a1a1a" : "#ffffff",
+                            }}
+                          >
+                            {sectionLabel}
+                          </span>
+                          <h3
+                            className="text-sm font-black uppercase truncate"
+                            style={{ fontFamily: headline }}
+                          >
+                            {item.name}
+                          </h3>
+                        </div>
+                        <p className="text-xs leading-relaxed text-[#1a1a1a]/70">
+                          {item.summary}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+          </div>
         )}
 
-        {/* ── 01 TERMS ── */}
-        {showSection("terms") && filteredTerms.length > 0 && (
+        {/* ── 00 TECH STACK (only when filtered to this section or searching) ── */}
+        {(activeSection === "stack" || q) && filteredStack.length > 0 && (
           <section>
-            <SectionHeader number="01" title="Terms" color="blue" id="terms" />
+            <SectionHeader number="00" title="Tech Stack" color="blue" id="stack" />
             <SortBar
               options={[
-                { key: "term", label: "Name" },
+                { key: "tool", label: "Name" },
                 { key: "category", label: "Category" },
               ]}
-              current={termSort}
-              direction={termSortDir}
-              onSort={(k) => toggleSort(termSort, k, termSortDir, setTermSort, setTermSortDir)}
-              filterOptions={termCategories.map((c) => ({ key: c, label: c }))}
-              currentFilter={termFilter}
-              onFilter={(k) => setTermFilter(k)}
+              current={stackSort}
+              direction={stackSortDir}
+              onSort={(k) => toggleSort(stackSort, k, stackSortDir, setStackSort, setStackSortDir)}
             />
             <div className="space-y-3">
-              {filteredTerms.map((t) => (
+              {filteredStack.map((s) => (
                 <CollapsibleCard
-                  key={t.term}
-                  id={slug(t.term)}
-                  title={t.term}
-                  accentColor="#4d7cf5"
+                  key={s.tool}
+                  id={`stack-${slug(s.tool)}`}
+                  title={s.tool}
+                  accentColor={stackFilter === s.tool ? "#1a1a1a" : "#4d7cf5"}
                 >
                   <div className="space-y-3">
                     <span
                       className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#4d7cf5]/10 text-[#4d7cf5] border-2 border-[#4d7cf5]/30"
                       style={{ fontFamily: label }}
                     >
-                      {t.category}
+                      {s.category}
                     </span>
-                    <p className="text-sm md:text-base leading-relaxed">{t.definition}</p>
-                    <div className="pt-3 border-t-2 border-[#1a1a1a]/10">
+                    <div>
                       <p className="text-xs uppercase tracking-wider text-[#4d7cf5] font-bold mb-1" style={{ fontFamily: label }}>
-                        Example
+                        What it is
                       </p>
-                      <p className="text-sm leading-relaxed text-[#1a1a1a]/70">{t.example}</p>
+                      <p className="text-sm md:text-base leading-relaxed">{s.what}</p>
                     </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-wider text-[#4d7cf5] font-bold mb-1" style={{ fontFamily: label }}>
+                        Why we use it
+                      </p>
+                      <p className="text-sm md:text-base leading-relaxed">{s.why}</p>
+                    </div>
+                    <div className="pt-3 border-t-2 border-[#1a1a1a]/10">
+                      <p className="text-xs uppercase tracking-wider text-[#1a1a1a]/40 font-bold mb-1" style={{ fontFamily: label }}>
+                        Think of it as
+                      </p>
+                      <p className="text-sm leading-relaxed text-[#1a1a1a]/70 italic">{s.analogy}</p>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setStackFilter(stackFilter === s.tool ? null : s.tool);
+                        setActiveSection(null);
+                      }}
+                      className={`mt-2 w-full px-4 py-2.5 text-xs font-bold uppercase tracking-wider border-4 border-[#1a1a1a] transition-all ${
+                        stackFilter === s.tool
+                          ? "bg-[#1a1a1a] text-[#F2B84B]"
+                          : "bg-[#fcf9f8] text-[#1a1a1a] hover:bg-[#4d7cf5] hover:text-white"
+                      }`}
+                      style={{ fontFamily: label }}
+                    >
+                      {stackFilter === s.tool ? `Showing all ${s.tool} entries — tap to clear` : `Show everything about ${s.tool}`}
+                    </button>
                   </div>
                 </CollapsibleCard>
               ))}
@@ -857,10 +938,11 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
           </section>
         )}
 
+
         {/* ── 02 COMMANDS ── */}
         {showSection("commands") && filteredCommands.length > 0 && (
           <section>
-            <SectionHeader number="02" title="Commands" color="gold" id="commands" />
+            <SectionHeader number="01" title="Commands" color="gold" id="commands" />
             <Legend>
               <span className="flex items-center gap-2">
                 <SafetyBadge level="safe" />
@@ -977,67 +1059,45 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
           </section>
         )}
 
-        {/* ── 03 YOUR STACK ── */}
-        {showSection("stack") && filteredStack.length > 0 && (
+
+        {/* ── 01 TERMS ── */}
+        {showSection("terms") && filteredTerms.length > 0 && (
           <section>
-            <SectionHeader number="03" title="Your Stack" color="blue" id="stack" />
+            <SectionHeader number="02" title="Terms" color="blue" id="terms" />
             <SortBar
               options={[
-                { key: "tool", label: "Name" },
+                { key: "term", label: "Name" },
                 { key: "category", label: "Category" },
               ]}
-              current={stackSort}
-              direction={stackSortDir}
-              onSort={(k) => toggleSort(stackSort, k, stackSortDir, setStackSort, setStackSortDir)}
+              current={termSort}
+              direction={termSortDir}
+              onSort={(k) => toggleSort(termSort, k, termSortDir, setTermSort, setTermSortDir)}
+              filterOptions={termCategories.map((c) => ({ key: c, label: c }))}
+              currentFilter={termFilter}
+              onFilter={(k) => setTermFilter(k)}
             />
             <div className="space-y-3">
-              {filteredStack.map((s) => (
+              {filteredTerms.map((t) => (
                 <CollapsibleCard
-                  key={s.tool}
-                  id={slug(s.tool)}
-                  title={s.tool}
-                  accentColor={stackFilter === s.tool ? "#1a1a1a" : "#4d7cf5"}
+                  key={t.term}
+                  id={slug(t.term)}
+                  title={t.term}
+                  accentColor="#4d7cf5"
                 >
                   <div className="space-y-3">
                     <span
                       className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#4d7cf5]/10 text-[#4d7cf5] border-2 border-[#4d7cf5]/30"
                       style={{ fontFamily: label }}
                     >
-                      {s.category}
+                      {t.category}
                     </span>
-                    <div>
-                      <p className="text-xs uppercase tracking-wider text-[#4d7cf5] font-bold mb-1" style={{ fontFamily: label }}>
-                        What it is
-                      </p>
-                      <p className="text-sm md:text-base leading-relaxed">{s.what}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-wider text-[#4d7cf5] font-bold mb-1" style={{ fontFamily: label }}>
-                        Why we use it
-                      </p>
-                      <p className="text-sm md:text-base leading-relaxed">{s.why}</p>
-                    </div>
+                    <p className="text-sm md:text-base leading-relaxed">{t.definition}</p>
                     <div className="pt-3 border-t-2 border-[#1a1a1a]/10">
-                      <p className="text-xs uppercase tracking-wider text-[#1a1a1a]/40 font-bold mb-1" style={{ fontFamily: label }}>
-                        Think of it as
+                      <p className="text-xs uppercase tracking-wider text-[#4d7cf5] font-bold mb-1" style={{ fontFamily: label }}>
+                        Example
                       </p>
-                      <p className="text-sm leading-relaxed text-[#1a1a1a]/70 italic">{s.analogy}</p>
+                      <p className="text-sm leading-relaxed text-[#1a1a1a]/70">{t.example}</p>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setStackFilter(stackFilter === s.tool ? null : s.tool);
-                        setActiveSection(null);
-                      }}
-                      className={`mt-2 w-full px-4 py-2.5 text-xs font-bold uppercase tracking-wider border-4 border-[#1a1a1a] transition-all ${
-                        stackFilter === s.tool
-                          ? "bg-[#1a1a1a] text-[#F2B84B]"
-                          : "bg-[#fcf9f8] text-[#1a1a1a] hover:bg-[#4d7cf5] hover:text-white"
-                      }`}
-                      style={{ fontFamily: label }}
-                    >
-                      {stackFilter === s.tool ? `Showing all ${s.tool} entries — tap to clear` : `Show everything about ${s.tool}`}
-                    </button>
                   </div>
                 </CollapsibleCard>
               ))}
@@ -1045,10 +1105,11 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
           </section>
         )}
 
+
         {/* ── 04 SAFE PRACTICES ── */}
         {showSection("safety") && filteredSafePractices.length > 0 && (
           <section>
-            <SectionHeader number="04" title="Safe Practices" color="gold" id="safety" />
+            <SectionHeader number="03" title="Safe Practices" color="gold" id="safety" />
             <div className="space-y-3">
               {filteredSafePractices.map((p) => (
                 <CollapsibleCard
@@ -1095,107 +1156,11 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
           </section>
         )}
 
-        {/* ── 05 FILE TYPES ── */}
-        {showSection("files") && sortedFileTypes.length > 0 && (
-          <section>
-            <SectionHeader number="05" title="File Types" color="blue" id="files" />
-            <Legend>
-              <span className="flex items-center gap-2">
-                <span className="text-xs font-bold text-[#22c55e]">Can edit</span>
-                <span className="text-xs">— safe to modify yourself</span>
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="text-xs font-bold text-[#ef4444]">Don&apos;t edit</span>
-                <span className="text-xs">— leave to developers</span>
-              </span>
-            </Legend>
-            <SortBar
-              options={[
-                { key: "extension", label: "Name" },
-                { key: "can_edit", label: "Editability" },
-              ]}
-              current={fileSort}
-              direction={fileSortDir}
-              onSort={(k) => toggleSort(fileSort, k, fileSortDir, setFileSort, setFileSortDir)}
-            />
-            <div className="space-y-3">
-              {sortedFileTypes.map((f) => (
-                <CollapsibleCard
-                  key={f.extension}
-                  id={slug(f.extension)}
-                  title={`${f.extension}  —  ${f.name}`}
-                  accentColor="#4d7cf5"
-                  rightLabel={
-                    <span
-                      className={`text-xs font-bold uppercase px-2 py-1 border-2 border-[#1a1a1a] ${
-                        f.can_edit === true || (typeof f.can_edit === "string" && f.can_edit.toLowerCase().startsWith("yes"))
-                          ? "bg-[#22c55e]/20 text-[#166534]"
-                          : f.can_edit === false
-                            ? "bg-[#ef4444]/20 text-[#991b1b]"
-                            : "bg-[#F2B84B]/20 text-[#92400e]"
-                      }`}
-                      style={{ fontFamily: label }}
-                    >
-                      {f.can_edit === true ? "Editable" : f.can_edit === false ? "Don't edit" : "Careful"}
-                    </span>
-                  }
-                >
-                  <div className="space-y-2">
-                    <p className="text-sm md:text-base leading-relaxed">{f.what}</p>
-                    <p className="text-sm text-[#1a1a1a]/60">
-                      <span className="font-bold uppercase text-xs" style={{ fontFamily: label }}>Where you see it:</span> {f.you_see_it}
-                    </p>
-                    <p className="text-sm text-[#1a1a1a]/60">
-                      <span className="font-bold uppercase text-xs" style={{ fontFamily: label }}>Can edit:</span>{" "}
-                      {typeof f.can_edit === "boolean" ? (f.can_edit ? "Yes" : "No — leave to developers") : f.can_edit}
-                    </p>
-                    {f.note && <p className="text-sm text-[#ef4444]/80 font-bold mt-1">{f.note}</p>}
-                  </div>
-                </CollapsibleCard>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── 06 SYMBOLS ── */}
-        {showSection("symbols") && filteredSymbols.length > 0 && (
-          <section>
-            <SectionHeader number="06" title="Symbols & Syntax" color="gold" id="symbols" />
-            <div className="space-y-3">
-              {filteredSymbols.map((s) => (
-                <CollapsibleCard
-                  key={s.symbol}
-                  id={slug(s.name)}
-                  title={s.symbol}
-                  accentColor="#F2B84B"
-                  rightLabel={
-                    <span className="text-xs text-[#fcf9f8]/50 uppercase hidden md:inline" style={{ fontFamily: label }}>
-                      {s.name}
-                    </span>
-                  }
-                >
-                  <div className="space-y-2">
-                    <span
-                      className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#F2B84B]/10 text-[#1a1a1a] border-2 border-[#F2B84B]/30 md:hidden"
-                      style={{ fontFamily: label }}
-                    >
-                      {s.name}
-                    </span>
-                    <p className="text-sm md:text-base leading-relaxed">{s.what}</p>
-                    <p className="text-sm text-[#1a1a1a]/70">
-                      <span className="font-bold text-[#F2B84B]">Example:</span> {s.example}
-                    </p>
-                  </div>
-                </CollapsibleCard>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* ── 07 FAQs ── */}
         {showSection("faqs") && filteredFaqs.length > 0 && (
           <section>
-            <SectionHeader number="07" title="FAQs" color="blue" id="faqs" />
+            <SectionHeader number="04" title="FAQs" color="blue" id="faqs" />
             <Legend>
               <span className="flex items-center gap-2">
                 <span className="text-xs">Tap a question to reveal the answer and solution.</span>
@@ -1249,10 +1214,11 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
           </section>
         )}
 
+
         {/* ── 08 TROUBLESHOOTING ── */}
         {showSection("troubleshooting") && filteredTroubleshooting.length > 0 && (
           <section>
-            <SectionHeader number="08" title="Troubleshooting" color="gold" id="troubleshooting" />
+            <SectionHeader number="05" title="Troubleshooting" color="gold" id="troubleshooting" />
             <Legend>
               <span className="flex items-center gap-2">
                 <SeverityDot severity="common" />
@@ -1316,6 +1282,106 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
             </div>
           </section>
         )}
+
+        {/* ── 05 FILE TYPES ── */}
+        {showSection("files") && sortedFileTypes.length > 0 && (
+          <section>
+            <SectionHeader number="06" title="File Types" color="blue" id="files" />
+            <Legend>
+              <span className="flex items-center gap-2">
+                <span className="text-xs font-bold text-[#22c55e]">Can edit</span>
+                <span className="text-xs">— safe to modify yourself</span>
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="text-xs font-bold text-[#ef4444]">Don&apos;t edit</span>
+                <span className="text-xs">— leave to developers</span>
+              </span>
+            </Legend>
+            <SortBar
+              options={[
+                { key: "extension", label: "Name" },
+                { key: "can_edit", label: "Editability" },
+              ]}
+              current={fileSort}
+              direction={fileSortDir}
+              onSort={(k) => toggleSort(fileSort, k, fileSortDir, setFileSort, setFileSortDir)}
+            />
+            <div className="space-y-3">
+              {sortedFileTypes.map((f) => (
+                <CollapsibleCard
+                  key={f.extension}
+                  id={slug(f.extension)}
+                  title={`${f.extension}  —  ${f.name}`}
+                  accentColor="#4d7cf5"
+                  rightLabel={
+                    <span
+                      className={`text-xs font-bold uppercase px-2 py-1 border-2 border-[#1a1a1a] ${
+                        f.can_edit === true || (typeof f.can_edit === "string" && f.can_edit.toLowerCase().startsWith("yes"))
+                          ? "bg-[#22c55e]/20 text-[#166534]"
+                          : f.can_edit === false
+                            ? "bg-[#ef4444]/20 text-[#991b1b]"
+                            : "bg-[#F2B84B]/20 text-[#92400e]"
+                      }`}
+                      style={{ fontFamily: label }}
+                    >
+                      {f.can_edit === true ? "Editable" : f.can_edit === false ? "Don't edit" : "Careful"}
+                    </span>
+                  }
+                >
+                  <div className="space-y-2">
+                    <p className="text-sm md:text-base leading-relaxed">{f.what}</p>
+                    <p className="text-sm text-[#1a1a1a]/60">
+                      <span className="font-bold uppercase text-xs" style={{ fontFamily: label }}>Where you see it:</span> {f.you_see_it}
+                    </p>
+                    <p className="text-sm text-[#1a1a1a]/60">
+                      <span className="font-bold uppercase text-xs" style={{ fontFamily: label }}>Can edit:</span>{" "}
+                      {typeof f.can_edit === "boolean" ? (f.can_edit ? "Yes" : "No — leave to developers") : f.can_edit}
+                    </p>
+                    {f.note && <p className="text-sm text-[#ef4444]/80 font-bold mt-1">{f.note}</p>}
+                  </div>
+                </CollapsibleCard>
+              ))}
+            </div>
+          </section>
+        )}
+
+
+        {/* ── 06 SYMBOLS ── */}
+        {showSection("symbols") && filteredSymbols.length > 0 && (
+          <section>
+            <SectionHeader number="07" title="Symbols & Syntax" color="gold" id="symbols" />
+            <div className="space-y-3">
+              {filteredSymbols.map((s) => (
+                <CollapsibleCard
+                  key={s.symbol}
+                  id={slug(s.name)}
+                  title={s.symbol}
+                  accentColor="#F2B84B"
+                  rightLabel={
+                    <span className="text-xs text-[#fcf9f8]/50 uppercase hidden md:inline" style={{ fontFamily: label }}>
+                      {s.name}
+                    </span>
+                  }
+                >
+                  <div className="space-y-2">
+                    <span
+                      className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider bg-[#F2B84B]/10 text-[#1a1a1a] border-2 border-[#F2B84B]/30 md:hidden"
+                      style={{ fontFamily: label }}
+                    >
+                      {s.name}
+                    </span>
+                    <p className="text-sm md:text-base leading-relaxed">{s.what}</p>
+                    <p className="text-sm text-[#1a1a1a]/70">
+                      <span className="font-bold text-[#F2B84B]">Example:</span> {s.example}
+                    </p>
+                  </div>
+                </CollapsibleCard>
+              ))}
+            </div>
+          </section>
+        )}
+
+
       </main>
 
       {/* Footer */}
@@ -1335,7 +1401,7 @@ export function GlossaryClient({ data }: { data: GlossaryData }) {
             </div>
             <div className="text-xs text-[#fcf9f8]/40 uppercase" style={{ fontFamily: label }}>
               <p>
-                {data.terms.length} terms &bull; {data.commands.length} commands &bull; {data.faqs.length} FAQs
+                {data.stack.length} tools &bull; {data.commands.length} commands &bull; {data.terms.length} terms &bull; {data.faqs.length} FAQs
               </p>
               <p className="mt-1">Last updated: {data.meta.lastUpdated}</p>
             </div>
