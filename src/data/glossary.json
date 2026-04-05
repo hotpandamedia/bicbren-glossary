@@ -1676,7 +1676,7 @@
       "command": "/clear",
       "category": "Claude Code",
       "safety": "caution",
-      "what": "Wipes the entire conversation history and frees up context space. Like starting fresh without opening a new session. Also available as `/reset` or `/new`.",
+      "what": "Wipes the entire conversation history and frees up context space. Like starting fresh without opening a new session.",
       "when": "When the conversation has gotten long and cluttered, or you're switching to a completely different task within the same session.",
       "example": "You've been debugging for 30 minutes and want to start a fresh conversation about a new feature. `/clear` wipes the slate.",
       "platform": "Claude Code",
@@ -1776,7 +1776,7 @@
       "safety": "safe",
       "what": "Opens the settings panel showing current version, active model, account info, and connectivity status. A quick health check.",
       "when": "When you want to verify which model you're on, check your version, or confirm your account is connected.",
-      "example": "`/status` shows: Claude Code v50.33.1, Model: opus, Account: connected, Plan: Max.",
+      "example": "`/status` shows your current version, the active model (e.g., opus), account connection status, and plan tier.",
       "platform": "Claude Code",
       "tags": [
         "read-only",
@@ -1847,8 +1847,8 @@
       "command": "/effort <level>",
       "category": "Claude Code",
       "safety": "safe",
-      "what": "Set how hard Claude thinks before responding. Levels: low (quick, surface-level), medium (balanced), high (thorough), max (deepest reasoning, Opus only).",
-      "when": "Low for simple questions, medium for general work, high for complex debugging, max for architecture decisions.",
+      "what": "Set how hard Claude thinks before responding. Levels: low (quick, surface-level), medium (balanced), high (thorough). Also supports auto to let Claude decide.",
+      "when": "Low for simple questions, medium for general work, high for complex debugging or architecture decisions.",
       "example": "`/effort low` for quick lookups. `/effort high` when debugging a tricky issue that needs careful analysis.",
       "platform": "Claude Code",
       "tags": [
@@ -1937,6 +1937,30 @@
       "platform": "Claude Code",
       "tags": [
         "qol"
+      ]
+    },
+    {
+      "command": "/mcp",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Manage MCP (Model Context Protocol) server connections. MCP servers are add-ons that give Claude extra abilities — like accessing Figma, Telegram, databases, or other services.",
+      "when": "When you need to check which MCP servers are connected, reconnect a dropped server, or authenticate with a new service.",
+      "example": "`/mcp` shows all connected servers: Figma, Telegram, memory, Playwright, etc. If one shows 'disconnected', you can reconnect from here.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/undo",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Undo the last file change Claude made. More targeted than `/rewind` — it reverses just the most recent edit without rolling back the whole conversation.",
+      "when": "When Claude's last edit was wrong but the rest of the conversation is fine. Faster than rewind for single-step mistakes.",
+      "example": "Claude just edited the wrong function. `/undo` reverts that one file change. The conversation stays intact — just tell Claude what you actually wanted.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
       ]
     },
     {
@@ -2087,9 +2111,9 @@
       "command": "Ctrl+T",
       "category": "Claude Code",
       "safety": "safe",
-      "what": "Toggle the task list visibility on screen. Tasks track Claude's progress on multi-step work.",
-      "when": "When you want to see or hide the task progress sidebar during complex operations.",
-      "example": "Claude is working through 8 tasks. Press Ctrl+T to show the task list with checkboxes. Press again to hide it.",
+      "what": "Toggle the task list and tool trace visibility. Shows what tools Claude is calling and the progress of multi-step work.",
+      "when": "When you want to watch Claude's tool calls in real-time or check task progress during complex operations.",
+      "example": "Claude is working through multiple steps. Press Ctrl+T to see a live feed of tool calls and task checkboxes. Press again to hide it.",
       "platform": "Claude Code",
       "tags": [
         "qol"
@@ -2158,7 +2182,7 @@
     {
       "command": "Esc + Esc",
       "category": "Claude Code",
-      "safety": "safe",
+      "safety": "caution",
       "what": "Quick rewind — press Escape twice to open the rewind/checkpoint interface. Same as `/rewind` but faster.",
       "when": "When Claude just did something wrong and you want to immediately undo back to a previous point.",
       "example": "Claude edited the wrong file. Press Escape twice — the rewind interface appears. Select a checkpoint and everything rolls back.",
@@ -2192,12 +2216,12 @@
       ]
     },
     {
-      "command": "Ctrl+B",
+      "command": "Ctrl+B (twice in tmux)",
       "category": "Claude Code",
       "safety": "safe",
-      "what": "Send running tasks or commands to the background. Note: if you're in tmux, press Ctrl+B twice — the first press is tmux's prefix key.",
+      "what": "Send running tasks or commands to the background. Important: in tmux (which you're almost always in), Ctrl+B is tmux's prefix key — so press Ctrl+B twice to send it to Claude Code.",
       "when": "When a long-running task (build, test suite) is blocking the input and you want to keep talking to Claude while it runs.",
-      "example": "A test suite is running and blocking input. Press Ctrl+B (or Ctrl+B Ctrl+B in tmux) — it moves to the background. Keep working while it finishes.",
+      "example": "A test suite is running and blocking input. Press Ctrl+B Ctrl+B (double-tap because tmux) — it moves to the background. Keep working while it finishes.",
       "platform": "Claude Code",
       "tags": [
         "qol"
