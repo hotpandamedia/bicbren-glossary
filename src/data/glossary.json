@@ -12,6 +12,12 @@
   },
   "recentlyAdded": [
     {
+      "section": "terms",
+      "name": "Subagent, Subagent-Driven Development",
+      "summary": "How Claude dispatches fresh AI workers per task from a plan — like a project lead hiring contractors. Includes practical how-to-use steps.",
+      "dateAdded": "2026-04-05"
+    },
+    {
       "section": "commands",
       "name": "Ctrl+B d, n, p, x, arrow keys + 18 more",
       "summary": "Complete tmux keybindings — detach, window/pane navigation, rename, close, copy-paste, command mode, and built-in help.",
@@ -33,12 +39,6 @@
       "section": "commands",
       "name": "/commit, /bb-glossary, /review-pr + 6 more",
       "summary": "Claude Code slash commands — commit, review, simplify, glossary, loops, schedules, and session handoffs.",
-      "dateAdded": "2026-04-04"
-    },
-    {
-      "section": "commands",
-      "name": "tmux new -s, attach, kill-server + 15 more",
-      "summary": "Full tmux command reference — session management, pane splitting, zoom, copy mode, and automation.",
       "dateAdded": "2026-04-04"
     }
   ],
@@ -336,6 +336,18 @@
       "category": "Git",
       "definition": "A way to check out multiple branches of the same repo simultaneously in different folders. Lets you work on two features at once without switching back and forth.",
       "example": "While working on the HPM roadmap page, we can use a worktree to also fix a bug on the KOT site without stashing or switching branches."
+    },
+    {
+      "term": "Subagent",
+      "category": "AI",
+      "definition": "A fresh AI worker that Claude dispatches to handle one specific task. Think of it like a project lead hiring a contractor — the contractor gets the blueprint for their piece, does the work, reports back, and the lead reviews before sending the next one.",
+      "example": "When building the 10 Pretext experiments for BicBren, Claude dispatches a subagent for each experiment. Subagent 1 builds the theme constants, reports back, then Subagent 2 builds the canvas helpers. Once shared infrastructure is done, multiple subagents can work on different experiments at the same time — like 3 contractors building 3 rooms in parallel instead of one person doing them all in sequence."
+    },
+    {
+      "term": "Subagent-Driven Development",
+      "category": "AI",
+      "definition": "A workflow where you write a plan first, then Claude hands each task to a fresh subagent instead of doing everything in one long session. Each subagent starts clean with only the plan and its assigned task — no accumulated memory from earlier work. This avoids Claude losing context on task 8 because it's still remembering tasks 1-7.",
+      "example": "How to use it: (1) Write a plan with Claude — it saves to a docs/ file with numbered tasks. (2) Tell Claude 'implement this plan using subagent-driven development.' (3) Claude sets up a git worktree (isolated branch), then dispatches a fresh subagent per task. (4) Each subagent implements, tests, commits, and self-reviews its task, then reports back as DONE, BLOCKED, or NEEDS_CONTEXT. (5) Claude reviews the work, optionally dispatches a reviewer subagent to double-check, then moves to the next task. (6) When all tasks are done, Claude merges the branch. For HPM, this means a 12-task leads system build gets clean, reviewed code per task instead of one giant messy session."
     },
     {
       "term": "tmux (Terminal Multiplexer)",
