@@ -3,7 +3,7 @@
     "title": "BicBren Tech Glossary",
     "tagline": "The bridge between Hot Panda Media and KOT Projects",
     "description": "A plain-language tech reference for non-programmers who work closely with developers and AI tools.",
-    "lastUpdated": "2026-04-04",
+    "lastUpdated": "2026-04-05",
     "safetyLegend": {
       "safe": "Can't break anything. Just reading or viewing information.",
       "caution": "Makes changes, but they can be undone. Still be mindful.",
@@ -11,6 +11,12 @@
     }
   },
   "recentlyAdded": [
+    {
+      "section": "commands",
+      "name": "Ctrl+B d, n, p, x, arrow keys + 18 more",
+      "summary": "Complete tmux keybindings — detach, window/pane navigation, rename, close, copy-paste, command mode, and built-in help.",
+      "dateAdded": "2026-04-05"
+    },
     {
       "section": "terms",
       "name": "Shell, Command, Terminal + 8 more",
@@ -27,12 +33,6 @@
       "section": "commands",
       "name": "/commit, /bb-glossary, /review-pr + 6 more",
       "summary": "Claude Code slash commands — commit, review, simplify, glossary, loops, schedules, and session handoffs.",
-      "dateAdded": "2026-04-04"
-    },
-    {
-      "section": "terms",
-      "name": "tmux (Terminal Multiplexer)",
-      "summary": "Background service that keeps terminal sessions alive across disconnects — the foundation of persistent dev workflows.",
       "dateAdded": "2026-04-04"
     },
     {
@@ -1015,6 +1015,288 @@
       "platform": "Terminal",
       "tags": [
         "automation",
+        "read-only"
+      ]
+    },
+    {
+      "command": "Ctrl+B, d",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Detach from the current tmux session. The session keeps running in the background — you just unplug your view. The counterpart to `tmux attach`.",
+      "when": "When you're done working but want the session to stay alive. Also happens automatically if your SSH connection drops.",
+      "example": "Press Ctrl+B then d — you're back at your normal terminal prompt. The tmux session with Claude Code, dev servers, and logs is still running. Come back anytime with `tmux attach`.",
+      "platform": "tmux",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+B, $",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Rename the current tmux session. A quick shortcut instead of typing `tmux rename-session`. A text prompt appears at the bottom of the screen.",
+      "when": "When your session name no longer matches what you're doing — faster than the full command.",
+      "example": "You're in a session called `dev` but now you're working on KOT. Press Ctrl+B then $ — type `kot-dev` and hit Enter. Done.",
+      "platform": "tmux",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+B, (",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Switch to the previous tmux session (by index order). A fast way to hop between sessions without opening the session tree.",
+      "when": "When you're jumping back and forth between two sessions — like `hpm-dev` and `kot-dev`.",
+      "example": "You're in `kot-dev` and need to check something in `hpm-dev`. Press Ctrl+B then ( — you jump to the previous session instantly.",
+      "platform": "tmux",
+      "tags": [
+        "navigation"
+      ]
+    },
+    {
+      "command": "Ctrl+B, )",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Switch to the next tmux session (by index order). The forward counterpart to `Ctrl+B, (`.",
+      "when": "When cycling through your sessions in order. Combine with ( to go back and forth.",
+      "example": "You're in `hpm-dev` and want to check `kot-dev`. Press Ctrl+B then ) — you jump forward to the next session.",
+      "platform": "tmux",
+      "tags": [
+        "navigation"
+      ]
+    },
+    {
+      "command": "tmux kill-session -t <name>",
+      "category": "tmux",
+      "safety": "caution",
+      "what": "Kills a specific tmux session by name. Everything running inside it stops — processes, dev servers, Claude Code instances. More surgical than `kill-server`.",
+      "when": "When you want to clean up one stale session without touching the others.",
+      "example": "`tmux kill-session -t old-test` removes just that one session. Your `hpm-dev` and `kot-dev` sessions are unaffected.",
+      "platform": "Terminal",
+      "tags": [
+        "cleanup"
+      ]
+    },
+    {
+      "command": "Ctrl+B, ,",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Rename the current window (tab). A text prompt appears at the bottom — type the new name and hit Enter. Helps you tell windows apart.",
+      "when": "After creating a new window, label it so you know what's running there — 'claude', 'server', 'logs', etc.",
+      "example": "You created window 2 for the dev server. Press Ctrl+B then , — type `dev-server` and hit Enter. Now the tab bar shows the name instead of just a number.",
+      "platform": "tmux",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+B, &",
+      "category": "tmux",
+      "safety": "caution",
+      "what": "Close the current window and all panes inside it. tmux asks for confirmation (y/n) before killing it, so you won't accidentally lose work.",
+      "when": "When you're done with a window and want to clean up — like closing a browser tab you no longer need.",
+      "example": "Your `logs` window is no longer useful. Press Ctrl+B then & — tmux asks `kill-window? (y/n)`. Press y and it's gone. Other windows are untouched.",
+      "platform": "tmux",
+      "tags": [
+        "cleanup"
+      ]
+    },
+    {
+      "command": "Ctrl+B, n",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Switch to the next window (tab) in the current session. Wraps around — after the last window, it goes back to window 0.",
+      "when": "Cycling through windows quickly. Faster than pressing Ctrl+B then a number if you're just stepping through.",
+      "example": "You're in window 0 (Claude Code) and want to check window 1 (dev server). Press Ctrl+B then n — you're on window 1.",
+      "platform": "tmux",
+      "tags": [
+        "navigation",
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+B, p",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Switch to the previous window (tab) in the current session. The backward counterpart to `Ctrl+B, n`.",
+      "when": "When you just moved forward one window too many, or you're bouncing between two adjacent windows.",
+      "example": "You're in window 2 (logs) and want to go back to window 1 (dev server). Press Ctrl+B then p — you're back.",
+      "platform": "tmux",
+      "tags": [
+        "navigation"
+      ]
+    },
+    {
+      "command": "Ctrl+B, 0-9",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Jump directly to a specific window by its number. The fastest way to switch windows when you know which one you want.",
+      "when": "When you have a mental map of your windows — 0 is Claude, 1 is dev server, 2 is logs — and want to jump directly.",
+      "example": "Press Ctrl+B then 2 — you jump straight to window 2. No cycling through windows, no menus. Just direct access.",
+      "platform": "tmux",
+      "tags": [
+        "navigation",
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+B, l",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Toggle back to the last active window — the one you were just in. Like Alt+Tab for tmux windows.",
+      "when": "When you keep jumping between two windows and want a quick toggle instead of remembering numbers.",
+      "example": "You're in window 0 (Claude Code), check window 2 (logs), then press Ctrl+B then l — you're back in window 0. Press again — window 2.",
+      "platform": "tmux",
+      "tags": [
+        "navigation",
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+B, ;",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Toggle back to the last active pane — the one you were just in. Like `Ctrl+B, l` but for panes within a window.",
+      "when": "When you're bouncing between two panes (e.g., code on left, terminal on right) and want a quick toggle.",
+      "example": "You're in the left pane editing, switch to the right pane to run a command, then Ctrl+B then ; — back to the left pane instantly.",
+      "platform": "tmux",
+      "tags": [
+        "navigation"
+      ]
+    },
+    {
+      "command": "Ctrl+B, arrow keys",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Move focus to the pane in the direction of the arrow key (up, down, left, right). The most intuitive way to navigate between panes.",
+      "when": "When you have multiple panes visible and want to switch to the one beside, above, or below the current one.",
+      "example": "You have a left pane and a right pane. Press Ctrl+B then → to move to the right pane. Ctrl+B then ← to go back.",
+      "platform": "tmux",
+      "tags": [
+        "navigation",
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+B, o",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Cycle to the next pane in the current window. Goes through panes in order — useful when you have 3+ panes and just want to step through them.",
+      "when": "When you have several panes and want to cycle through them one by one without thinking about direction.",
+      "example": "You have 4 panes in a grid. Press Ctrl+B then o repeatedly — focus moves through each pane in order, then wraps back to the first.",
+      "platform": "tmux",
+      "tags": [
+        "navigation"
+      ]
+    },
+    {
+      "command": "Ctrl+B, q",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Flash large numbers on each pane for a couple seconds. Press a number while they're showing to jump to that pane. A visual pane selector.",
+      "when": "When you have many panes and want to jump to a specific one by number — especially useful with 4+ panes.",
+      "example": "Press Ctrl+B then q — each pane flashes a big number (0, 1, 2, 3). Quickly press 2 while the numbers are visible — you jump to pane 2.",
+      "platform": "tmux",
+      "tags": [
+        "navigation",
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+B, !",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Promote the current pane into its own full window. The pane 'graduates' from being a split into being a standalone tab.",
+      "when": "When a pane has grown too important to share space — like Claude Code output that needs full-screen width.",
+      "example": "You split a window into 3 panes, but one of them needs more room. Focus that pane, press Ctrl+B then ! — it becomes its own window. The other panes stay in the original window.",
+      "platform": "tmux",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+B, x",
+      "category": "tmux",
+      "safety": "caution",
+      "what": "Close the current pane. tmux asks for confirmation (y/n) before killing it. If it's the last pane in a window, the window closes too.",
+      "when": "When you're done with a split pane and want to reclaim the screen space for remaining panes.",
+      "example": "You had a 3-pane setup but the bottom pane is idle. Focus it, press Ctrl+B then x — confirm with y. The remaining panes expand to fill the space.",
+      "platform": "tmux",
+      "tags": [
+        "cleanup"
+      ]
+    },
+    {
+      "command": "Ctrl+B, {",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Swap the current pane with the previous one — effectively moves your pane one position to the left/up in the layout.",
+      "when": "When you want to rearrange pane positions without recreating the layout. Like reordering items in a list.",
+      "example": "You have [logs | claude | server]. Focus the claude pane, press Ctrl+B then { — now it's [claude | logs | server]. The pane moved left.",
+      "platform": "tmux",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+B, }",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Swap the current pane with the next one — moves your pane one position to the right/down in the layout. The counterpart to `Ctrl+B, {`.",
+      "when": "When you want to push a pane to the other side without rebuilding the split.",
+      "example": "You have [claude | logs | server]. Focus the claude pane, press Ctrl+B then } — now it's [logs | claude | server]. The pane moved right.",
+      "platform": "tmux",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+B, ]",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Paste the contents of the tmux copy buffer into the current pane. This is what you use after copying text in Copy Mode (`Ctrl+B, [`).",
+      "when": "After entering copy mode, selecting text, and pressing Enter to copy — use this to paste it wherever your cursor is.",
+      "example": "You copied an error message from the logs pane using copy mode. Switch to the Claude Code pane, press Ctrl+B then ] — the error text is pasted in.",
+      "platform": "tmux",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+B, PgUp",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Enter Copy Mode and immediately scroll up one page. A shortcut that combines entering copy mode and scrolling in one keystroke.",
+      "when": "When something just scrolled past and you want to quickly scroll back. Slightly faster than Ctrl+B, [ then PgUp separately.",
+      "example": "A long build log just flew by. Press Ctrl+B then PgUp — you're in copy mode, already scrolled up one page. Keep pressing PgUp to go further. Press q to exit.",
+      "platform": "tmux",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+B, :",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Open the tmux command prompt at the bottom of the screen. You can type any tmux command here — like a command line within tmux itself.",
+      "when": "When you need to run a tmux command that doesn't have a keyboard shortcut, or when you want to change settings on the fly.",
+      "example": "Press Ctrl+B then : — a prompt appears at the bottom. Type `set mouse on` and press Enter — mouse support is now enabled for scrolling and clicking panes.",
+      "platform": "tmux",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+B, ?",
+      "category": "tmux",
+      "safety": "safe",
+      "what": "Show a list of all tmux keyboard shortcuts. A built-in cheat sheet right inside tmux. Press q to close it.",
+      "when": "When you forget a shortcut and need a quick reference without leaving tmux or opening a browser.",
+      "example": "Press Ctrl+B then ? — a scrollable list of every keybinding appears. Find what you need, then press q to go back to your work.",
+      "platform": "tmux",
+      "tags": [
+        "essential",
         "read-only"
       ]
     },
