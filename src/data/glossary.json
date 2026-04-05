@@ -12,9 +12,9 @@
   },
   "recentlyAdded": [
     {
-      "section": "terms",
-      "name": "Subagent, Subagent-Driven Development",
-      "summary": "How Claude dispatches fresh AI workers per task from a plan — like a project lead hiring contractors. Includes practical how-to-use steps.",
+      "section": "commands",
+      "name": "Claude Code complete cheatsheet — 55 entries",
+      "summary": "CLI flags, 30 built-in slash commands, keyboard shortcuts, special prefixes (!, @, #), and text editing shortcuts.",
       "dateAdded": "2026-04-05"
     },
     {
@@ -25,9 +25,9 @@
     },
     {
       "section": "terms",
-      "name": "Shell, Command, Terminal + 8 more",
-      "summary": "Core terminal concepts — what a shell is, what commands are, hooks, skills, tool permissions, and how it all connects.",
-      "dateAdded": "2026-04-04"
+      "name": "Subagent, Subagent-Driven Development",
+      "summary": "How Claude dispatches fresh AI workers per task from a plan — like a project lead hiring contractors.",
+      "dateAdded": "2026-04-05"
     },
     {
       "section": "commands",
@@ -1597,6 +1597,706 @@
       "tags": [
         "qol",
         "custom"
+      ]
+    },
+    {
+      "command": "claude -p \"query\"",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Print mode — sends a question to Claude and gets the answer back without starting an interactive session. Great for quick lookups or piping output into other tools.",
+      "when": "When you want a one-shot answer without opening a full conversation. Also used for scripting and automation.",
+      "example": "`claude -p 'what does this project do?'` prints an answer and exits. Or `cat error.log | claude -p 'explain this error'` pipes a file in for analysis.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "claude --model <model>",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Start a session using a specific AI model. You can use short names like `sonnet`, `opus`, or `haiku` instead of the full model IDs.",
+      "when": "When you want a faster/cheaper model (sonnet, haiku) for simple tasks, or the most capable model (opus) for complex work.",
+      "example": "`claude --model sonnet` starts a session with the faster Sonnet model. Good for quick edits. Switch back with `/model opus` inside the session.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "claude -w <name>",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Start Claude Code in an isolated git worktree — a separate copy of your code where changes don't affect the main branch. Think of it as a safe sandbox for experiments.",
+      "when": "When you want to try something risky without messing up your working branch. The worktree lives in `.claude/worktrees/<name>`.",
+      "example": "`claude -w test-new-layout` creates an isolated copy. If the experiment works, merge it back. If not, delete it — your main code was never touched.",
+      "platform": "Terminal",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "claude update",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Updates Claude Code to the latest version. Always good to stay current — new features, bug fixes, and model improvements ship regularly.",
+      "when": "When Claude tells you an update is available, or when something isn't working as expected.",
+      "example": "`claude update` downloads and installs the latest version. Check the current version with `claude --version`.",
+      "platform": "Terminal",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "claude --verbose",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Start a session with verbose logging — shows detailed tool usage, API calls, and behind-the-scenes activity. Useful when you want to see exactly what Claude is doing.",
+      "when": "When debugging unexpected behavior or when you're curious about what's happening under the hood.",
+      "example": "`claude --verbose` shows every tool call, file read, and API request as they happen. Toggle it mid-session with Ctrl+O.",
+      "platform": "Terminal",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/help",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Shows all available commands and basic usage info. Your starting point when you forget what's available.",
+      "when": "Anytime you're unsure what commands exist or how to do something.",
+      "example": "Type `/help` — a list of all built-in commands appears with brief descriptions.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential",
+        "read-only"
+      ]
+    },
+    {
+      "command": "/clear",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Wipes the entire conversation history and frees up context space. Like starting fresh without opening a new session. Also available as `/reset` or `/new`.",
+      "when": "When the conversation has gotten long and cluttered, or you're switching to a completely different task within the same session.",
+      "example": "You've been debugging for 30 minutes and want to start a fresh conversation about a new feature. `/clear` wipes the slate.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/compact",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Compresses the conversation to save context space without losing important information. You can add focus instructions to guide what gets kept.",
+      "when": "When Claude says context is getting full, or after a long conversation where you want to keep going without losing key decisions.",
+      "example": "`/compact` shrinks the conversation. `/compact keep auth-related decisions` tells Claude to prioritize keeping those details.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/context",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Shows a visual grid of how much context (memory) Claude is using. Each block represents a chunk of the conversation. Includes suggestions for freeing space.",
+      "when": "When you want to see how close you are to hitting context limits, or after a long session to check if you should compact.",
+      "example": "`/context` shows a colored grid — green blocks are available, filled blocks are used. Might suggest `/compact` if you're running low.",
+      "platform": "Claude Code",
+      "tags": [
+        "read-only",
+        "qol"
+      ]
+    },
+    {
+      "command": "/rewind",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Undo the conversation and code changes back to a previous point. Like time travel — picks a checkpoint and rolls everything back. Also available as `/checkpoint`.",
+      "when": "When Claude went down the wrong path and you want to undo everything back to before it started. Much cleaner than trying to manually undo changes.",
+      "example": "`/rewind` shows recent checkpoints. Select one and Claude undoes all code changes made after that point and removes those messages from the conversation.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/exit",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Exits the Claude Code session. Same as pressing Ctrl+D. Your session is saved and can be resumed later with `claude -c` or `claude -r`.",
+      "when": "When you're done working. Also available as `/quit`.",
+      "example": "Type `/exit` — the session closes. Come back later with `claude -c` to pick up where you left off.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/cost",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Shows how many tokens (units of text) this conversation has used. Tokens are how AI usage is measured — more tokens = more compute.",
+      "when": "When you're curious about how much a session is costing, or after a big task to understand the usage.",
+      "example": "`/cost` might show: input tokens: 45,000, output tokens: 12,000. Bigger numbers mean more complex conversations.",
+      "platform": "Claude Code",
+      "tags": [
+        "read-only"
+      ]
+    },
+    {
+      "command": "/usage",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Shows your plan limits and current rate limit status. Tells you how much capacity you have left before hitting throttling.",
+      "when": "When Claude feels slow or you're getting rate-limited. Check how much of your quota you've used.",
+      "example": "`/usage` shows your plan tier and how much of your hourly/daily limit is consumed.",
+      "platform": "Claude Code",
+      "tags": [
+        "read-only"
+      ]
+    },
+    {
+      "command": "/stats",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Visualizes your Claude Code usage patterns — daily activity, session history, streaks, and which models you use most. A personal dashboard.",
+      "when": "When you want to see your usage trends or check your streak of daily usage.",
+      "example": "`/stats` shows a chart of your activity over time, how many sessions you've run, and your most-used models.",
+      "platform": "Claude Code",
+      "tags": [
+        "read-only",
+        "qol"
+      ]
+    },
+    {
+      "command": "/status",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Opens the settings panel showing current version, active model, account info, and connectivity status. A quick health check.",
+      "when": "When you want to verify which model you're on, check your version, or confirm your account is connected.",
+      "example": "`/status` shows: Claude Code v50.33.1, Model: opus, Account: connected, Plan: Max.",
+      "platform": "Claude Code",
+      "tags": [
+        "read-only",
+        "essential"
+      ]
+    },
+    {
+      "command": "/doctor",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Runs a diagnostic check on your Claude Code installation — verifies settings, permissions, MCP servers, and connectivity. Like a health scan.",
+      "when": "When something isn't working right — commands failing, tools not loading, or Claude behaving unexpectedly.",
+      "example": "`/doctor` checks everything and reports: 'MCP servers: 5 connected, Permissions: OK, Settings: valid'. Highlights any problems found.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/skills",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Lists all available skills (custom slash commands) installed in your Claude Code. Skills are like add-ons that give Claude specialized abilities.",
+      "when": "When you forget what custom skills are available, or want to see what's installed.",
+      "example": "`/skills` shows: bb-glossary, session-handoff, build-log, design-review, and all other installed skills with descriptions.",
+      "platform": "Claude Code",
+      "tags": [
+        "read-only"
+      ]
+    },
+    {
+      "command": "/config",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Opens the settings interface where you can change theme, model, output style, editor mode (vim), and other preferences. Also available as `/settings`.",
+      "when": "When you want to customize how Claude Code looks or behaves — dark mode, model selection, etc.",
+      "example": "`/config` opens the settings panel. Navigate with arrow keys, change options, press Escape to close.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/model",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Switch the AI model mid-conversation. Use arrow keys to adjust effort level. Short names work: `opus`, `sonnet`, `haiku`.",
+      "when": "When you want to switch to a faster model for simple tasks, or a more capable model for complex work, without leaving the session.",
+      "example": "`/model sonnet` switches to the faster Sonnet model. `/model opus` switches to the most capable Opus model. `/model` with no argument opens a picker.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/fast",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Toggle fast mode on or off. Fast mode uses the same model but optimizes for speed — shorter, more direct responses with faster output.",
+      "when": "When you want quicker responses and don't need detailed explanations. Good for rapid iteration.",
+      "example": "`/fast on` enables fast mode — responses come quicker and more concisely. `/fast off` returns to normal mode.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/effort <level>",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Set how hard Claude thinks before responding. Levels: low (quick, surface-level), medium (balanced), high (thorough), max (deepest reasoning, Opus only).",
+      "when": "Low for simple questions, medium for general work, high for complex debugging, max for architecture decisions.",
+      "example": "`/effort low` for quick lookups. `/effort high` when debugging a tricky issue that needs careful analysis.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/theme",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Change the visual theme of Claude Code — light/dark mode, colorblind-friendly options, and ANSI color schemes.",
+      "when": "When you want to switch between light and dark mode, or need a colorblind-accessible theme.",
+      "example": "`/theme` opens a picker. Select dark mode for late-night work, or a high-contrast theme for better readability.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/permissions",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Manage which tools Claude can use automatically (allow), which need your approval (ask), and which are blocked (deny). Controls Claude's level of autonomy.",
+      "when": "When you want to give Claude more freedom (auto-approve file edits) or restrict it (always ask before running commands). Also available as `/allowed-tools`.",
+      "example": "`/permissions` shows the current rules. You can allow `Read` (never asks), set `Bash` to ask (prompts every time), or deny specific tools entirely.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/memory",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "View and edit CLAUDE.md memory files — the persistent instructions that Claude reads at the start of every session. Also manages auto-memory entries.",
+      "when": "When you want to add project rules, update instructions, or check what Claude 'remembers' between sessions.",
+      "example": "`/memory` opens the memory editor. Add rules like 'always use TypeScript' or 'never push to main directly' — Claude follows them in every future session.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/init",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Initialize a project with a CLAUDE.md file — the guide that tells Claude about your project's structure, rules, and conventions.",
+      "when": "When setting up Claude Code for a new project for the first time. Creates the foundation for project-specific instructions.",
+      "example": "`/init` in a new project folder creates a CLAUDE.md with basic project info. Claude uses this in every future session to understand the project.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/diff",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Opens an interactive diff viewer showing all uncommitted code changes. Also shows per-turn diffs — what changed in each conversation step.",
+      "when": "Before committing, to review exactly what Claude changed. Or mid-session, to see the accumulating changes.",
+      "example": "`/diff` shows a side-by-side view: red lines were removed, green lines were added. Scroll through to review before committing.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/copy",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Copies Claude's last response to your clipboard. Add a number to copy an older response. If the response has code blocks, shows a picker to choose which one.",
+      "when": "When you want to paste Claude's response or a code snippet somewhere else — a document, Slack, or another terminal.",
+      "example": "`/copy` copies the most recent response. `/copy 2` copies the second-to-last. If there are code blocks, it asks which one you want.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/export",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Export the entire conversation as plain text — to a file or your clipboard. Creates a readable log of everything discussed and decided.",
+      "when": "When you want to save a session record, share a conversation with a teammate, or archive important decisions.",
+      "example": "`/export` copies to clipboard. `/export session-log.txt` saves to a file. Great for sharing context with Ngọc or archiving project discussions.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/plan",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Enter plan mode — Claude discusses and designs before writing any code. It can read and search files but won't edit anything until you approve the plan.",
+      "when": "Before starting a big feature or refactor. Plan first, execute second. Prevents Claude from jumping into code prematurely.",
+      "example": "`/plan fix the auth bug` — Claude investigates, proposes a plan with specific files and changes, and waits for your approval before touching any code.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/tasks",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Shows all background tasks and processes Claude is running. Also available as `/bashes`. Lets you monitor and manage parallel work.",
+      "when": "When Claude has kicked off background work (builds, tests, searches) and you want to check progress or stop something.",
+      "example": "`/tasks` shows: Task 1: 'Running npm test' (in progress), Task 2: 'Searching codebase' (completed). You can stop any running task.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/login",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Sign in to your Anthropic account. Opens a browser window for authentication.",
+      "when": "When you first install Claude Code, or when your session has expired and you need to re-authenticate.",
+      "example": "`/login` opens a browser window. Sign in with your credentials, and Claude Code connects to your account.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/logout",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Sign out from your Anthropic account. You'll need to `/login` again to use Claude Code.",
+      "when": "When switching accounts, or for security when stepping away from a shared machine.",
+      "example": "`/logout` disconnects your account. Claude Code stops working until you `/login` again.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "/feedback",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Submit feedback or report a bug to the Claude Code team. Also available as `/bug`. Opens a form where you describe the issue.",
+      "when": "When you encounter a bug, unexpected behavior, or have a suggestion for improvement.",
+      "example": "`/feedback` opens the feedback form. Describe what happened and it gets sent to the Anthropic team.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/desktop",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Continue the current terminal session in the Claude Code Desktop app. Transfers your full conversation context. Also available as `/app`.",
+      "when": "When you started in the terminal but want the nicer desktop UI — with image previews, better scrolling, and a dedicated window.",
+      "example": "`/desktop` opens the Desktop app and loads your current session. You can keep working from the richer interface.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "/voice",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Toggle push-to-talk voice dictation. Hold Space to speak, release to send. Claude transcribes your speech into the input box.",
+      "when": "When typing is inconvenient — brainstorming ideas, dictating long descriptions, or working away from the keyboard.",
+      "example": "`/voice` enables voice mode. Hold Space, say 'add a login page with Google OAuth', release — your words appear as typed text.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+C",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Cancel whatever Claude is currently doing — stop a generation, interrupt a command, or clear your current input. The universal 'stop' button.",
+      "when": "When Claude is going down the wrong path, a command is taking too long, or you changed your mind mid-generation.",
+      "example": "Claude starts editing the wrong file. Press Ctrl+C — it stops immediately. You can redirect it with new instructions.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+D",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Exit Claude Code. Same as typing `/exit`. Sends an EOF (end of file) signal that closes the session gracefully.",
+      "when": "When you're done working and want to close the session. Faster than typing `/exit`.",
+      "example": "Press Ctrl+D — the session closes. Your conversation is saved and can be resumed with `claude -c`.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+L",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Redraws the screen without clearing your conversation history. Fixes visual glitches or garbled output without losing anything.",
+      "when": "When the terminal display looks corrupted — overlapping text, broken borders, or visual artifacts after resizing.",
+      "example": "After resizing your terminal or tmux pane, the display looks wonky. Ctrl+L redraws everything cleanly.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+O",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Toggle verbose output — shows detailed tool calls, MCP interactions, and behind-the-scenes activity. Like turning on subtitles for what Claude is doing.",
+      "when": "When you want to watch Claude work in real-time — seeing every file it reads, every search it runs, every tool it calls.",
+      "example": "Press Ctrl+O — now you see: 'Reading src/app.ts...', 'Searching for auth handler...', 'Editing line 42...'. Press again to turn it off.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+R",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Opens interactive reverse search through your command history. Type to filter, press Ctrl+R again for older matches, Tab to accept, Ctrl+C to cancel.",
+      "when": "When you remember part of a previous prompt and want to find and reuse it without retyping.",
+      "example": "Press Ctrl+R, type 'glossary' — it finds your last prompt containing 'glossary'. Press Enter to use it, or Ctrl+R again to find an older one.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+T",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Toggle the task list visibility on screen. Tasks track Claude's progress on multi-step work.",
+      "when": "When you want to see or hide the task progress sidebar during complex operations.",
+      "example": "Claude is working through 8 tasks. Press Ctrl+T to show the task list with checkboxes. Press again to hide it.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Shift+Tab",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Cycle through permission modes: default → acceptEdits → plan → auto. Controls how much freedom Claude has. Also available as Alt+M.",
+      "when": "When you want to quickly switch between giving Claude more autonomy (auto approves everything) or less (plan mode, read-only).",
+      "example": "Press Shift+Tab — the mode indicator at the bottom changes. Keep pressing to cycle: default (asks per tool) → acceptEdits (auto-approves file edits) → plan (read-only).",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Option+P (Mac) / Alt+P",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Switch the AI model without leaving your current prompt. A quick toggle between models mid-thought.",
+      "when": "When you're about to ask something and realize you want a different model — faster or more capable.",
+      "example": "You're typing a complex question and want Opus instead of Sonnet. Press Option+P, select opus, continue typing.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Option+T (Mac) / Alt+T",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Toggle extended thinking mode. When enabled, Claude shows its reasoning process before answering — useful for understanding complex decisions.",
+      "when": "When you want to see how Claude is thinking through a problem, or when debugging why it made a particular choice.",
+      "example": "Press Option+T to enable. Ask a complex question — Claude first shows its reasoning steps, then gives the final answer.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Option+O (Mac) / Alt+O",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Toggle fast mode on/off with a keyboard shortcut. Same as `/fast` but without typing a command.",
+      "when": "Quick toggle when you want snappier responses for a few prompts, then switch back to normal mode.",
+      "example": "Press Option+O — fast mode activates (shown in the status bar). Press again to return to normal mode.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+G",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Opens your current prompt in your default text editor (VS Code, vim, nano). Write a long, detailed prompt there with full editor features, then save and close to send it.",
+      "when": "When you need to write a complex, multi-paragraph prompt and the single-line input box feels too cramped. Also available as Ctrl+X Ctrl+E.",
+      "example": "Press Ctrl+G — your editor opens with your current text. Write a detailed feature spec, save, close — the text appears in Claude's input ready to send.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Esc + Esc",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Quick rewind — press Escape twice to open the rewind/checkpoint interface. Same as `/rewind` but faster.",
+      "when": "When Claude just did something wrong and you want to immediately undo back to a previous point.",
+      "example": "Claude edited the wrong file. Press Escape twice — the rewind interface appears. Select a checkpoint and everything rolls back.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Up / Down arrows",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Navigate through your prompt history — previous messages you've sent in this session. Up goes to older prompts, Down goes to newer ones.",
+      "when": "When you want to reuse or modify a previous prompt. Faster than retyping.",
+      "example": "Press Up — your last prompt appears. Press Up again for the one before that. Edit if needed, then press Enter to send.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+V (or Cmd+V)",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Paste an image from your clipboard directly into Claude Code. Claude can see and analyze images — screenshots, diagrams, error messages, designs.",
+      "when": "When you want Claude to look at something visual — a screenshot of a bug, a design mockup, or an error dialog.",
+      "example": "Take a screenshot (Cmd+Shift+4 on Mac), then Ctrl+V in Claude Code — the image appears and Claude can describe and analyze it.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "Ctrl+B",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Send running tasks or commands to the background. Note: if you're in tmux, press Ctrl+B twice — the first press is tmux's prefix key.",
+      "when": "When a long-running task (build, test suite) is blocking the input and you want to keep talking to Claude while it runs.",
+      "example": "A test suite is running and blocking input. Press Ctrl+B (or Ctrl+B Ctrl+B in tmux) — it moves to the background. Keep working while it finishes.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "! <command>",
+      "category": "Claude Code",
+      "safety": "caution",
+      "what": "Bash mode — run a shell command directly from Claude's input and add its output to the conversation. The output becomes part of the context Claude can reference.",
+      "when": "When you want to run a terminal command and have Claude see the results — checking git status, running tests, or viewing logs.",
+      "example": "`! git status` runs git status and shows the output to both you and Claude. `! npm test` runs tests and Claude can help interpret the results.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "@ (file mention)",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Trigger file path autocomplete. Type @ and start typing a filename — Claude Code suggests matching files from your project. Select one to reference it.",
+      "when": "When you want to point Claude to a specific file without typing the full path. Much faster and less error-prone.",
+      "example": "Type `look at @glo` — autocomplete suggests `src/data/glossary.json`. Select it and Claude reads that file.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
+      ]
+    },
+    {
+      "command": "# (comment)",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Add a comment that appears in the transcript but is NOT sent to Claude. Like a sticky note for yourself when reviewing the conversation later.",
+      "when": "When you want to annotate the conversation for your own reference without affecting Claude's behavior.",
+      "example": "`# this approach was suggested by Dong in the Lark chat` — visible in the transcript but Claude never sees it.",
+      "platform": "Claude Code",
+      "tags": [
+        "qol"
+      ]
+    },
+    {
+      "command": "Ctrl+K",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Delete everything from the cursor to the end of the line. The deleted text is stored — paste it back with Ctrl+Y. Standard terminal text editing.",
+      "when": "When you want to quickly clear the end of your current input without backspacing character by character.",
+      "example": "You typed 'fix the login bug in the auth module' but want to change the ending. Put cursor after 'bug', press Ctrl+K — everything after 'bug' is deleted.",
+      "platform": "Claude Code",
+      "tags": [
+        "text-editing"
+      ]
+    },
+    {
+      "command": "Ctrl+U",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Delete everything from the cursor to the start of the line. The deleted text is stored — paste it back with Ctrl+Y. Press repeatedly to clear multiline input.",
+      "when": "When you want to wipe your current input and start over, or clear a long prompt you've changed your mind about.",
+      "example": "You typed a long prompt but want to start over. Press Ctrl+U — the whole line is deleted. Much faster than holding backspace.",
+      "platform": "Claude Code",
+      "tags": [
+        "text-editing"
+      ]
+    },
+    {
+      "command": "Ctrl+Y",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Paste back text that was deleted with Ctrl+K or Ctrl+U. Like an undo for line deletions. Press Alt+Y after to cycle through older deletions.",
+      "when": "When you accidentally deleted text with Ctrl+K/U and want it back, or when you intentionally cut text to move it.",
+      "example": "You deleted a line with Ctrl+U, moved to a new position, then Ctrl+Y pastes it back. It's cut-and-paste for the terminal.",
+      "platform": "Claude Code",
+      "tags": [
+        "text-editing"
+      ]
+    },
+    {
+      "command": "Alt+B / Alt+F",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Jump the cursor one word at a time. Alt+B moves backward (left), Alt+F moves forward (right). Much faster than arrowing one character at a time.",
+      "when": "When editing a long prompt and you need to jump to a specific word without holding the arrow key. On Mac, requires Option-as-Meta configured in terminal settings.",
+      "example": "Cursor is at the end of 'fix the login bug in auth'. Press Alt+B three times — cursor jumps back past 'auth', 'in', 'bug'. Edit from there.",
+      "platform": "Claude Code",
+      "tags": [
+        "text-editing"
+      ]
+    },
+    {
+      "command": "\\ + Enter (multiline)",
+      "category": "Claude Code",
+      "safety": "safe",
+      "what": "Start a new line in your prompt without sending it. Type a backslash then press Enter. Works in all terminals. Other options: Shift+Enter (iTerm2, Ghostty, Kitty) or Option+Enter (Mac).",
+      "when": "When you want to write a multi-line prompt — listing requirements, writing detailed instructions, or pasting formatted text.",
+      "example": "Type `fix these issues:\\` then Enter — a new line starts. Type `1. Login timeout\\` Enter `2. Missing avatar` Enter. Send the whole multi-line message.",
+      "platform": "Claude Code",
+      "tags": [
+        "essential"
       ]
     }
   ],
